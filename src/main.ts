@@ -41,7 +41,7 @@ if ('BRANCH_NAME' in process.env == false || process.env.BRANCH_NAME == 'develop
       deployToEnvironment: acceptanceEnvironment,
     },
   );
-} else if (process.env.BRANCH_NAME == 'production') {
+} else if (process.env.BRANCH_NAME == 'main') {
   new PipelineStack(app, 'tribebrp-pipeline-production',
     {
       env: deploymentEnvironment,
