@@ -12,10 +12,15 @@
     "diff": "npx projen diff",
     "eject": "npx projen eject",
     "eslint": "npx projen eslint",
+    "install:auth": "npx projen install:auth",
+    "install:home": "npx projen install:home",
+    "install:login": "npx projen install:login",
+    "install:logout": "npx projen install:logout",
     "lint": "npx projen lint",
     "package": "npx projen package",
     "post-compile": "npx projen post-compile",
     "post-upgrade": "npx projen post-upgrade",
+    "postinstall": "npx projen postinstall",
     "pre-compile": "npx projen pre-compile",
     "release": "npx projen release",
     "synth": "npx projen synth",
@@ -51,12 +56,27 @@
     "typescript": "^4.8.3"
   },
   "dependencies": {
+    "@aws-cdk/aws-apigatewayv2-alpha": "^2.42.0-alpha.0",
+    "@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.42.0-alpha.0",
     "aws-cdk-lib": "^2.1.0",
-    "constructs": "^10.0.5"
+    "constructs": "^10.0.5",
+    "dotenv": "*"
   },
   "license": "EUPL-1.2",
   "version": "0.0.0",
   "jest": {
+    "setupFiles": [
+      "dotenv/config"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/cdk.out",
+      "/test/playwright"
+    ],
+    "roots": [
+      "src",
+      "test"
+    ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
       "<rootDir>/(test|src)/**/*(*.)@(spec|test).ts?(x)"
@@ -72,10 +92,9 @@
     ],
     "coverageDirectory": "coverage",
     "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/"
+      "/node_modules/",
+      "/cdk.out",
+      "/test/playwright"
     ],
     "watchPathIgnorePatterns": [
       "/node_modules/"

@@ -1,0 +1,27 @@
+{
+  "name": "login",
+  "version": "1.0.0",
+  "description": "login lambda",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "npx jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "3.165.0",
+    "@aws-sdk/client-secrets-manager": "3.165.0",
+    "@gemeentenijmegen/session": "0.0.3",
+    "cookie": "^0.5.0",
+    "mustache": "^4.2.0",
+    "openid-client": "^5.1.9",
+    "uid-safe": "^2.1.5"
+  },
+  "devDependencies": {
+    "aws-sdk-client-mock": "^2.0.0",
+    "@aws-sdk/types": "3.162.0"
+  }
+}

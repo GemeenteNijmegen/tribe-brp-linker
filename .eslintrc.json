@@ -144,8 +144,13 @@
       "error",
       {
         "devDependencies": [
-          "**/test/**",
-          "**/build-tools/**"
+          "**/src/app/login/tests/**",
+          "**/src/app/auth/tests/**",
+          "**/src/app/home/tests/**",
+          "**/src/app/uitkeringen/tests/**",
+          "**/src/app/logout/tests/**",
+          "**//test/**",
+          "**//build-tools/**"
         ],
         "optionalDependencies": false,
         "peerDependencies": true
