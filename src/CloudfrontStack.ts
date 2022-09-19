@@ -48,7 +48,7 @@ export class CloudfrontStack extends Stack {
 
     const cloudfrontDistribution = this.setCloudfrontStack(props.hostDomain);
     this.addStaticResources(cloudfrontDistribution);
-    this.addDnsRecords(cloudfrontDistribution);
+    // this.addDnsRecords(cloudfrontDistribution);
   }
 
   /**
