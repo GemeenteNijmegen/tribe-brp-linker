@@ -4,6 +4,7 @@ import { Alarm } from 'aws-cdk-lib/aws-cloudwatch';
 import { FilterPattern, IFilterPattern, MetricFilter, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 import { Statics } from './statics';
+import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 
 export interface ApiFunctionProps {
   description: string;
@@ -31,6 +32,10 @@ export class ApiFunction extends Construct {
       logRetention: RetentionDays.ONE_MONTH,
       environment: {
         SESSION_TABLE: props.table.tableName,
+        APPLICATION_URL_BASE: props.applicationUrlBase || '',
+        AUTH_URL_BASE: StringParameter.valueForStringParameter(this, Statics.ssmAuthUrlBaseParameter),
+        OIDC_CLIENT_ID: StringParameter.valueForStringParameter(this, Statics.ssmOIDCClientID),
+        OIDC_SCOPE: StringParameter.valueForStringParameter(this, Statics.ssmOIDCScope),
         ...props.environment,
       },
     });
