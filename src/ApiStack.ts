@@ -31,7 +31,7 @@ export class ApiStack extends Stack {
 
     const appDomain = SSM.StringParameter.valueForStringParameter(this, Statics.ssmZoneName);;
     
-    new SSM.StringParameter(this, 'apigatewaydomain', {
+    new SSM.StringParameter(this, 'hostedzone-id', {
       stringValue: this.domain(),
       parameterName: Statics.ssmApiGatewayDomain,
     });
