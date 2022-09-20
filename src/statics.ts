@@ -1,6 +1,8 @@
 export abstract class Statics {
   static readonly projectName: string = 'tribe-brp-linker';
 
+  static readonly subDomain: string = 'tribebrp';
+
   /**
    * Repo information
    */
@@ -21,8 +23,10 @@ export abstract class Statics {
    * the actual zone between stacks. This param is set by DNSStack and should not be modified after.
    */
   static readonly ssmZonePath: string = `/cdk/${this.projectName}/zones`;
-  static readonly ssmZoneId: string = `/cdk/${this.projectName}/zone-id`;
-  static readonly ssmZoneName: string = `/cdk/${this.projectName}/zone-name`;
+  static readonly ssmZoneId: string = `/cdk/${this.projectName}/zones/zone-id`;
+  static readonly ssmZoneName: string = `/cdk/${this.projectName}/zones/zone-name`;
+
+  static readonly ssmApiGatewayDomain: string = `/cdk/${this.projectName}/apigateway-domain`;
 
   /** There seems to be no way to get the required ds record value in the CDK/API */
   static readonly ssmNijmegenDSRecordValue: string = `/cdk/${this.projectName}/ds-record-value`;

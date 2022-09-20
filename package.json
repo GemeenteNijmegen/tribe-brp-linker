@@ -59,6 +59,7 @@
     "@aws-cdk/aws-apigatewayv2-alpha": "^2.42.0-alpha.0",
     "@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.42.0-alpha.0",
     "aws-cdk-lib": "^2.1.0",
+    "cdk-remote-stack": "^2.0.9",
     "constructs": "^10.0.5",
     "dotenv": "^16.0.2"
   },

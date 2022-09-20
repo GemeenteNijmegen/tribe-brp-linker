@@ -1,6 +1,5 @@
 import {
   Stack,
-  StackProps,
   Duration,
   aws_certificatemanager as CertificateManager,
   aws_route53 as Route53,
@@ -28,27 +27,37 @@ import {
   OriginAccessIdentity,
 } from 'aws-cdk-lib/aws-cloudfront';
 import { HttpOrigin, S3Origin } from 'aws-cdk-lib/aws-cloudfront-origins';
+import { IHostedZone } from 'aws-cdk-lib/aws-route53';
+import { RemoteParameters } from 'cdk-remote-stack';
 import { Construct } from 'constructs';
 import { Statics } from './statics';
 
-export interface CloudFrontStackProps extends StackProps {
-  /**
-     * Domain for the default origin (HTTPorigin)
-     */
-  hostDomain: string;
-  /**
-     * current branch: Determines subdomain of csp-nijmegen.nl
-     */
-  branch: string;
-}
 
 export class CloudfrontStack extends Stack {
-  constructor(scope: Construct, id: string, props: CloudFrontStackProps) {
+  private zone?: IHostedZone;
+  constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    const cloudfrontDistribution = this.setCloudfrontStack(props.hostDomain);
+    const zone = this.hostedZone();
+
+    const apiGatewayDomain = SSM.StringParameter.valueForStringParameter(this, Statics.ssmApiGatewayDomain);
+
+    const cloudfrontDistribution = this.setCloudfrontStack(apiGatewayDomain, [zone.zoneName], this.certificateArn());
     this.addStaticResources(cloudfrontDistribution);
-    // this.addDnsRecords(cloudfrontDistribution);
+    this.addDnsRecords(cloudfrontDistribution);
+  }
+
+  /**
+   * Get the certificate ARN from parameter store in us-east-1
+   * @returns string Certificate ARN
+   */
+  private certificateArn() {
+    const parameters = new RemoteParameters(this, 'params', {
+      path: `${Statics.certificatePath}/`,
+      region: 'us-east-1',
+    });
+    const certificateArn = parameters.get(Statics.certificateArn);
+    return certificateArn;
   }
 
   /**
@@ -144,12 +153,7 @@ export class CloudfrontStack extends Stack {
    * @param distribution the cloudfront distribution
    */
   addDnsRecords(distribution: Distribution) {
-    const zoneId = SSM.StringParameter.valueForStringParameter(this, Statics.ssmZoneId);
-    const zoneName = SSM.StringParameter.valueForStringParameter(this, Statics.ssmZoneName);
-    const zone = Route53.HostedZone.fromHostedZoneAttributes(this, 'zone', {
-      hostedZoneId: zoneId,
-      zoneName: zoneName,
-    });
+    const zone = this.hostedZone();
 
     new Route53.ARecord(this, 'a-record', {
       zone: zone,
@@ -160,6 +164,18 @@ export class CloudfrontStack extends Stack {
       zone: zone,
       target: Route53.RecordTarget.fromAlias(new Route53Targets.CloudFrontTarget(distribution)),
     });
+  }
+
+  private hostedZone() {
+    if (!this.zone) {
+      const zoneId = SSM.StringParameter.valueForStringParameter(this, Statics.ssmZoneId);
+      const zoneName = SSM.StringParameter.valueForStringParameter(this, Statics.ssmZoneName);
+      this.zone = Route53.HostedZone.fromHostedZoneAttributes(this, 'zone', {
+        hostedZoneId: zoneId,
+        zoneName: zoneName,
+      });
+    }
+    return this.zone;
   }
 
   /**

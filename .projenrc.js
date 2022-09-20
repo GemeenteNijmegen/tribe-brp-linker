@@ -9,6 +9,7 @@ const project = new GemeenteNijmegenCdkApp({
     'dotenv',
     '@aws-cdk/aws-apigatewayv2-alpha',
     '@aws-cdk/aws-apigatewayv2-integrations-alpha',
+    'cdk-remote-stack',
   ],
   jestOptions: {
     jestConfig: {

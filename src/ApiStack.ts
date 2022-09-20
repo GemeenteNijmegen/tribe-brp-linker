@@ -30,6 +30,10 @@ export class ApiStack extends Stack {
     });
 
     const appDomain = this.domain();
+    new SSM.StringParameter(this, 'hostedzone-id', {
+      stringValue: appDomain,
+      parameterName: Statics.ssmApiGatewayDomain,
+    });
 
     this.setFunctions(`https://${appDomain}/`);
   }
