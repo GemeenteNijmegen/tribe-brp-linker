@@ -41,18 +41,9 @@ class OpenIDConnect {
      */
     getIssuer() {
         const issuer = new Issuer({
-            issuer: `${process.env.AUTH_URL_BASE}/broker/sp/oidc`,
-            authorization_endpoint: `${process.env.AUTH_URL_BASE}/broker/sp/oidc/authenticate`,
-            token_endpoint: `${process.env.AUTH_URL_BASE}/broker/sp/oidc/token`,
-            jwks_uri: `${process.env.AUTH_URL_BASE}/broker/sp/oidc/certs`,
-            userinfo_endpoint: `${process.env.AUTH_URL_BASE}/broker/sp/oidc/userinfo`,
-            revocation_endpoint: `${process.env.AUTH_URL_BASE}/broker/sp/oidc/token/revoke`,
-            introspection_endpoint: `${process.env.AUTH_URL_BASE}/broker/sp/oidc/token/introspect`,
-            end_session_endpoint: `${process.env.AUTH_URL_BASE}/broker/sp/oidc/logout`,
-            token_endpoint_auth_methods_supported: ["client_secret_post", "client_secret_basic"],
-            introspection_endpoint_auth_methods_supported: ["client_secret_post", "client_secret_basic"],
-            revocation_endpoint_auth_methods_supported: ["client_secret_post", "client_secret_basic"],
-            revocation_endpoint_auth_methods_supported: "RS256"
+            issuer: `${process.env.AUTH_URL_BASE}`,
+            authorization_endpoint: `${process.env.AUTH_URL_BASE}/auth`,
+            token_endpoint: `${process.env.AUTH_URL_BASE}/token`,
         });
         return issuer;
     }
