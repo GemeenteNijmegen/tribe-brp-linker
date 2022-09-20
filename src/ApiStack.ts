@@ -1,6 +1,6 @@
 import * as apigatewayv2 from '@aws-cdk/aws-apigatewayv2-alpha';
 import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha';
-import { aws_secretsmanager, Stack, StackProps, aws_ssm as SSM } from 'aws-cdk-lib';
+import { aws_secretsmanager, Stack, StackProps, aws_ssm as SSM, CfnOutput } from 'aws-cdk-lib';
 import { Table } from 'aws-cdk-lib/aws-dynamodb';
 import { Construct } from 'constructs';
 import { ApiFunction } from './ApiFunction';
@@ -34,6 +34,12 @@ export class ApiStack extends Stack {
       stringValue: appDomain,
       parameterName: Statics.ssmApiGatewayDomain,
     });
+
+    const temp_output = new CfnOutput(this, 'temp-output', {
+      value: 'y2dnbkliwi',
+      exportName: 'api-api-stack:ExportsOutputRefapiC855031500EF81AC',
+    });
+    temp_output.overrideLogicalId('ExportsOutputRefapiC855031500EF81AC');
 
     this.setFunctions(`https://${appDomain}/`);
   }
