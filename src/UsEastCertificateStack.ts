@@ -1,4 +1,5 @@
 import { aws_certificatemanager as CertificateManager, Stack, StackProps, aws_ssm as SSM } from 'aws-cdk-lib';
+import { HostedZone } from 'aws-cdk-lib/aws-route53';
 import { RemoteParameters } from 'cdk-remote-stack';
 import { Construct } from 'constructs';
 import { Statics } from './statics';
@@ -29,11 +30,14 @@ export class UsEastCertificateStack extends Stack {
       region: 'eu-west-1',
     });
     const zoneParams = this.getZoneAttributes(parameters, Statics.ssmZoneId, Statics.ssmZoneName);
+    const zone = HostedZone.fromHostedZoneAttributes(this, 'zone', zoneParams);
     const cspDomain = zoneParams.zoneName;
+
 
     const certificate = new CertificateManager.Certificate(this, 'certificate', {
       domainName: cspDomain,
-      validation: CertificateManager.CertificateValidation.fromDns(),
+      validation: CertificateManager.CertificateValidation.fromDns(zone),
+      
     });
 
     new SSM.StringParameter(this, 'cert-arn', {
