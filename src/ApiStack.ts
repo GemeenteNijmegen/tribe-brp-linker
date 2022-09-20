@@ -35,12 +35,6 @@ export class ApiStack extends Stack {
       parameterName: Statics.ssmApiGatewayDomain,
     });
 
-    const temp_output = new CfnOutput(this, 'temp-output', {
-      value: 'y2dnbkliwi',
-      exportName: 'api-api-stack:ExportsOutputRefapiC855031500EF81AC',
-    });
-    temp_output.overrideLogicalId('ExportsOutputRefapiC855031500EF81AC');
-
     this.setFunctions(`https://${appDomain}/`);
   }
 
