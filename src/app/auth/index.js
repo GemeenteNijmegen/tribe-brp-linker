@@ -13,6 +13,7 @@ function parseEvent(event) {
 
 exports.handler = async (event, context) => {
     try {
+        console.log(event);
         const params = parseEvent(event);
         return await handleRequest(params.cookies, params.code, params.state, dynamoDBClient);
     } catch (err) {
