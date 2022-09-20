@@ -29,7 +29,7 @@ export class ApiStack extends Stack {
       description: 'Tribe to BRP webapplicatie',
     });
 
-    const appDomain = this.domain();
+    const appDomain = SSM.StringParameter.valueForStringParameter(this, Statics.ssmZoneName);;
     new SSM.StringParameter(this, 'hostedzone-id', {
       stringValue: appDomain,
       parameterName: Statics.ssmApiGatewayDomain,
