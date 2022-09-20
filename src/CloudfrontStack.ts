@@ -99,6 +99,7 @@ export class CloudfrontStack extends Stack {
     if (!certificate) { domainNames = undefined; };
 
     const distribution = new Distribution(this, 'cf-distribution', {
+      comment: 'Tribe BRP application',
       priceClass: PriceClass.PRICE_CLASS_100,
       domainNames,
       certificate,
