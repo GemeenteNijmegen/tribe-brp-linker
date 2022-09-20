@@ -38,7 +38,7 @@ test('index is ok', async () => {
 test('Return login page with correct link', async () => {
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
   const result = await handleLoginRequest('', dynamoDBClient);
-  expect(result.body).toMatch(`${process.env.AUTH_URL_BASE}/broker/sp/oidc/authenticate`);
+  expect(result.body).toMatch(`${process.env.AUTH_URL_BASE}/auth`);
   expect(result.body).toMatch(encodeURIComponent(`${process.env.APPLICATION_URL_BASE}auth`));
   expect(result.statusCode).toBe(200);
   writeFile(path.join(__dirname, 'output', 'test.html'), result.body, () => { });

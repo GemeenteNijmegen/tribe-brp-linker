@@ -37,7 +37,7 @@ export class UsEastCertificateStack extends Stack {
     const certificate = new CertificateManager.Certificate(this, 'certificate', {
       domainName: cspDomain,
       validation: CertificateManager.CertificateValidation.fromDns(zone),
-      
+
     });
 
     new SSM.StringParameter(this, 'cert-arn', {

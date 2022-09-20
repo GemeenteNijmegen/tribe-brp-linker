@@ -2,9 +2,9 @@ import * as path from 'path';
 import { aws_lambda as Lambda, aws_dynamodb, RemovalPolicy, Duration } from 'aws-cdk-lib';
 import { Alarm } from 'aws-cdk-lib/aws-cloudwatch';
 import { FilterPattern, IFilterPattern, MetricFilter, RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
 import { Statics } from './statics';
-import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 
 export interface ApiFunctionProps {
   description: string;
