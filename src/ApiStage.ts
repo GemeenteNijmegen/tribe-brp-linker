@@ -23,10 +23,12 @@ export class ApiStage extends Stage {
     const usEastCertificateStack = new UsEastCertificateStack(this, 'us-cert-stack', { branch: props.branch, env: { region: 'us-east-1' } });
     usEastCertificateStack.addDependency(dnsStack);
 
-    new ApiStack(this, 'api-stack', {
+    const apiStack = new ApiStack(this, 'api-stack', {
       branch: props.branch,
       sessionsTable: sessionsStack.sessionsTable,
     });
-    new CloudfrontStack(this, 'cloudfront-stack').addDependency(usEastCertificateStack);
+    const cloudfrontStack = new CloudfrontStack(this, 'cloudfront-stack');
+    cloudfrontStack.addDependency(usEastCertificateStack);
+    cloudfrontStack.addDependency(apiStack);
   }
 }
