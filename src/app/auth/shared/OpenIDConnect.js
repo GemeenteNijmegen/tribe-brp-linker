@@ -95,8 +95,10 @@ class OpenIDConnect {
         }
         let tokenSet;
         try {
-            tokenSet = await client.oauthCallback(redirect_uri, params, { state: state });
+            tokenSet = await client.callback(redirect_uri, params, { state: state });
+            console.debug(tokenSet);
         } catch(err) {
+            console.debug(err);
             throw new Error(`${err.error} ${err.error_description}`);
         }
         const claims = tokenSet.claims();
