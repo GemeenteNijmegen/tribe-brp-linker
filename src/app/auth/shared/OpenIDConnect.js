@@ -60,7 +60,7 @@ class OpenIDConnect {
         const client = new this.issuer.Client({
             client_id: process.env.OIDC_CLIENT_ID,
             redirect_uris: [redirect_uri],
-            response_types: ['code'],
+            response_types: ['code']
         });
         const authUrl = client.authorizationUrl({
             scope: process.env.OIDC_SCOPE,  
@@ -86,6 +86,7 @@ class OpenIDConnect {
             client_id: process.env.OIDC_CLIENT_ID,
             redirect_uris: [redirect_uri],
             client_secret: client_secret,
+            token_endpoint_auth_method: 'client_secret_post',
             response_types: ['code'],
         });
         const params = client.callbackParams(redirect_uri + '/?code=' + code + '&state=' + returnedState);
@@ -94,7 +95,7 @@ class OpenIDConnect {
         }
         let tokenSet;
         try {
-            tokenSet = await client.callback(redirect_uri, params, { state: state });
+            tokenSet = await client.oauthCallback(redirect_uri, params, { state: state });
         } catch(err) {
             throw new Error(`${err.error} ${err.error_description}`);
         }
