@@ -27,7 +27,7 @@ async function handleRequest(cookies, queryStringParamCode, queryStringParamStat
                 loggedin: { BOOL: true },
                 access_token: { S: tokenSet.access_token },
                 refresh_token: { S: tokenSet.refresh_token },
-                expires_in: { N: tokenSet.expires_in }
+                expires_in: { N: `${tokenSet.expires_in}` }
             });
         } else {
             return { 'statusCode': 500 }
