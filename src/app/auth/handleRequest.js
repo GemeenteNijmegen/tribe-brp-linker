@@ -19,18 +19,22 @@ async function handleRequest(cookies, queryStringParamCode, queryStringParamStat
         return redirectResponse('/login');
     }
     const state = session.getValue('state');
-    const OIDC = new OpenIDConnect();
+    const OIDC = new OpenIDConnect(); 
     try {
-        const claims = await OIDC.authorize(queryStringParamCode, state, queryStringParamState, queryStringParamState);    
-        if (claims) {
+        const tokenSet = await OIDC.authorize(queryStringParamCode, state, queryStringParamState, queryStringParamState);    
+        console.debug('test2', tokenSet);
+        if (tokenSet) {
             await session.createSession({ 
                 loggedin: { BOOL: true },
-                bsn: { S: claims.sub }
+                access_token: { S: tokenSet.access_token },
+                refresh_token: { S: tokenSet.refresh_token },
+                expires: { N: tokenSet.expires }
             });
         } else {
             return redirectResponse('/login');
         }
     } catch (error) {
+        console.debug('test2', error);
         console.error(error.message);
         return redirectResponse('/login');
     }

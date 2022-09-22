@@ -65,7 +65,8 @@ class OpenIDConnect {
         const authUrl = client.authorizationUrl({
             scope: process.env.OIDC_SCOPE,  
             resource: process.env.AUTH_URL_BASE,
-            state: state
+            state: state,
+            organization_id: process.env.AUTH_ORG_ID
         });
         return authUrl;
     }
@@ -89,24 +90,20 @@ class OpenIDConnect {
             token_endpoint_auth_method: 'client_secret_post',
             response_types: ['code'],
         });
-        const params = client.callbackParams(redirect_uri + '/?code=' + code + '&state=' + returnedState);
+        const params = client.callbackParams(redirect_uri + '/?code=' + code);
         if(state !== returnedState) {
             throw new Error('state does not match session state');
         }
         let tokenSet;
         try {
-            tokenSet = await client.callback(redirect_uri, params, { state: state });
+            console.debug(redirect_uri, params, state);
+            tokenSet = await client.oauthCallback(redirect_uri.toString(), params);
             console.debug(tokenSet);
+            return tokenSet;
         } catch(err) {
             console.debug(err);
-            throw new Error(`${err.error} ${err.error_description}`);
+            throw new Error(`${err.error} ${err.error_description} ${err?.error_hint}`);
         }
-        const claims = tokenSet.claims();
-        if(claims.aud != process.env.OIDC_CLIENT_ID) { 
-            throw new Error('claims aud does not match client id');
-        }
-        return claims;
-       
     }
     
     generateState() {
