@@ -35,6 +35,7 @@ const project = new GemeenteNijmegenCdkApp({
   },
   gitignore: [
     'src/app/**/tests/output',
+    'local',
   ],
 });
 project.synth();

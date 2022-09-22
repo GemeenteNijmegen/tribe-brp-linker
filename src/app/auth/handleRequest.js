@@ -22,16 +22,15 @@ async function handleRequest(cookies, queryStringParamCode, queryStringParamStat
     const OIDC = new OpenIDConnect(); 
     try {
         const tokenSet = await OIDC.authorize(queryStringParamCode, state, queryStringParamState, queryStringParamState);    
-        console.debug('test2', tokenSet);
         if (tokenSet) {
             await session.createSession({ 
                 loggedin: { BOOL: true },
                 access_token: { S: tokenSet.access_token },
                 refresh_token: { S: tokenSet.refresh_token },
-                expires: { N: tokenSet.expires }
+                expires_in: { N: tokenSet.expires_in }
             });
         } else {
-            return redirectResponse('/login');
+            return { 'statusCode': 500 }
         }
     } catch (error) {
         console.debug('test2', error);

@@ -22,14 +22,10 @@ exports.homeRequestHandler = async (cookies, apiClient, dynamoDBClient) => {
 }
 
 async function handleLoggedinRequest(session, apiClient) {
-    const bsn = session.getValue('bsn');
-    const brpApi = new BrpApi(apiClient);
-    const brpData = await brpApi.getBrpData(bsn);
-    const naam = brpData?.Persoon?.Persoonsgegevens?.Naam ? brpData.Persoon.Persoonsgegevens.Naam : 'Onbekende gebruiker';
+    // const bsn = session.getValue('bsn');
     data = {
         title: 'overzicht',
-        shownav: true,
-        volledigenaam: naam
+        shownav: true
     };
 
     // render page

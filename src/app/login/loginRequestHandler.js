@@ -2,21 +2,11 @@ const { Session } = require('@gemeentenijmegen/session');
 const { OpenIDConnect } = require('./shared/OpenIDConnect');
 const { render } = require('./shared/render');
 
-function redirectResponse(location, status = 302) {
+function redirectResponse(location, status = 302, cookies) {
     const response = {
         'statusCode': status,
         'headers': {
             'Location': location
-        }
-    };
-    return response;
-}
-function htmlResponse(body, cookies) {
-    const response = {
-        'statusCode': 200,
-        'body': body,
-        'headers': {
-            'Content-type': 'text/html'
         },
         'cookies': cookies
     };
@@ -38,15 +28,7 @@ async function handleLoginRequest(cookies, dynamoDBClient) {
     });
     const authUrl = OIDC.getLoginUrl(state);
     
-    const data = {
-        title: 'Inloggen',
-        authUrl: authUrl
-    }
-    const html = await render(data, __dirname + '/templates/login.mustache', { 
-        'header': `${__dirname}/shared/header.mustache`,
-        'footer': `${__dirname}/shared/footer.mustache`
-    });
     const newCookies = [session.getCookie()];
-    return htmlResponse(html, newCookies);
+    return redirectResponse(authUrl, 302, newCookies);
 }
 exports.handleLoginRequest = handleLoginRequest;

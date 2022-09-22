@@ -1,5 +1,3 @@
-import { writeFile } from 'fs';
-import * as path from 'path';
 import { DynamoDBClient, GetItemCommandOutput, GetItemCommand } from '@aws-sdk/client-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
 import { handler } from '../index.js';
@@ -28,27 +26,25 @@ beforeEach(() => {
   ddbMock.reset();
 });
 
-
 test('index is ok', async () => {
   const result = await handler({}, {});
-  expect(result.statusCode).toBe(200);
+  expect(result.statusCode).toBe(302);
 });
 
 
 test('Return login page with correct link', async () => {
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
   const result = await handleLoginRequest('', dynamoDBClient);
-  expect(result.body).toMatch(`${process.env.AUTH_URL_BASE}/auth`);
-  expect(result.body).toMatch(encodeURIComponent(`${process.env.APPLICATION_URL_BASE}auth`));
-  expect(result.statusCode).toBe(200);
-  writeFile(path.join(__dirname, 'output', 'test.html'), result.body, () => { });
+  expect(result.headers.Location).toContain(process.env.AUTH_URL_BASE);
+  expect(result.statusCode).toBe(302);
 });
 
-test('No redirect if session cookie doesn\'t exist', async () => {
+test('Redirect to auth url if session cookie doesn\'t exist', async () => {
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
 
   const result = await handleLoginRequest('demo=12345', dynamoDBClient);
-  expect(result.statusCode).toBe(200);
+  expect(result.statusCode).toBe(302);
+  expect(result.headers.Location).toContain(process.env.AUTH_URL_BASE);
 });
 
 test('Create session if no session exists', async () => {
@@ -86,10 +82,11 @@ test('Unknown session returns login page', async () => {
   const sessionId = '12345';
   const result = await handleLoginRequest(`session=${sessionId}`, dynamoDBClient);
   expect(ddbMock.calls().length).toBe(2);
-  expect(result.statusCode).toBe(200);
+  expect(result.statusCode).toBe(302);
+  expect(result.headers.Location).toContain(process.env.AUTH_URL_BASE);
 });
 
-test('Known session without login returns login page, without creating new session', async () => {
+test('Known session without login redirects to login url, without creating new session', async () => {
   const output: Partial<GetItemCommandOutput> = {
     Item: {
       loggedin: {
@@ -102,7 +99,8 @@ test('Known session without login returns login page, without creating new sessi
   const sessionId = '12345';
   const result = await handleLoginRequest(`session=${sessionId}`, dynamoDBClient);
   expect(ddbMock.calls().length).toBe(2);
-  expect(result.statusCode).toBe(200);
+  expect(result.statusCode).toBe(302);
+  expect(result.headers.Location).toContain(process.env.AUTH_URL_BASE);
 });
 
 test('Request without session returns session cookie', async () => {

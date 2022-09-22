@@ -39,14 +39,11 @@ jest.mock('openid-client', () => {
       return {
         Client: jest.fn(() => {
           return {
-            callback: jest.fn(() => {
+            oauthCallback: jest.fn(() => {
               return {
-                claims: jest.fn(() => {
-                  return {
-                    aud: process.env.OIDC_CLIENT_ID,
-                    sub: '12345',
-                  };
-                }),
+                access_token: 'bla',
+                refresh_token: 'die',
+                expires: 1234,
               };
             }),
             callbackParams: jest.fn(() => {}),

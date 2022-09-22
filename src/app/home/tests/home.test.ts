@@ -67,6 +67,6 @@ test('Shows overview page', async () => {
   const apiClient = new FileApiClient();
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
   const result = await homeRequestHandler('session=12345', apiClient, dynamoDBClient);
-  expect(result.body).toMatch('Mijn Nijmegen');
+  expect(result.body).toMatch('BRP');
   writeFile(path.join(__dirname, 'output', 'test.html'), result.body, () => {});
 });
