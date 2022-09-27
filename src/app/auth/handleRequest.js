@@ -38,6 +38,7 @@ async function handleRequest(cookies, queryStringParamCode, queryStringParamStat
         console.error(error.message);
         return redirectResponse('/login');
     }
-    return redirectResponse(`/?contact_id=${contact_id}`, 302, [session.getCookie()]);
+    const url = contact_id ? `/?contact_id=${contact_id}` : '/';
+    return redirectResponse(url, 302, [session.getCookie()]);
 }
 exports.handleRequest = handleRequest;

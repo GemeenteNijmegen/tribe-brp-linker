@@ -34,7 +34,7 @@ test('index is ok', async () => {
 
 test('Return login page with correct link', async () => {
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-  const result = await handleLoginRequest('', dynamoDBClient);
+  const result = await handleLoginRequest({ cookies: '', contact_id: '' }, dynamoDBClient);
   expect(result.headers.Location).toContain(process.env.AUTH_URL_BASE);
   expect(result.statusCode).toBe(302);
 });
@@ -42,7 +42,7 @@ test('Return login page with correct link', async () => {
 test('Redirect to auth url if session cookie doesn\'t exist', async () => {
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
 
-  const result = await handleLoginRequest('demo=12345', dynamoDBClient);
+  const result = await handleLoginRequest({ cookies: 'demo=12345', contact_id: '' }, dynamoDBClient);
   expect(result.statusCode).toBe(302);
   expect(result.headers.Location).toContain(process.env.AUTH_URL_BASE);
 });
@@ -70,7 +70,7 @@ test('Redirect to home if already logged in', async () => {
   ddbMock.on(GetItemCommand).resolves(output);
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
   const sessionId = '12345';
-  const result = await handleLoginRequest(`session=${sessionId}`, dynamoDBClient);
+  const result = await handleLoginRequest({ cookies: `session=${sessionId}`, contact_id: '' }, dynamoDBClient);
   expect(result.headers.Location).toBe('/');
   expect(result.statusCode).toBe(302);
 });
@@ -80,7 +80,7 @@ test('Unknown session returns login page', async () => {
   const output: Partial<GetItemCommandOutput> = {}; //empty output
   ddbMock.on(GetItemCommand).resolves(output);
   const sessionId = '12345';
-  const result = await handleLoginRequest(`session=${sessionId}`, dynamoDBClient);
+  const result = await handleLoginRequest({ cookies: `session=${sessionId}`, contact_id: '' }, dynamoDBClient);
   expect(ddbMock.calls().length).toBe(2);
   expect(result.statusCode).toBe(302);
   expect(result.headers.Location).toContain(process.env.AUTH_URL_BASE);
@@ -97,7 +97,7 @@ test('Known session without login redirects to login url, without creating new s
   ddbMock.on(GetItemCommand).resolves(output);
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
   const sessionId = '12345';
-  const result = await handleLoginRequest(`session=${sessionId}`, dynamoDBClient);
+  const result = await handleLoginRequest({ cookies: `session=${sessionId}`, contact_id: '' }, dynamoDBClient);
   expect(ddbMock.calls().length).toBe(2);
   expect(result.statusCode).toBe(302);
   expect(result.headers.Location).toContain(process.env.AUTH_URL_BASE);
@@ -105,21 +105,8 @@ test('Known session without login redirects to login url, without creating new s
 
 test('Request without session returns session cookie', async () => {
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-  const result = await handleLoginRequest('', dynamoDBClient);
+  const result = await handleLoginRequest({ cookies: '', contact_id: '' }, dynamoDBClient);
   expect(result.cookies).toEqual(
     expect.arrayContaining([expect.stringMatching('session=')]),
   );
-});
-
-test('DynamoDB error', async () => {
-  ddbMock.on(GetItemCommand).rejects(new Error('Not supported!'));
-  const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-  let failed = false;
-  try {
-    await handleLoginRequest('session=12345', dynamoDBClient);
-  } catch (error) {
-    failed = true;
-  }
-  expect(ddbMock.calls().length).toBe(1);
-  expect(failed).toBe(true);
 });

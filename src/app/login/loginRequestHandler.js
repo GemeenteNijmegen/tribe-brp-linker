@@ -14,6 +14,7 @@ function redirectResponse(location, status = 302, cookies) {
 }
 
 async function handleLoginRequest(params, dynamoDBClient) {
+    console.debug(params);
     let session = new Session(params.cookies, dynamoDBClient);
     await session.init();
     if (session.isLoggedIn() === true) {

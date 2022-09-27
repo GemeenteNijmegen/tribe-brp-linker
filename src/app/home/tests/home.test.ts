@@ -1,5 +1,3 @@
-import { writeFile } from 'fs';
-import * as path from 'path';
 import { DynamoDBClient, GetItemCommand, GetItemCommandOutput } from '@aws-sdk/client-dynamodb';
 import { SecretsManagerClient, GetSecretValueCommandOutput, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import { mockClient } from 'aws-sdk-client-mock';
@@ -51,7 +49,7 @@ test('Returns 200', async () => {
   secretsMock.on(GetSecretValueCommand).resolves(output);
   const apiClient = new FileApiClient();
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-  const result = await homeRequestHandler('session=12345', apiClient, dynamoDBClient);
+  const result = await homeRequestHandler({ cookies: 'session=12345', contact_id: '' }, apiClient, dynamoDBClient);
 
   expect(result.statusCode).toBe(200);
   let cookies = result.cookies.filter((cookie: string) => cookie.indexOf('HttpOnly; Secure'));
@@ -66,7 +64,7 @@ test('Shows overview page', async () => {
   secretsMock.on(GetSecretValueCommand).resolves(output);
   const apiClient = new FileApiClient();
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-  const result = await homeRequestHandler('session=12345', apiClient, dynamoDBClient);
+  const result = await homeRequestHandler({ cookies: 'session=12345', contact_id: '' }, apiClient, dynamoDBClient);
+  console.debug(result);
   expect(result.body).toMatch('BRP');
-  writeFile(path.join(__dirname, 'output', 'test.html'), result.body, () => {});
 });
