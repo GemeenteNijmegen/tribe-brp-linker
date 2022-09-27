@@ -19,6 +19,7 @@ async function handleRequest(cookies, queryStringParamCode, queryStringParamStat
         return redirectResponse('/login');
     }
     const state = session.getValue('state');
+    const contact_id = session.getValue('contact_id');
     const OIDC = new OpenIDConnect(); 
     try {
         const tokenSet = await OIDC.authorize(queryStringParamCode, state, queryStringParamState, queryStringParamState);    
@@ -27,7 +28,7 @@ async function handleRequest(cookies, queryStringParamCode, queryStringParamStat
                 loggedin: { BOOL: true },
                 access_token: { S: tokenSet.access_token },
                 refresh_token: { S: tokenSet.refresh_token },
-                expires_in: { N: `${tokenSet.expires_in}` }
+                expires_in: { N: `${tokenSet.expires_in}` },
             });
         } else {
             return { 'statusCode': 500 }
@@ -37,6 +38,6 @@ async function handleRequest(cookies, queryStringParamCode, queryStringParamStat
         console.error(error.message);
         return redirectResponse('/login');
     }
-    return redirectResponse('/', 302, [session.getCookie()]);
+    return redirectResponse(`/?contact_id=${contact_id}`, 302, [session.getCookie()]);
 }
 exports.handleRequest = handleRequest;

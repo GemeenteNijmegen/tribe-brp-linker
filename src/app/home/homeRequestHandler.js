@@ -12,16 +12,16 @@ function redirectResponse(location, code = 302) {
     }
 }
 
-exports.homeRequestHandler = async (cookies, apiClient, dynamoDBClient) => {
-    let session = new Session(cookies, dynamoDBClient);
+exports.homeRequestHandler = async (params, apiClient, dynamoDBClient) => {
+    let session = new Session(params.cookies, dynamoDBClient);
     await session.init();
     if (session.isLoggedIn() == true) {
-        return await handleLoggedinRequest(session, apiClient);
+        return await handleLoggedinRequest(session, apiClient, params.contact_id);
     }
-    return redirectResponse('/login');
+    return redirectResponse(`/login?contact_id=${params.contact_id}`);
 }
 
-async function handleLoggedinRequest(session, apiClient) {
+async function handleLoggedinRequest(session, apiClient, contact_id) {
     // const bsn = session.getValue('bsn');
     data = {
         title: 'overzicht',

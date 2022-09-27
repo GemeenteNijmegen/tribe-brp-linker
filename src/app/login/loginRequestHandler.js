@@ -13,8 +13,8 @@ function redirectResponse(location, status = 302, cookies) {
     return response;
 }
 
-async function handleLoginRequest(cookies, dynamoDBClient) {
-    let session = new Session(cookies, dynamoDBClient);
+async function handleLoginRequest(params, dynamoDBClient) {
+    let session = new Session(params.cookies, dynamoDBClient);
     await session.init();
     if (session.isLoggedIn() === true) {
         console.debug('redirect to home');
@@ -24,7 +24,8 @@ async function handleLoginRequest(cookies, dynamoDBClient) {
     const state = OIDC.generateState();
     await session.createSession({ 
         loggedin: { BOOL: false },
-        state: { S: state }
+        state: { S: state },
+        contact_id: { S: params.contact_id }
     });
     const authUrl = OIDC.getLoginUrl(state);
     

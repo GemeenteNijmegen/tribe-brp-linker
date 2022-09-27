@@ -18,6 +18,7 @@ const initPromise = init();
 function parseEvent(event) {
     return { 
         'cookies': event?.cookies?.join(';'),
+        'contact_id': event?.queryStringParameters?.contact_id
     };
 }
 
@@ -25,7 +26,7 @@ exports.handler = async (event, context) => {
     try {
         const params = parseEvent(event);
         await initPromise;
-        return await homeRequestHandler(params.cookies, apiClient, dynamoDBClient);
+        return await homeRequestHandler(params, apiClient, dynamoDBClient);
     
     } catch (err) {
         console.error(err);
