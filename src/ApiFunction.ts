@@ -40,7 +40,7 @@ export class ApiFunction extends Construct {
           },
           // Copy a file so that it will be included in the bundled asset
           afterBundling(inputDir: string, outputDir: string): string[] {
-            return [`cp -r ${inputDir} ${outputDir}`];
+            return [`cp -r ${inputDir}/. ${outputDir}`];
           },
         },
       },
