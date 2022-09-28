@@ -1,8 +1,7 @@
-const { render } = require('./shared/render');
-const { BrpApi } = require('./BrpApi');
-const { Session } = require('@gemeentenijmegen/session');
+import { render } from './shared/render';
+import { Session } from '@gemeentenijmegen/session';
 
-function redirectResponse(location, code = 302) {
+function redirectResponse(location: string, code = 302) {
     return {
         'statusCode': code,
         'body': '',
@@ -12,7 +11,7 @@ function redirectResponse(location, code = 302) {
     }
 }
 
-exports.homeRequestHandler = async (params, apiClient, dynamoDBClient) => {
+export async function homeRequestHandler(params: any, apiClient: any, dynamoDBClient: any): Promise<any> {
     let session = new Session(params.cookies, dynamoDBClient);
     await session.init();
     if (session.isLoggedIn() == true) {
@@ -21,9 +20,9 @@ exports.homeRequestHandler = async (params, apiClient, dynamoDBClient) => {
     return redirectResponse(`/login?contact_id=${params.contact_id}`);
 }
 
-async function handleLoggedinRequest(session, apiClient, contact_id) {
+async function handleLoggedinRequest(session: any, _apiClient: any, _contact_id: string) {
     // const bsn = session.getValue('bsn');
-    data = {
+    const data = {
         title: 'overzicht',
         shownav: true
     };
@@ -33,7 +32,7 @@ async function handleLoggedinRequest(session, apiClient, contact_id) {
         'header': `${__dirname}/shared/header.mustache`,
         'footer': `${__dirname}/shared/footer.mustache`
     });
-    response = {
+    const response = {
         'statusCode': 200,
         'body': html,
         'headers': {

@@ -1,7 +1,7 @@
-const { Session } = require('@gemeentenijmegen/session');
-const { OpenIDConnect } = require('./shared/OpenIDConnect');
+import { Session } from '@gemeentenijmegen/session';
+import { OpenIDConnect } from './shared/OpenIDConnect';
 
-function redirectResponse(location, code = 302, cookies) {
+function redirectResponse(location: string, code = 302, cookies?: string[]) {
     return {
         'statusCode': code,
         'body': '',
@@ -12,7 +12,7 @@ function redirectResponse(location, code = 302, cookies) {
     };
 }
 
-async function handleRequest(cookies, queryStringParamCode, queryStringParamState, dynamoDBClient) {
+export async function handleRequest(cookies: any, queryStringParamCode: string, queryStringParamState: string, dynamoDBClient: any): Promise<any> {
     let session = new Session(cookies, dynamoDBClient);
     await session.init();
     if (session.sessionId === false) {
@@ -33,7 +33,7 @@ async function handleRequest(cookies, queryStringParamCode, queryStringParamStat
         } else {
             return { 'statusCode': 500 }
         }
-    } catch (error) {
+    } catch (error: any) {
         console.debug('test2', error);
         console.error(error.message);
         return redirectResponse('/login');
@@ -41,4 +41,3 @@ async function handleRequest(cookies, queryStringParamCode, queryStringParamStat
     const url = contact_id ? `/?contact_id=${contact_id}` : '/';
     return redirectResponse(url, 302, [session.getCookie()]);
 }
-exports.handleRequest = handleRequest;
