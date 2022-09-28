@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { aws_lambda as Lambda, aws_dynamodb, RemovalPolicy, Duration } from 'aws-cdk-lib';
 import { Alarm } from 'aws-cdk-lib/aws-cloudwatch';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { FilterPattern, IFilterPattern, MetricFilter, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
@@ -22,12 +23,28 @@ export class ApiFunction extends Construct {
     super(scope, id);
     // See https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Lambda-Insights-extension-versionsx86-64.html
     const insightsArn = 'arn:aws:lambda:eu-west-1:580247275435:layer:LambdaInsightsExtension:16';
-    this.lambda = new Lambda.Function(this, 'lambda', {
-      runtime: Lambda.Runtime.NODEJS_14_X,
+    this.lambda = new NodejsFunction(this, 'lambda', {
+      runtime: Lambda.Runtime.NODEJS_16_X,
+      timeout: Duration.seconds(5),
       memorySize: 512,
-      handler: 'index.handler',
+      handler: 'handler',
+      entry: path.join(__dirname, props.codePath, 'index.ts'),
+      depsLockFilePath: path.join(__dirname, props.codePath, 'package-lock.json'),
+      bundling: {
+        commandHooks: {
+          beforeBundling(_inputDir, _outputDir) {
+            return ['npm install'];
+          },
+          beforeInstall(_inputDir, _outputDir) {
+            return [];
+          },
+          // Copy a file so that it will be included in the bundled asset
+          afterBundling(inputDir: string, outputDir: string): string[] {
+            return [`cp -r ${inputDir} ${outputDir}`];
+          },
+        },
+      },
       description: props.description,
-      code: Lambda.Code.fromAsset(path.join(__dirname, props.codePath)),
       insightsVersion: Lambda.LambdaInsightsVersion.fromInsightVersionArn(insightsArn),
       logRetention: RetentionDays.ONE_MONTH,
       environment: {
