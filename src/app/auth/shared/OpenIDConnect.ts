@@ -1,9 +1,9 @@
-const { SecretsManagerClient, GetSecretValueCommand } = require('@aws-sdk/client-secrets-manager');
-const { Issuer, generators } = require('openid-client');
+import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
+import { Issuer, generators } from 'openid-client';
 
-class OpenIDConnect {
-    issuer = false;
-    clientSecret = false;
+export class OpenIDConnect {
+    issuer;
+    clientSecret : string|undefined = undefined;
     
     /**
      * Helper class for our OIDC auth flow
@@ -19,7 +19,7 @@ class OpenIDConnect {
      */
     async getOidcClientSecret() {
         if(!this.clientSecret) { 
-            const secretsManagerClient = new SecretsManagerClient();
+            const secretsManagerClient = new SecretsManagerClient({});
             const command = new GetSecretValueCommand({ SecretId: process.env.CLIENT_SECRET_ARN });
             const data = await secretsManagerClient.send(command);
             // Depending on whether the secret is a string or binary, one of these fields will be populated.
@@ -54,12 +54,15 @@ class OpenIDConnect {
      * This should be checked before accepting the login response.
      * @returns {string} the login url
      */
-    getLoginUrl(state) {
+    getLoginUrl(state: string): string {
+        if(process.env?.APPLICATION_URL_BASE == undefined || process.env.OIDC_CLIENT_ID == undefined) {
+            throw Error("All environment variables should be set");
+        }
         const base_url = new URL(process.env.APPLICATION_URL_BASE);
         const redirect_uri = new URL('/auth', base_url);
         const client = new this.issuer.Client({
             client_id: process.env.OIDC_CLIENT_ID,
-            redirect_uris: [redirect_uri],
+            redirect_uris: [redirect_uri.toString()],
             response_types: ['code']
         });
         const authUrl = client.authorizationUrl({
@@ -77,15 +80,18 @@ class OpenIDConnect {
      * 
      * @param {string} code 
      * @param {string} state 
-     * @returns {object | false} returns a claims object on succesful auth
+     * @returns {Promise<any | false>} returns a promise which resolves to a claims object on succesful auth
      */
-    async authorize(code, state, returnedState) {
+    async authorize(code: string, state: string, returnedState: string): Promise<any | false> {
+        if(process.env?.APPLICATION_URL_BASE == undefined || process.env.OIDC_CLIENT_ID == undefined) {
+            throw Error("All environment variables should be set");
+        }
         const base_url = new URL(process.env.APPLICATION_URL_BASE);
         const redirect_uri = new URL('/auth', base_url);
         const client_secret = await this.getOidcClientSecret();
         const client = new this.issuer.Client({
             client_id: process.env.OIDC_CLIENT_ID,
-            redirect_uris: [redirect_uri],
+            redirect_uris: [redirect_uri.toString()],
             client_secret: client_secret,
             token_endpoint_auth_method: 'client_secret_post',
             response_types: ['code'],
@@ -100,7 +106,7 @@ class OpenIDConnect {
             tokenSet = await client.oauthCallback(redirect_uri.toString(), params);
             console.debug(tokenSet);
             return tokenSet;
-        } catch(err) {
+        } catch(err: any) {
             console.debug(err);
             throw new Error(`${err.error} ${err.error_description} ${err?.error_hint}`);
         }
@@ -110,4 +116,3 @@ class OpenIDConnect {
         return generators.state();
     }
 }
-exports.OpenIDConnect = OpenIDConnect;

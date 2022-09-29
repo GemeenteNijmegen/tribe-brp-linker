@@ -22,13 +22,14 @@ export async function handleRequest(cookies: any, queryStringParamCode: string, 
   const contact_id = session.getValue('contact_id');
   const OIDC = new OpenIDConnect();
   try {
-    const tokenSet = await OIDC.authorize(queryStringParamCode, state, queryStringParamState, queryStringParamState);
+    const tokenSet = await OIDC.authorize(queryStringParamCode, state, queryStringParamState);
     if (tokenSet) {
       await session.createSession({
         loggedin: { BOOL: true },
         access_token: { S: tokenSet.access_token },
         refresh_token: { S: tokenSet.refresh_token },
         expires_in: { N: `${tokenSet.expires_in}` },
+        xsrf_token: { S: OIDC.generateState() }
       });
     } else {
       return { statusCode: 500 };
