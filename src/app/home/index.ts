@@ -1,6 +1,8 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { ApiClient } from '@gemeentenijmegen/apiclient';
+import { APIGatewayProxyEventV2 } from 'aws-lambda';
 import { homeRequestHandler } from './homeRequestHandler';
+import { parse } from 'querystring';
 
 const dynamoDBClient = new DynamoDBClient({});
 const apiClient = new ApiClient();
@@ -15,10 +17,12 @@ async function init() {
 
 const initPromise = init();
 
-function parseEvent(event: any) {
+function parseEvent(event: APIGatewayProxyEventV2): any {
   return {
     cookies: event?.cookies?.join(';'),
     contact_id: event?.queryStringParameters?.contact_id,
+    body: event.body ? parse(Buffer.from(event.body, 'base64').toString('utf8')) : undefined,
+    method: event.requestContext.http.method
   };
 }
 
@@ -26,7 +30,12 @@ exports.handler = async (event: any, _context: any) => {
   try {
     const params = parseEvent(event);
     await initPromise;
-    return await homeRequestHandler(params, apiClient, dynamoDBClient);
+    console.debug(params);
+    if(params.method == 'GET') {
+      return await homeRequestHandler(params, apiClient, dynamoDBClient);
+    } else if(params.method == 'POST') {
+      return await homeRequestHandler(params, apiClient, dynamoDBClient);
+    }
 
   } catch (err) {
     console.error(err);

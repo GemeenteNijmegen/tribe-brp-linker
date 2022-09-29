@@ -114,7 +114,7 @@ export class ApiStack extends Stack {
     this.api.addRoutes({
       integration: new HttpLambdaIntegration('home', homeFunction.lambda),
       path: '/',
-      methods: [apigatewayv2.HttpMethod.GET],
+      methods: [apigatewayv2.HttpMethod.GET, apigatewayv2.HttpMethod.POST],
     });
   }
 
