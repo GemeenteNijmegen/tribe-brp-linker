@@ -29,7 +29,7 @@ export async function handleRequest(cookies: any, queryStringParamCode: string, 
         access_token: { S: tokenSet.access_token },
         refresh_token: { S: tokenSet.refresh_token },
         expires_in: { N: `${tokenSet.expires_in}` },
-        xsrf_token: { S: OIDC.generateState() }
+        xsrf_token: { S: OIDC.generateState() },
       });
     } else {
       return { statusCode: 500 };
