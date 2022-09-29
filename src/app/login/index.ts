@@ -10,7 +10,7 @@ function parseEvent(event: any) {
   };
 }
 
-exports.handler = async (event: any, _context: any) => {
+export async function handler(event: any, _context: any) {
   try {
     const params = parseEvent(event);
     const response = await handleLoginRequest(params, dynamoDBClient);
