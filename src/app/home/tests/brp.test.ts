@@ -16,10 +16,6 @@ beforeAll(() => {
     global.console.error = jest.fn();
     global.console.time = jest.fn();
     global.console.log = jest.fn();
-    process.env.CERTPATH = '../certs/mijn.crt';
-    process.env.KEYPATH = '../certs/mijn.key';
-    process.env.CAPATH = '../certs/root.crt';
-    process.env.BRP_API_URL = 'https://data-test.nijmegen.nl/TenT/Bevraging/Irma';
   }
 });
 
