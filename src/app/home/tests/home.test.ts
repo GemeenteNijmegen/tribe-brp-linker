@@ -65,6 +65,24 @@ test('Shows overview page', async () => {
   const apiClient = new FileApiClient();
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
   const result = await homeRequestHandler({ cookies: 'session=12345', contact_id: '' }, apiClient, dynamoDBClient);
-  console.debug(result);
   expect(result.body).toMatch('BRP');
+});
+
+
+test('After sending form details are shown', async () => {
+  const output: GetSecretValueCommandOutput = {
+    $metadata: {},
+    SecretString: 'ditiseennepgeheim',
+  };
+  secretsMock.on(GetSecretValueCommand).resolves(output);
+  const apiClient = new FileApiClient();
+  const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
+  const result = await homeRequestHandler({
+    method: 'POST',
+    cookies: 'session=12345',
+    contact_id: '',
+    body: { bsn: '900222670' },
+  }, apiClient, dynamoDBClient);
+  console.debug(result);
+  expect(result.body).toMatch('Geboortedatum');
 });

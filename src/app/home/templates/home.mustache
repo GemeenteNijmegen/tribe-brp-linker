@@ -3,14 +3,16 @@
 <main>
     <h1>BRP Controle</h1>
 </main>
-
+{{#error}}
+<p class="notice">{{error}}</p>
+{{/error}}
 {{>footer}}
     <h1>Controleer persoonsgegevens</h1>
     <form action="/" method="POST">
       <fieldset>
         <legend>Controleer op BSN</legend>
         <label>Wat is uw BSN</label>
-        <input type="number" name="bsn" />
+        <input type="number" name="bsn" value="{{bsn}}" />
       </fieldset>
       <div class="actions">
         <input type="submit" value="Controleren" />
@@ -19,26 +21,28 @@
     <form action="" method="POST">
       <h2>Controlegegevens</h2>
       <p>Zoek een persoon om controlegegevens weer te geven.</p>
-      {{! <dl>
+      {{#controle_data }}
+      <dl>
         <dt>
           Geboortedatum
         </dt>
         <dd>
-          21-11-1984
+          {{birthday}}
         </dd>
         <dt>
           Achternaam
         </dt>
         <dd>
-          Van Stoffer tot Zeem
+          {{lastname}}
         </dd>
         <dt>
           Woonplaats
         </dt>
         <dd>
-          Nijmegen
+          {{city}}
         </dd>
-      </dl> }}
+      </dl>
+      {{/controle_data}}
       <div class="actions">
         <input type="submit" value="Koppelen aan afhandeling" />
         <a href="#">Terug zonder koppelen</a>
