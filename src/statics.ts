@@ -67,6 +67,7 @@ export abstract class Statics {
      */
   static readonly ssmMTLSRootCA: string = `/cdk/${this.projectName}/mtls-rootca`;
 
+  static readonly ssmBrpApiEndpointUrl: string = `/cdk/${this.projectName}/brp-api-url`;
 
   static readonly ssmSessionsTableArn: string = `/cdk/${this.projectName}/sessionstable-arn`;
 

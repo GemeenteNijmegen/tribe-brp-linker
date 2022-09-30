@@ -87,6 +87,7 @@ export class ApiStack extends Stack {
         MTLS_PRIVATE_KEY_ARN: secretMTLSPrivateKey.secretArn,
         MTLS_CLIENT_CERT_NAME: Statics.ssmMTLSClientCert,
         MTLS_ROOT_CA_NAME: Statics.ssmMTLSRootCA,
+        BRP_API_URL: SSM.StringParameter.valueForStringParameter(this, Statics.ssmBrpApiEndpointUrl),
       },
     });
     secretMTLSPrivateKey.grantRead(homeFunction.lambda);
