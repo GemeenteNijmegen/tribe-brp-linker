@@ -14,7 +14,7 @@ class Home {
     this.dynamoDBClient = dynamoDBClient;
   }
 
-  async requestHandler(): Promise<any> {
+  async handleRequest(): Promise<any> {
     this.session = new Session(this.params.cookies, this.dynamoDBClient);
     await this.session.init();
     if (this.session.isLoggedIn() == true) {
@@ -84,5 +84,5 @@ class Home {
 
 export async function homeRequestHandler(params: any, apiClient: any, dynamoDBClient: any): Promise<any> {
   const home = new Home(params, apiClient, dynamoDBClient);
-  return home.requestHandler();
+  return home.handleRequest();
 }
