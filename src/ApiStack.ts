@@ -94,6 +94,23 @@ export class ApiStack extends Stack {
     tlskeyParam.grantRead(homeFunction.lambda);
     tlsRootCAParam.grantRead(homeFunction.lambda);
 
+    const linkUserFunction = new ApiFunction(this, 'linkuser-function', {
+      description: 'Link user-lambda voor de BRP koppeling.',
+      codePath: 'app/linkuser',
+      table: this.sessionsTable,
+      tablePermissions: 'ReadWrite',
+      applicationUrlBase: baseUrl,
+      environment: {
+        MTLS_PRIVATE_KEY_ARN: secretMTLSPrivateKey.secretArn,
+        MTLS_CLIENT_CERT_NAME: Statics.ssmMTLSClientCert,
+        MTLS_ROOT_CA_NAME: Statics.ssmMTLSRootCA,
+        BRP_API_URL: SSM.StringParameter.valueForStringParameter(this, Statics.ssmBrpApiEndpointUrl),
+      },
+    });
+    secretMTLSPrivateKey.grantRead(linkUserFunction.lambda);
+    tlskeyParam.grantRead(linkUserFunction.lambda);
+    tlsRootCAParam.grantRead(linkUserFunction.lambda);
+
     this.api.addRoutes({
       integration: new HttpLambdaIntegration('login', loginFunction.lambda),
       path: '/login',
@@ -116,6 +133,12 @@ export class ApiStack extends Stack {
       integration: new HttpLambdaIntegration('home', homeFunction.lambda),
       path: '/',
       methods: [apigatewayv2.HttpMethod.GET, apigatewayv2.HttpMethod.POST],
+    });
+
+    this.api.addRoutes({
+      integration: new HttpLambdaIntegration('home', linkUserFunction.lambda),
+      path: '/linkuser',
+      methods: [apigatewayv2.HttpMethod.POST],
     });
   }
 
