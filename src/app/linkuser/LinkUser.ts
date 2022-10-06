@@ -36,7 +36,7 @@ export class LinkUser {
       console.debug('handling link request: retrieved data');
       const tribeApi = new TribeApi(this.session.getValue('access_token'));
       const tribeUser = new TribeUser(bsn, tribeApi);
-      const exists = tribeUser.checkIfExists();
+      const exists = await tribeUser.checkIfExists();
       if (!exists) {
         await tribeUser.create({
           FirstName: brpData.firstName,
