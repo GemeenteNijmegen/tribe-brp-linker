@@ -41,48 +41,49 @@ beforeEach(() => {
   ddbMock.on(GetItemCommand).resolves(getItemOutput);
 });
 
-test('Returns 200', async () => {
-  const output: GetSecretValueCommandOutput = {
-    $metadata: {},
-    SecretString: 'ditiseennepgeheim',
-  };
-  secretsMock.on(GetSecretValueCommand).resolves(output);
-  const apiClient = new FileApiClient();
-  const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-  const result = await homeRequestHandler({ cookies: 'session=12345', contact_id: '' }, apiClient, dynamoDBClient);
+describe('Requests to home route', () => {
+  test('Returns 200 when logged in', async () => {
+    const output: GetSecretValueCommandOutput = {
+      $metadata: {},
+      SecretString: 'ditiseennepgeheim',
+    };
+    secretsMock.on(GetSecretValueCommand).resolves(output);
+    const apiClient = new FileApiClient();
+    const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
+    const result = await homeRequestHandler({ cookies: 'session=12345', contact_id: '' }, apiClient, dynamoDBClient);
 
-  expect(result.statusCode).toBe(200);
-  let cookies = result.cookies.filter((cookie: string) => cookie.indexOf('HttpOnly; Secure'));
-  expect(cookies.length).toBe(1);
-});
+    expect(result.statusCode).toBe(200);
+    let cookies = result.cookies.filter((cookie: string) => cookie.indexOf('HttpOnly; Secure'));
+    expect(cookies.length).toBe(1);
+  });
 
-test('Shows overview page', async () => {
-  const output: GetSecretValueCommandOutput = {
-    $metadata: {},
-    SecretString: 'ditiseennepgeheim',
-  };
-  secretsMock.on(GetSecretValueCommand).resolves(output);
-  const apiClient = new FileApiClient();
-  const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-  const result = await homeRequestHandler({ cookies: 'session=12345', contact_id: '' }, apiClient, dynamoDBClient);
-  expect(result.body).toMatch('BRP');
-});
+  test('Shows overview page', async () => {
+    const output: GetSecretValueCommandOutput = {
+      $metadata: {},
+      SecretString: 'ditiseennepgeheim',
+    };
+    secretsMock.on(GetSecretValueCommand).resolves(output);
+    const apiClient = new FileApiClient();
+    const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
+    const result = await homeRequestHandler({ cookies: 'session=12345', contact_id: '' }, apiClient, dynamoDBClient);
+    expect(result.body).toMatch('BRP');
+  });
 
 
-test('After sending form details are shown', async () => {
-  const output: GetSecretValueCommandOutput = {
-    $metadata: {},
-    SecretString: 'ditiseennepgeheim',
-  };
-  secretsMock.on(GetSecretValueCommand).resolves(output);
-  const apiClient = new FileApiClient();
-  const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-  const result = await homeRequestHandler({
-    method: 'POST',
-    cookies: 'session=12345',
-    contact_id: '',
-    body: { bsn: '900222670' },
-  }, apiClient, dynamoDBClient);
-  console.debug(result);
-  expect(result.body).toMatch('Geboortedatum');
+  test('After sending form details are shown', async () => {
+    const output: GetSecretValueCommandOutput = {
+      $metadata: {},
+      SecretString: 'ditiseennepgeheim',
+    };
+    secretsMock.on(GetSecretValueCommand).resolves(output);
+    const apiClient = new FileApiClient();
+    const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
+    const result = await homeRequestHandler({
+      method: 'POST',
+      cookies: 'session=12345',
+      contact_id: '',
+      body: { bsn: '900222670' },
+    }, apiClient, dynamoDBClient);
+    expect(result.body).toMatch('Geboortedatum');
+  });
 });

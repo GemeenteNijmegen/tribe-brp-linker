@@ -134,7 +134,7 @@
       "description": "Runs eslint against the codebase",
       "steps": [
         {
-          "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src src/app/login/tests src/app/auth/tests src/app/home/tests src/app/uitkeringen/tests src/app/logout/tests /test /build-tools .projenrc.js"
+          "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src src/app/login/tests src/app/auth/tests src/app/home/tests src/app/linkuser/tests src/app/logout/tests /test /build-tools .projenrc.js"
         }
       ]
     },
@@ -151,6 +151,14 @@
       "steps": [
         {
           "exec": "cd src/app/home && npm install"
+        }
+      ]
+    },
+    "install:linkuser": {
+      "name": "install:linkuser",
+      "steps": [
+        {
+          "exec": "cd src/app/linkuser && npm install"
         }
       ]
     },
@@ -195,7 +203,7 @@
       "name": "post-upgrade",
       "steps": [
         {
-          "exec": "       (cd src/app/login && npx npm-check-updates -u --dep prod,dev && npm install)       && (cd src/app/home && npx npm-check-updates -u --dep prod,dev && npm install)       && (cd src/app/login && npx npm-check-updates -u --dep prod,dev && npm install)       && (cd src/app/logout && npx npm-check-updates -u --dep prod,dev && npm install)"
+          "exec": "       (cd src/app/login && npx npm-check-updates -u --dep prod,dev && npm install)       && (cd src/app/home && npx npm-check-updates -u --dep prod,dev && npm install)       && (cd src/app/login && npx npm-check-updates -u --dep prod,dev && npm install)       && (cd src/app/linkuser && npx npm-check-updates -u --dep prod,dev && npm install)       && (cd src/app/logout && npx npm-check-updates -u --dep prod,dev && npm install)"
         }
       ]
     },
@@ -203,7 +211,7 @@
       "name": "postinstall",
       "steps": [
         {
-          "exec": "npm run install:login && npm run install:auth && npm run install:home && npm run install:logout"
+          "exec": "npm run install:login && npm run install:auth && npm run install:home && npm run install:logout && npm run install:linkuser"
         }
       ]
     },

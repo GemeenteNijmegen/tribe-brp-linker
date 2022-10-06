@@ -22,16 +22,18 @@ const project = new GemeenteNijmegenCdkApp({
     'install:login': 'cd src/app/login && npm install',
     'install:auth': 'cd src/app/auth && npm install',
     'install:home': 'cd src/app/home && npm install',
+    'install:linkuser': 'cd src/app/linkuser && npm install',
     'install:logout': 'cd src/app/logout && npm install',
-    'postinstall': 'npm run install:login && npm run install:auth && npm run install:home && npm run install:logout',
+    'postinstall': 'npm run install:login && npm run install:auth && npm run install:home && npm run install:logout && npm run install:linkuser',
     'post-upgrade': ' \
       (cd src/app/login && npx npm-check-updates -u --dep prod,dev && npm install) \
       && (cd src/app/home && npx npm-check-updates -u --dep prod,dev && npm install) \
       && (cd src/app/login && npx npm-check-updates -u --dep prod,dev && npm install) \
+      && (cd src/app/linkuser && npx npm-check-updates -u --dep prod,dev && npm install) \
       && (cd src/app/logout && npx npm-check-updates -u --dep prod,dev && npm install)',
   },
   eslintOptions: {
-    devdirs: ['src/app/login/tests', 'src/app/auth/tests', 'src/app/home/tests', 'src/app/uitkeringen/tests', 'src/app/logout/tests', '/test', '/build-tools'],
+    devdirs: ['src/app/login/tests', 'src/app/auth/tests', 'src/app/home/tests', 'src/app/linkuser/tests', 'src/app/logout/tests', '/test', '/build-tools'],
   },
   gitignore: [
     'src/app/**/tests/output',

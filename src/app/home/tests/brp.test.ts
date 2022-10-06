@@ -34,7 +34,7 @@ test('Api', async () => {
     console.debug(result);
     expect(result.Persoon.BSN.BSN).toBe('900222670');
     expect(result.Persoon.Persoonsgegevens.Naam).toBe('A. de Smit');
-  } catch(error) {
+  } catch (error) {
     console.debug(error);
   }
 });

@@ -14,6 +14,7 @@
     "eslint": "npx projen eslint",
     "install:auth": "npx projen install:auth",
     "install:home": "npx projen install:home",
+    "install:linkuser": "npx projen install:linkuser",
     "install:login": "npx projen install:login",
     "install:logout": "npx projen install:logout",
     "lint": "npx projen lint",

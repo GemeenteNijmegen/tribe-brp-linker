@@ -18,10 +18,13 @@
         <input type="submit" value="Controleren" />
       </div>
     </form>
-    <form action="" method="POST">
+    <form action="/linkuser" method="POST">
       <h2>Controlegegevens</h2>
       <p>Zoek een persoon om controlegegevens weer te geven.</p>
       {{#controle_data }}
+      <input type="hidden" name="bsn" value={{bsn}} />
+      {{! hardcoded contact id until linking button is available }}
+      <input type="hidden" name="contact_id" value="5959b767-3bbf-42ae-a5d9-122ccbb425ea" />
       <dl>
         <dt>
           Geboortedatum
