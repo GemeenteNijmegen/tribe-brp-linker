@@ -9,7 +9,7 @@ const axiosMock = new MockAdapter(axios);
 
 beforeAll(() => {
   if (process.env.VERBOSETESTS != 'True') {
-    global.console.error = jest.fn();
+    // global.console.error = jest.fn();
     global.console.time = jest.fn();
     global.console.log = jest.fn();
   }
