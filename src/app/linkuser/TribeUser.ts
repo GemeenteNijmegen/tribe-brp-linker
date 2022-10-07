@@ -1,5 +1,6 @@
 import { Bsn } from '@gemeentenijmegen/utils/lib/Bsn';
-import { PersonRelationFields } from './PersonRelationFields';
+import { Address } from './Address';
+import { PersonRelation } from './PersonRelation';
 import { TribeApi } from './TribeApi';
 
 export class TribeUser {
@@ -7,6 +8,7 @@ export class TribeUser {
   private bsn: Bsn;
   private relationId?: string;
   private inwonerId?: string;
+  private addressId?: string;
 
   constructor(bsn: string | Bsn, api: TribeApi) {
     this.tribeApi = api;
@@ -17,9 +19,18 @@ export class TribeUser {
     }
   }
 
-  async checkIfExists() {
+  async exists() {
     const result = await this.getRelationAndInwonerIDs();
     if (result) {
+      return true;
+    }
+    return false;
+  }
+
+
+  async hasAddress() {
+    await this.getRelationAndInwonerIDs();
+    if (this.addressId) {
       return true;
     }
     return false;
@@ -36,8 +47,11 @@ export class TribeUser {
         if (data.value.length == 0) {
           return false;
         }
+
         this.relationId = data.value[0].Person.ID;
         this.inwonerId = data.value[0].ID;
+        this.addressId = data.value[0].Person.Address?.ID;
+
         if (typeof this.inwonerId === 'string' && typeof this.relationId === 'string') {
           console.debug('found relation + inwoner');
           return { inwonerId: this.inwonerId, relationId: this.relationId };
@@ -63,7 +77,7 @@ export class TribeUser {
     return this.relationId;
   }
 
-  async update(fields: Partial<PersonRelationFields>) {
+  async update(fields: Partial<PersonRelation>) {
     console.debug('updating user', fields);
     if (!this.relationId) {
       console.debug('no relation id');
@@ -73,7 +87,7 @@ export class TribeUser {
         throw Error('No person with this BSN found to update');
       }
     }
-    const fieldsIncludingID: Partial<PersonRelationFields> = {
+    const fieldsIncludingID: Partial<PersonRelation> = {
       ID: this.relationId,
       ...fields,
     };
@@ -88,7 +102,7 @@ export class TribeUser {
     }
   }
 
-  async create(fields: PersonRelationFields): Promise<boolean> {
+  async create(fields: PersonRelation): Promise<boolean> {
     console.debug('creating user', fields);
     try {
       const personRelationId = await this.tribeApi.postRelation(fields);
@@ -129,4 +143,52 @@ export class TribeUser {
     }
   }
 
+  async updateAddress(fields: Partial<Address>) {
+    console.debug('updating address', fields);
+    if (!this.addressId || !this.relationId) {
+      console.debug('no address id, you should create an address. Not update this one.');
+      await this.getRelationAndInwonerIDs();
+      if (!this.relationId) {
+        console.error('id error');
+        throw Error('No person with this BSN found to update');
+      }
+      if (!this.addressId) {
+        console.error('id error');
+        throw Error('No address found for this person, use createAddress');
+      }
+    }
+    const fieldsIncludingID: Partial<Address> = {
+      ID: this.addressId,
+      ...fields,
+    };
+    console.debug('about to post');
+    try {
+      const result = await this.tribeApi.postAddress(fieldsIncludingID, this.relationId);
+      console.debug('updated address', this);
+      console.debug(result);
+      return result;
+    } catch (error) {
+      console.error('Updating address failed', error);
+    }
+  }
+
+  async createAddress(fields: Partial<Address>) {
+    console.debug('updating address', fields);
+    if (!this.relationId) {
+      await this.getRelationAndInwonerIDs();
+      if (!this.relationId) {
+        console.error('id error');
+        throw Error('No person with this BSN found to update');
+      }
+    }
+    console.debug('about to post');
+    try {
+      const result = await this.tribeApi.postAddress(fields, this.relationId);
+      console.debug('created address', this);
+      console.debug(result);
+      return result;
+    } catch (error) {
+      console.error('Updating address failed', error);
+    }
+  }
 }

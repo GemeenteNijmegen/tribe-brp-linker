@@ -1,5 +1,5 @@
 
-export interface InwonerRelationshipFields {
+export interface InwonerRelationship {
   ID?: string;
   Name: string;
   Person: {

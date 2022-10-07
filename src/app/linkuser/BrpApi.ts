@@ -25,4 +25,26 @@ export class BrpApi {
       return data;
     }
   }
+
+  /** According to the [logisch ontwerp BRP 4.0](https://www.rvig.nl/brp/documenten/publicaties/2022/03/31/logisch-ontwerp-brp-4.0),
+   * a house number can consist of
+   * - 1-5 digits
+   * - an appending letter
+   * - an alphanumeric appending string
+   *
+   * - there might be a notation without a number, consisting of a string of the form
+   * `by N` or `to N`.
+   *
+   * This function captures the first 1-5 digits as the number, and everything else
+   * as the suffix. If the start is not numeric, the number will be returned as 0, and the rest
+   * as the suffix.
+   */
+  houseNumberHelper(brpNumber: string): { number: number; suffix: string } {
+    const matches = brpNumber.match(/(^\d{1,5})(.*)/);
+    if (matches !== null) {
+      const result = { number: Number(matches[1]), suffix: matches[2] };
+      return result;
+    }
+    return { number: 0, suffix: brpNumber };
+  }
 }

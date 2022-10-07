@@ -36,7 +36,7 @@ export class LinkUser {
       console.debug('handling link request: retrieved data');
       const tribeApi = new TribeApi(this.session.getValue('access_token'));
       const tribeUser = new TribeUser(bsn, tribeApi);
-      const exists = await tribeUser.checkIfExists();
+      const exists = await tribeUser.exists();
       if (!exists) {
         await tribeUser.create({
           FirstName: brpData.firstName,
@@ -50,6 +50,23 @@ export class LinkUser {
           MiddleName: brpData.middleName,
         });
       }
+      if (await tribeUser.hasAddress()) {
+        await tribeUser.updateAddress({
+          Street: brpData.street,
+          HouseNumber: brpData.number,
+          HouseNumberSuffix: brpData.suffix,
+          City: brpData.city,
+          Postalcode: brpData.postalCode,
+        });
+      } else {
+        await tribeUser.createAddress({
+          Street: brpData.street,
+          HouseNumber: brpData.number,
+          HouseNumberSuffix: brpData.suffix,
+          City: brpData.city,
+          Postalcode: brpData.postalCode,
+        });
+      }
       await tribeUser.addToContactMoment(this.params.body.contact_id);
       return this.redirectResponse(`https://app.tribecrm.nl/${this.params.body.contact_id}`);
     } catch (error) {
@@ -61,6 +78,7 @@ export class LinkUser {
   async brpData(bsn: Bsn) {
     const brpApi = new BrpApi(this.apiClient);
     const brpData = await brpApi.getBrpData(bsn.bsn);
+    const splitNumber = brpApi.houseNumberHelper(brpData?.Persoon?.Adres?.Huisnummer);
     const data = {
       birthday: brpData?.Persoon?.Persoonsgegevens?.Geboortedatum,
       firstName: brpData?.Persoon?.Persoonsgegevens?.Voornamen,
@@ -68,7 +86,8 @@ export class LinkUser {
       middleName: brpData?.Persoon?.Persoonsgegevens?.Voorvoegsel,
       city: brpData?.Persoon?.Adres?.Woonplaats,
       street: brpData?.Persoon?.Adres?.Straat,
-      number: brpData?.Persoon?.Adres?.Huisnummer,
+      number: splitNumber.number,
+      suffix: splitNumber.suffix,
       postalCode: brpData?.Persoon?.Adres?.Postcode,
     };
     return data;

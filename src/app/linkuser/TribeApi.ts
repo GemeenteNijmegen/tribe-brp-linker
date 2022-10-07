@@ -1,6 +1,7 @@
 import axios, { Axios } from 'axios';
-import { InwonerRelationshipFields } from './InwonerRelationshipFields';
-import { PersonRelationFields } from './PersonRelationFields';
+import { Address } from './Address';
+import { InwonerRelationship } from './InwonerRelationship';
+import { PersonRelation } from './PersonRelation';
 
 export class TribeApi {
   public readonly bsnField = '_9ecc8d21__f69a__4f4c__a239__5db7a5f21ddd';
@@ -90,17 +91,27 @@ export class TribeApi {
 
   // Add filter to url because axios escapes spaces, tribe doesn't handle this
   async requestInwonerWithRelation(bsn: string): Promise<any> {
-    const result = await this.get(`/${this.inwonerType}?$expand=Person&$filter=Person/${this.bsnField} eq '${bsn}'`);
+    const result = await this.get(`/${this.inwonerType}?$expand=Person($expand=Address)&$filter=Person/${this.bsnField} eq '${bsn}'`);
     return result;
   }
 
-  async postRelation(params: Partial<PersonRelationFields>): Promise<any> {
+  async postRelation(params: Partial<PersonRelation>): Promise<any> {
     const result = await this.post('/Relation_Person', params);
     return result?.ID;
   }
 
-  async postInwoner(params: InwonerRelationshipFields): Promise<any> {
+  async postInwoner(params: InwonerRelationship): Promise<any> {
     const result = await this.post(`/${this.inwonerType}`, params);
+    return result?.ID;
+  }
+
+  async postAddress(params: Partial<Address>, personId: string): Promise<any> {
+    const result = await this.post('/Address', {
+      ...params,
+      Person: {
+        ID: personId,
+      },
+    });
     return result?.ID;
   }
 

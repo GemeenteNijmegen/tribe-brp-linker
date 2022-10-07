@@ -1,5 +1,5 @@
 
-export interface PersonRelationFields {
+export interface PersonRelation {
   ID?: string;
   FirstName: string;
   LastName: string;
