@@ -27,6 +27,7 @@ class Home {
     let data: any = {
       title: 'Controleer BRP-gegevens',
       shownav: true,
+      contact_id: this.params.contact_id
     };
 
     if (this.params.method == 'POST') {
