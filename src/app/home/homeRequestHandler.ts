@@ -33,6 +33,7 @@ class Home {
       try {
         const bsn = new Bsn(this.params.body.bsn);
         data.controle_data = await this.brpData(bsn);
+        data.bsn = bsn.bsn;
       } catch (error) {
         data.error = 'Er is iets misgegaan, probeer het opnieuw';
         console.error(error);
