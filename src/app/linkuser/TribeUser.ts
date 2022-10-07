@@ -83,7 +83,7 @@ export class TribeUser {
       console.debug('updated user', this);
       console.debug(result);
       return result;
-    } catch(error) {
+    } catch (error) {
       console.error('Updating user failed', error);
     }
   }

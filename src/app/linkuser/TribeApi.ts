@@ -1,5 +1,4 @@
-import { Axios } from 'axios';
-import axios from 'axios';
+import axios, { Axios } from 'axios';
 import { InwonerRelationshipFields } from './InwonerRelationshipFields';
 import { PersonRelationFields } from './PersonRelationFields';
 
@@ -25,7 +24,7 @@ export class TribeApi {
     try {
       console.debug('getting ', this.axios.getUri({ url, params }));
       const response = await this.axios.get(url, { params });
-      if(response.status != 200) {
+      if (response.status != 200) {
         console.debug(response.request.responseURL);
         throw Error('Unexpected response: ' + response.status);
       }
