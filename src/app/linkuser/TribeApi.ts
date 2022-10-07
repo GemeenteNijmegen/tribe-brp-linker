@@ -1,4 +1,5 @@
 import { Axios } from 'axios';
+import axios from 'axios';
 import { InwonerRelationshipFields } from './InwonerRelationshipFields';
 import { PersonRelationFields } from './PersonRelationFields';
 
@@ -10,12 +11,9 @@ export class TribeApi {
   private axios: Axios;
 
   constructor(access_token: string) {
-    this.axios = new Axios(
+    this.axios = axios.create(
       {
         baseURL: this.baseUrl,
-        headers: {
-          'content-type': 'application/json',
-        },
         params: {
           access_token: access_token,
         },
@@ -25,7 +23,12 @@ export class TribeApi {
 
   async get(url: string, params?: any): Promise<any> {
     try {
+      console.debug('getting ', this.axios.getUri({ url, params }));
       const response = await this.axios.get(url, { params });
+      if(response.status != 200) {
+        console.debug(response.request.responseURL);
+        throw Error('Unexpected response: ' + response.status);
+      }
       if (typeof response.data === 'string') {
         return JSON.parse(response.data);
       }
@@ -53,29 +56,30 @@ export class TribeApi {
 
   async post(url: string, params?: any) {
     try {
-      const response = await this.axios.post(url, { params });
+      console.debug('posting ', this.axios.getUri({ url, params }));
+      const response = await this.axios.post(url, params);
       if (typeof response.data === 'string') {
         return JSON.parse(response.data);
       }
+      console.debug(response.data);
       return response.data;
     } catch (error: any) {
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
+        console.error(error.response.data);
+        console.error(error.response.status);
+        console.error(error.response.headers);
       } else if (error.request) {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
-        console.log(error.request);
+        console.error(error.request);
       } else {
         // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
+        console.error('Error', error.message);
       }
-      console.log(error.config);
-      return error;
+      throw Error(error);
     }
   }
 
@@ -87,7 +91,7 @@ export class TribeApi {
 
   // Add filter to url because axios escapes spaces, tribe doesn't handle this
   async requestInwonerWithRelation(bsn: string): Promise<any> {
-    const result = await this.get(`/${this.inwonerType}?$expand=Person$filter=Person/${this.bsnField} eq '${bsn}'`);
+    const result = await this.get(`/${this.inwonerType}?$expand=Person&$filter=Person/${this.bsnField} eq '${bsn}'`);
     return result;
   }
 
