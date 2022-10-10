@@ -1,4 +1,4 @@
-import { aws_certificatemanager as CertificateManager, Stack, StackProps, aws_ssm as SSM } from 'aws-cdk-lib';
+import { aws_certificatemanager as CertificateManager, Stack, StackProps, aws_ssm as SSM, RemovalPolicy } from 'aws-cdk-lib';
 import { HostedZone } from 'aws-cdk-lib/aws-route53';
 import { RemoteParameters } from 'cdk-remote-stack';
 import { Construct } from 'constructs';
@@ -37,8 +37,8 @@ export class UsEastCertificateStack extends Stack {
     const certificate = new CertificateManager.Certificate(this, 'certificate', {
       domainName: cspDomain,
       validation: CertificateManager.CertificateValidation.fromDns(zone),
-
     });
+    certificate.applyRemovalPolicy(RemovalPolicy.DESTROY);
 
     new SSM.StringParameter(this, 'cert-arn', {
       stringValue: certificate.certificateArn,
