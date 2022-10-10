@@ -1,6 +1,6 @@
 const { GemeenteNijmegenCdkApp } = require('@gemeentenijmegen/modules-projen');
 const project = new GemeenteNijmegenCdkApp({
-  cdkVersion: '2.1.0',
+  cdkVersion: '2.45.0',
   defaultReleaseBranch: 'main',
   devDeps: ['@gemeentenijmegen/modules-projen'],
   name: 'tribe-brp-linker',
