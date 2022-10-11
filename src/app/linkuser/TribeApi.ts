@@ -4,7 +4,7 @@ import { InwonerRelationship } from './InwonerRelationship';
 import { PersonRelation } from './PersonRelation';
 
 export class TribeApi {
-  public readonly bsnField = '_9ecc8d21__f69a__4f4c__a239__5db7a5f21ddd';
+  public static readonly bsnField = '_9ecc8d21__f69a__4f4c__a239__5db7a5f21ddd';
   public readonly inwonerType = 'e0d6534a__cc84__4cf7__bdc5__d32f9311c09e';
   private contactMomentType = 'ec99e518__c6e2__4e5c__81b5__7f20ab721737';
   private baseUrl = 'https://api.tribecrm.nl/v1/odata';
@@ -85,13 +85,13 @@ export class TribeApi {
 
   // Add filter to url because axios escapes spaces, tribe doesn't handle this
   async requestRelation(bsn: string): Promise<any> {
-    const result = await this.get(`/Relation_Person?$filter=${this.bsnField} eq '${bsn}'`);
+    const result = await this.get(`/Relation_Person?$filter=${TribeApi.bsnField} eq '${bsn}'`);
     return result;
   }
 
   // Add filter to url because axios escapes spaces, tribe doesn't handle this
   async requestInwonerWithRelation(bsn: string): Promise<any> {
-    const result = await this.get(`/${this.inwonerType}?$expand=Person($expand=Address)&$filter=Person/${this.bsnField} eq '${bsn}'`);
+    const result = await this.get(`/${this.inwonerType}?$expand=Person($expand=Address)&$filter=Person/${TribeApi.bsnField} eq '${bsn}'`);
     return result;
   }
 

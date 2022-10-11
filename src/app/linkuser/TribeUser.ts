@@ -106,7 +106,7 @@ export class TribeUser {
     console.debug('creating user', fields);
     try {
       // Add BSN to new relation in Tribe.
-      fields.BSN = this.bsn.bsn;
+      fields[TribeApi.bsnField] = this.bsn.bsn;
       const personRelationId = await this.tribeApi.postRelation(fields);
       if (!personRelationId) {
         throw Error('Failed to create PersonRelation');

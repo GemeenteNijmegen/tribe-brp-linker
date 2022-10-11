@@ -136,7 +136,7 @@ export class CloudfrontStack extends Stack {
   }
 
   private errorResponses() {
-    const errorCodes = [403, 404, 500, 503];
+    const errorCodes = [400, 403, 404, 500, 503];
     return errorCodes.map(code => {
       return {
         httpStatus: code,
