@@ -18,10 +18,12 @@ async function init() {
 const initPromise = init();
 
 function parseEvent(event: APIGatewayProxyEventV2): any {
+  const body = event.body ? parse(Buffer.from(event.body, 'base64').toString('utf8')) : undefined;
   return {
     cookies: event?.cookies?.join(';'),
-    body: event.body ? parse(Buffer.from(event.body, 'base64').toString('utf8')) : undefined,
+    body,
     method: event.requestContext.http.method,
+    contact_id: event?.queryStringParameters?.contact_id ? event?.queryStringParameters?.contact_id : body?.contact_id,
   };
 }
 
