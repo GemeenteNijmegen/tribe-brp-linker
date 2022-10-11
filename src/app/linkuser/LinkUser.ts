@@ -40,7 +40,6 @@ export class LinkUser {
       const exists = await tribeUser.exists();
       if (!exists) {
         await tribeUser.create({
-          BSN: bsn.bsn,
           FirstName: brpData.firstName,
           LastName: brpData.lastName,
           MiddleName: brpData.middleName,
