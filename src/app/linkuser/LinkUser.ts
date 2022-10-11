@@ -69,7 +69,7 @@ export class LinkUser {
         });
       }
       await tribeUser.addToContactMoment(this.params.body.contact_id);
-      return this.redirectResponse(`https://app.tribecrm.nl/${this.params.body.contact_id}`);
+      return this.redirectResponse(`https://app.tribecrm.nl/entity/${this.params.body.contact_id}`);
     } catch (error) {
       console.error(error);
       return this.errorResponse();
