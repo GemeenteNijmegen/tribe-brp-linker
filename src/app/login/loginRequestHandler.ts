@@ -18,7 +18,7 @@ function errorResponse(code = 500) {
   };
 }
 
-export async function handleLoginRequest(params: any, dynamoDBClient: any) {
+export async function handleLoginRequest(params: any, dynamoDBClient: any): Promise<{ statusCode: number; headers?: any, cookies?: any }> {
   if(!params.contact_id) { return errorResponse(400); }
   let session = new Session(params.cookies, dynamoDBClient);
   await session.init();
