@@ -16,6 +16,7 @@ export class LinkUser {
   }
 
   async handleRequest(): Promise<any> {
+    if(!this.params.contact_id) { return this.errorResponse(400); }
     this.session = new Session(this.params.cookies, this.dynamoDBClient);
     await this.session.init();
     if (this.session.isLoggedIn() == true) {
@@ -39,6 +40,7 @@ export class LinkUser {
       const exists = await tribeUser.exists();
       if (!exists) {
         await tribeUser.create({
+          BSN: bsn.bsn,
           FirstName: brpData.firstName,
           LastName: brpData.lastName,
           MiddleName: brpData.middleName,

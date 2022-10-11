@@ -15,6 +15,7 @@ class Home {
   }
 
   async handleRequest(): Promise<any> {
+    if(!this.params.contact_id) { return this.errorResponse(400); }
     this.session = new Session(this.params.cookies, this.dynamoDBClient);
     await this.session.init();
     if (this.session.isLoggedIn() == true) {
@@ -80,6 +81,12 @@ class Home {
       cookies: [
         this.session?.getCookie(),
       ],
+    };
+  }
+
+  errorResponse(code = 500) {
+    return {
+      statusCode: code,
     };
   }
 }

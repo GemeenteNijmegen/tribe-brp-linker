@@ -12,7 +12,14 @@ function redirectResponse(location: string, status = 302, cookies?: any[]) {
   return response;
 }
 
+function errorResponse(code = 500) {
+  return {
+    statusCode: code,
+  };
+}
+
 export async function handleLoginRequest(params: any, dynamoDBClient: any) {
+  if(!params.contact_id) { return errorResponse(400); }
   let session = new Session(params.cookies, dynamoDBClient);
   await session.init();
   if (session.isLoggedIn() === true) {
