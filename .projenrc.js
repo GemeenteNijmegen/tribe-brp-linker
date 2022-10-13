@@ -28,7 +28,7 @@ const project = new GemeenteNijmegenCdkApp({
     'post-upgrade': ' \
       (cd src/app/login && npx npm-check-updates -u --dep prod,dev && npm install) \
       && (cd src/app/home && npx npm-check-updates -u --dep prod,dev && npm install) \
-      && (cd src/app/login && npx npm-check-updates -u --dep prod,dev && npm install) \
+      && (cd src/app/auth && npx npm-check-updates -u --dep prod,dev && npm install) \
       && (cd src/app/linkuser && npx npm-check-updates -u --dep prod,dev && npm install) \
       && (cd src/app/logout && npx npm-check-updates -u --dep prod,dev && npm install)',
   },

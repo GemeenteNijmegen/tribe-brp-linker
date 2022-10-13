@@ -16,7 +16,7 @@ class Home {
 
   async handleRequest(): Promise<any> {
     if (!this.params.contact_id) { return this.errorResponse(400); }
-    this.session = new Session(this.params.cookies, this.dynamoDBClient);
+    this.session = new Session(this.params.cookies, this.dynamoDBClient, { ttlInMinutes: 240 });
     await this.session.init();
     if (this.session.isLoggedIn() == true) {
       return this.loggedInResponse();

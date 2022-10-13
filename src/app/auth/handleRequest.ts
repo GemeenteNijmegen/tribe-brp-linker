@@ -13,7 +13,7 @@ function redirectResponse(location: string, code = 302, cookies?: string[]) {
 }
 
 export async function handleRequest(cookies: any, queryStringParamCode: string, queryStringParamState: string, dynamoDBClient: any): Promise<any> {
-  let session = new Session(cookies, dynamoDBClient);
+  let session = new Session(cookies, dynamoDBClient, { ttlInMinutes: 240 });
   await session.init();
   if (session.sessionId === false) {
     return redirectResponse('/login');
