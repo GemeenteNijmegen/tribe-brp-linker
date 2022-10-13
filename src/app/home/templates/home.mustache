@@ -1,13 +1,11 @@
 {{>header}}
 
+<h1>Controleer persoonsgegevens</h1>
 <main>
-    <h1>BRP Controle</h1>
-</main>
 {{#error}}
 <p class="notice">{{error}}</p>
 {{/error}}
-{{>footer}}
-    <h1>Controleer persoonsgegevens</h1>
+{{^error}}
     <form action="/" method="POST">
       <input type="hidden" name="contact_id" value="{{contact_id}}" />
       <fieldset>
@@ -49,6 +47,8 @@
       {{/controle_data}}
       <div class="actions">
         <input type="submit" value="Koppelen aan afhandeling" />
-        <a href="#">Terug zonder koppelen</a>
+        <a href="https://app.tribecrm.nl/entity/{{contact_id}}">Terug zonder koppelen</a>
       </div>
     </form>
+{{/error}}
+</main>
