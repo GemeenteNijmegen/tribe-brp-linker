@@ -49,7 +49,7 @@ test('Redirect to auth url if session cookie doesn\'t exist', async () => {
 test('Create session if no session exists', async () => {
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
 
-  await handleLoginRequest({ 'contact_id': 'test'}, dynamoDBClient);
+  await handleLoginRequest({ contact_id: 'test' }, dynamoDBClient);
 
   expect(ddbMock.calls().length).toBe(1);
 });
@@ -75,7 +75,7 @@ test('Redirect to home if already logged in', async () => {
 });
 
 test('Error if no contact-id', async () => {
-  
+
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
   const sessionId = '12345';
   const result = await handleLoginRequest({ cookies: `session=${sessionId}` }, dynamoDBClient);

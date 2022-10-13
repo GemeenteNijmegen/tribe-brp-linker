@@ -1,4 +1,4 @@
-import { TribeApi } from "./TribeApi";
+import { TribeApi } from './TribeApi';
 
 /**
  * PersonRelation models the Tribe PersonRelation entity
