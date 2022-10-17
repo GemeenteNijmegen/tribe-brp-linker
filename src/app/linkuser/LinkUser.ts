@@ -1,6 +1,7 @@
 import { Session } from '@gemeentenijmegen/session';
 import { Bsn } from '@gemeentenijmegen/utils/lib/Bsn';
 import { BrpApi } from './BrpApi';
+import { OpenIDConnect } from './OpenIDConnect';
 import { TribeApi } from './TribeApi';
 import { TribeUser } from './TribeUser';
 
@@ -20,6 +21,7 @@ export class LinkUser {
     this.session = new Session(this.params.cookies, this.dynamoDBClient, { ttlInMinutes: 240 });
     await this.session.init();
     if (this.session.isLoggedIn() == true) {
+      await this.refreshSession(this.session);
       return this.loggedInResponse();
     }
     return this.redirectResponse(`/login?contact_id=${this.params.contact_id}`);
@@ -92,6 +94,42 @@ export class LinkUser {
       postalCode: brpData?.Persoon?.Adres?.Postcode,
     };
     return data;
+  }
+
+  /**
+   * Uses the refresh token to refresh the session
+   * Stores the new acces/refresh tokens and expiration
+   * Also refreshes the xsrf token.
+   * @param session The active session
+   */
+  async refreshSession(session: Session) {
+    try {
+      const OIDC = new OpenIDConnect();
+      const refreshToken = session.getValue('refresh_token');
+      const expiresIn = session.getValue('expires_in');
+      const lastRefresh = session.getValue('last_refresh');
+      const sessionStart = session.getValue('session_start');
+      const maxSession = session.ttl * 60 * 1000; // Convert to milis
+      const tokenSet = await OIDC.refresh(refreshToken, lastRefresh, expiresIn, sessionStart, maxSession);
+      if (tokenSet === false) {
+        return; // No refresh needed
+      } else if (tokenSet) {
+        await session.updateSession({
+          loggedin: { BOOL: true },
+          access_token: { S: tokenSet.access_token },
+          refresh_token: { S: tokenSet.refresh_token },
+          expires_in: { N: `${tokenSet.expires_in}` },
+          last_refresh: { N: Date.now() },
+          xsrf_token: { S: OIDC.generateState() },
+          // Do not refresh session_start (denoting start of session)
+        });
+      } else {
+        throw Error('Could not refresh session');
+      }
+    } catch (error: any) {
+      console.error(error.message);
+      // Do not rethrow error as this is no critical functionality
+    }
   }
 
   redirectResponse(location: string, code = 302) {

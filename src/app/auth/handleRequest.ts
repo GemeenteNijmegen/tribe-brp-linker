@@ -29,6 +29,8 @@ export async function handleRequest(cookies: any, queryStringParamCode: string, 
         access_token: { S: tokenSet.access_token },
         refresh_token: { S: tokenSet.refresh_token },
         expires_in: { N: `${tokenSet.expires_in}` },
+        session_start: { N: Date.now() },
+        last_refresh: { N: Date.now() },
         xsrf_token: { S: OIDC.generateState() },
       });
     } else {

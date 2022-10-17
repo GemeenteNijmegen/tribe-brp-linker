@@ -83,17 +83,17 @@ export class OpenIDConnect {
      * @returns {Promise<any | false>} returns a promise which resolves to a claims object on succesful auth
      */
   async authorize(code: string, state: string, returnedState: string): Promise<any | false> {
+    const redirect_uri = this.getRedirectUri();
+    const client = await this.createClient(redirect_uri);
 
-    const client = await this.createClient();
-
-    const params = client.client.callbackParams(client.redirect_uri + '/?code=' + code);
+    const params = client.callbackParams(redirect_uri + '/?code=' + code);
     if (state !== returnedState) {
       throw new Error('state does not match session state');
     }
     let tokenSet;
     try {
-      console.debug(client.redirect_uri, params, state);
-      tokenSet = await client.client.oauthCallback(client.redirect_uri.toString(), params);
+      console.debug(redirect_uri, params, state);
+      tokenSet = await client.oauthCallback(redirect_uri.toString(), params);
       console.debug(tokenSet);
       return tokenSet;
     } catch (err: any) {
@@ -102,32 +102,35 @@ export class OpenIDConnect {
     }
   }
 
-  private async createClient() {
-    if (process.env?.APPLICATION_URL_BASE == undefined || process.env.OIDC_CLIENT_ID == undefined) {
-      throw Error('All environment variables should be set');
+  /**
+   * Refreshes the access token at the OIDC-provider using the given refresh token.
+   * Provide lastRefresh and expiration to determine if a the token is expired.
+   *  Example: `sessionExpired = lastRefresh + expiration < Date.now()`
+   * When both sesssionStart and maxSession are provided the session duration is also checked.
+   *  Example: `tokenExpired = sessionStart + maxSession < Date.now()`
+   * If either session or token expired a refresh request is made. If neighter is provied the request
+   * is always made. Returns false if no session request is required.
+   * @param refreshToken refresh_token in session
+   * @param lastRefresh optional: last time the refresh is done (=session start at begin of session)
+   * @param expiration optional: the time the access token is valid (expires_in in session)
+   * @param sessionStart optional: the time the session is originally started (session_start)
+   * @param maxSession optional: the max ttl of the session
+   * @returns a new TokenSet to be parsed/stored in the session
+   */
+  async refresh(refreshToken: string, lastRefresh?: number, expiration?: number, sessionStart?: number, maxSession?: number) {
+    // Check if session is still valid
+    const sessionExpired = (sessionStart && maxSession) && sessionStart + maxSession < Date.now();
+    const accessTokenExpired = (lastRefresh && expiration) && lastRefresh + expiration < Date.now();
+    if (!accessTokenExpired && !sessionExpired) {
+      return false;
     }
-    const base_url = new URL(process.env.APPLICATION_URL_BASE);
-    const redirect_uri = new URL('/auth', base_url);
-    const client_secret = await this.getOidcClientSecret();
-    const client = new this.issuer.Client({
-      client_id: process.env.OIDC_CLIENT_ID,
-      redirect_uris: [redirect_uri.toString()],
-      client_secret: client_secret,
-      token_endpoint_auth_method: 'client_secret_post',
-      response_types: ['code'],
-    });
-    return {
-      client: client,
-      redirect_uri: redirect_uri,
-    };
-  }
 
-  async refresh(refreshToken: string) {
-    const client = await this.createClient();
+    // Do refresh request
+    const client = await this.createClient(this.getRedirectUri());
     let tokenSet;
     try {
       console.debug('Using oAuth refresh token');
-      tokenSet = await client.client.refresh(refreshToken);
+      tokenSet = await client.refresh(refreshToken);
       console.debug(tokenSet);
       return tokenSet;
     } catch (err: any) {
@@ -139,4 +142,33 @@ export class OpenIDConnect {
   generateState() {
     return generators.state();
   }
+
+  private getRedirectUri() {
+    if (process.env?.APPLICATION_URL_BASE == undefined) {
+      throw Error('APPLICATION_URL_BASE env variable must be set');
+    }
+    const base_url = new URL(process.env.APPLICATION_URL_BASE);
+    return new URL('/auth', base_url);
+  }
+
+  private getOidcClientId() {
+    if (process.env.OIDC_CLIENT_ID == undefined) {
+      throw Error('OIDC_CLIENT_ID env variable must be set');
+    }
+    return process.env.OIDC_CLIENT_ID;
+  }
+
+  private async createClient(redirect_uri: URL) {
+    const client_id = this.getOidcClientId();
+    const client_secret = await this.getOidcClientSecret();
+    const client = new this.issuer.Client({
+      client_id: client_id,
+      redirect_uris: [redirect_uri.toString()],
+      client_secret: client_secret,
+      token_endpoint_auth_method: 'client_secret_post',
+      response_types: ['code'],
+    });
+    return client;
+  }
+
 }

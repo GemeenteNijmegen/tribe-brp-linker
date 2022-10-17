@@ -73,14 +73,22 @@ class Home {
     try {
       const OIDC = new OpenIDConnect();
       const refreshToken = session.getValue('refresh_token');
-      const tokenSet = await OIDC.refresh(refreshToken);
-      if (tokenSet) {
+      const expiresIn = session.getValue('expires_in');
+      const lastRefresh = session.getValue('last_refresh');
+      const sessionStart = session.getValue('session_start');
+      const maxSession = session.ttl * 60 * 1000; // Convert to milis
+      const tokenSet = await OIDC.refresh(refreshToken, lastRefresh, expiresIn, sessionStart, maxSession);
+      if (tokenSet === false) {
+        return; // No refresh needed
+      } else if (tokenSet) {
         await session.updateSession({
           loggedin: { BOOL: true },
           access_token: { S: tokenSet.access_token },
           refresh_token: { S: tokenSet.refresh_token },
           expires_in: { N: `${tokenSet.expires_in}` },
+          last_refresh: { N: Date.now() },
           xsrf_token: { S: OIDC.generateState() },
+          // Do not refresh session_start (denoting start of session)
         });
       } else {
         throw Error('Could not refresh session');
