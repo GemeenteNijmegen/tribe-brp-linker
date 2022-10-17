@@ -1,5 +1,6 @@
 import { Session } from '@gemeentenijmegen/session';
 import { Bsn } from '@gemeentenijmegen/utils/lib/Bsn';
+import { OpenIDConnect } from '../auth/shared/OpenIDConnect';
 import { BrpApi } from './BrpApi';
 import { render } from './shared/render';
 
@@ -19,6 +20,7 @@ class Home {
     this.session = new Session(this.params.cookies, this.dynamoDBClient, { ttlInMinutes: 240 });
     await this.session.init();
     if (this.session.isLoggedIn() == true) {
+      await this.refreshSession(this.session);
       return this.loggedInResponse();
     }
     return this.redirectResponse(`/login?contact_id=${this.params.contact_id}`);
@@ -59,6 +61,34 @@ class Home {
       city: brpData?.Persoon?.Adres?.Woonplaats,
     };
     return data;
+  }
+
+  /**
+   * Uses the refresh token to refresh the session
+   * Stores the new acces/refresh tokens and expiration
+   * Also refreshes the xsrf token.
+   * @param session The active session
+   */
+  async refreshSession(session: Session) {
+    try {
+      const OIDC = new OpenIDConnect();
+      const refreshToken = session.getValue('refresh_token');
+      const tokenSet = await OIDC.refresh(refreshToken);
+      if (tokenSet) {
+        await session.updateSession({
+          loggedin: { BOOL: true },
+          access_token: { S: tokenSet.access_token }, 
+          refresh_token: { S: tokenSet.refresh_token },
+          expires_in: { N: `${tokenSet.expires_in}` },
+          xsrf_token: { S: OIDC.generateState() },
+        });
+      } else {
+        throw Error("Could not refresh session");
+      }
+    } catch (error: any) {
+      console.error(error.message);
+      // Do not rethrow error as this is no critical functionality 
+    }
   }
 
   redirectResponse(location: string, code = 302) {
