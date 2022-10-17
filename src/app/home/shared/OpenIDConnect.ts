@@ -104,28 +104,10 @@ export class OpenIDConnect {
 
   /**
    * Refreshes the access token at the OIDC-provider using the given refresh token.
-   * Provide lastRefresh and expiration to determine if a the token is expired.
-   *  Example: `sessionExpired = lastRefresh + expiration < Date.now()`
-   * When both sesssionStart and maxSession are provided the session duration is also checked.
-   *  Example: `tokenExpired = sessionStart + maxSession < Date.now()`
-   * If either session or token expired a refresh request is made. If neighter is provied the request
-   * is always made. Returns false if no session request is required.
    * @param refreshToken refresh_token in session
-   * @param lastRefresh optional: last time the refresh is done (=session start at begin of session)
-   * @param expiration optional: the time the access token is valid (expires_in in session)
-   * @param sessionStart optional: the time the session is originally started (session_start)
-   * @param maxSession optional: the max ttl of the session
    * @returns a new TokenSet to be parsed/stored in the session
    */
-  async refresh(refreshToken: string, lastRefresh?: number, expiration?: number, sessionStart?: number, maxSession?: number) {
-    // Check if session is still valid
-    const sessionExpired = (sessionStart && maxSession) && sessionStart + maxSession < Date.now();
-    const accessTokenExpired = (lastRefresh && expiration) && lastRefresh + expiration < Date.now();
-    if (!accessTokenExpired && !sessionExpired) {
-      return false;
-    }
-
-    // Do refresh request
+  async refresh(refreshToken: string) {
     const client = await this.createClient(this.getRedirectUri());
     let tokenSet;
     try {
