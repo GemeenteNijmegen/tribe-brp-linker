@@ -77,17 +77,17 @@ class Home {
       if (tokenSet) {
         await session.updateSession({
           loggedin: { BOOL: true },
-          access_token: { S: tokenSet.access_token }, 
+          access_token: { S: tokenSet.access_token },
           refresh_token: { S: tokenSet.refresh_token },
           expires_in: { N: `${tokenSet.expires_in}` },
           xsrf_token: { S: OIDC.generateState() },
         });
       } else {
-        throw Error("Could not refresh session");
+        throw Error('Could not refresh session');
       }
     } catch (error: any) {
       console.error(error.message);
-      // Do not rethrow error as this is no critical functionality 
+      // Do not rethrow error as this is no critical functionality
     }
   }
 

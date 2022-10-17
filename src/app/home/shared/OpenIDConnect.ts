@@ -83,7 +83,7 @@ export class OpenIDConnect {
      * @returns {Promise<any | false>} returns a promise which resolves to a claims object on succesful auth
      */
   async authorize(code: string, state: string, returnedState: string): Promise<any | false> {
-    
+
     const client = await this.createClient();
 
     const params = client.client.callbackParams(client.redirect_uri + '/?code=' + code);
@@ -102,7 +102,7 @@ export class OpenIDConnect {
     }
   }
 
-  private async createClient(){
+  private async createClient() {
     if (process.env?.APPLICATION_URL_BASE == undefined || process.env.OIDC_CLIENT_ID == undefined) {
       throw Error('All environment variables should be set');
     }
@@ -119,10 +119,10 @@ export class OpenIDConnect {
     return {
       client: client,
       redirect_uri: redirect_uri,
-    }
+    };
   }
 
-  async refresh(refreshToken: string){
+  async refresh(refreshToken: string) {
     const client = await this.createClient();
     let tokenSet;
     try {
