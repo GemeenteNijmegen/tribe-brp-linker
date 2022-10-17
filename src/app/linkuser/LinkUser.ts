@@ -32,6 +32,10 @@ export class LinkUser {
     }
     try {
       console.debug('handling link request: getting data');
+
+      if (!this.is_valid_post()) {
+        return this.errorResponse(403);
+      }
       const bsn = new Bsn(this.params.body.bsn);
       const brpData = await this.brpData(bsn);
       console.debug('handling link request: retrieved data');
@@ -92,6 +96,21 @@ export class LinkUser {
       postalCode: brpData?.Persoon?.Adres?.Postcode,
     };
     return data;
+  }
+
+  
+  /**
+   * Check if the request is a valid post. For now only checks XSRF token.
+   *
+   * @returns boolean
+   */
+   is_valid_post() {
+    const xsrf_token = this.session?.getValue('xsrf_token');
+    if (xsrf_token == undefined || xsrf_token !== this.params.body.xsrf_token) {
+      console.debug('xsrf tokens do not match');
+      return false;
+    }
+    return true;
   }
 
   redirectResponse(location: string, code = 302) {

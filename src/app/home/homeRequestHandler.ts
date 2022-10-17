@@ -25,14 +25,19 @@ class Home {
   }
 
   async loggedInResponse() {
+    const xsrf_token = this.session?.getValue('xsrf_token');
     let data: any = {
       title: 'Controleer BRP-gegevens',
       shownav: true,
       contact_id: this.params.contact_id,
+      xsrf_token,
     };
 
     if (this.params.method == 'POST') {
       try {
+        if (!this.is_valid_post()) {
+          return this.errorResponse(403);
+        };
         const bsn = new Bsn(this.params.body.bsn);
         data.controle_data = await this.brpData(bsn);
         data.bsn = bsn.bsn;
@@ -59,6 +64,20 @@ class Home {
       city: brpData?.Persoon?.Adres?.Woonplaats,
     };
     return data;
+  }
+
+  /**
+   * Check if the request is a valid post. For now only checks XSRF token.
+   *
+   * @returns boolean
+   */
+  is_valid_post() {
+    const xsrf_token = this.session?.getValue('xsrf_token');
+    if (xsrf_token == undefined || xsrf_token !== this.params.body.xsrf_token) {
+      console.debug('xsrf tokens do not match');
+      return false;
+    }
+    return true;
   }
 
   redirectResponse(location: string, code = 302) {
