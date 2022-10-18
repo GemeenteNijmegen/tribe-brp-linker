@@ -20,6 +20,9 @@ class Home {
     this.session = new Session(this.params.cookies, this.dynamoDBClient, { ttlInMinutes: 240 });
     await this.session.init();
     if (this.session.isLoggedIn() == true) {
+      if (!this.is_valid_post()) {
+        return this.errorResponse(403);
+      };
       await this.refreshSessionIfExpired(this.session);
       return this.loggedInResponse();
     }
@@ -37,9 +40,6 @@ class Home {
 
     if (this.params.method == 'POST') {
       try {
-        if (!this.is_valid_post()) {
-          return this.errorResponse(403);
-        };
         const bsn = new Bsn(this.params.body.bsn);
         data.controle_data = await this.brpData(bsn);
         data.bsn = bsn.bsn;
@@ -69,7 +69,6 @@ class Home {
   }
 
   /**
-<<<<<<< HEAD
    * Uses the refresh token to refresh the session
    * Stores the new acces/refresh tokens and expiration
    * Also refreshes the xsrf token.
@@ -109,7 +108,9 @@ class Home {
    */
   is_valid_post() {
     const xsrf_token = this.session?.getValue('xsrf_token');
-    if (xsrf_token == undefined || xsrf_token !== this.params.body.xsrf_token) {
+    const invalid_xsrf_token = xsrf_token == undefined || xsrf_token !== this.params.body.xsrf_token;
+    const is_post = this.params.method == 'POST';
+    if (is_post && invalid_xsrf_token) {
       console.debug('xsrf tokens do not match');
       return false;
     }

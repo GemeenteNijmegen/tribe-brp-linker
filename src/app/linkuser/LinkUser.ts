@@ -21,6 +21,9 @@ export class LinkUser {
     this.session = new Session(this.params.cookies, this.dynamoDBClient, { ttlInMinutes: 240 });
     await this.session.init();
     if (this.session.isLoggedIn() == true) {
+      if (!this.is_valid_post()) {
+        return this.errorResponse(403);
+      }
       await this.refreshSessionIfExpired(this.session);
       return this.loggedInResponse();
     }
@@ -35,9 +38,6 @@ export class LinkUser {
     try {
       console.debug('handling link request: getting data');
 
-      if (!this.is_valid_post()) {
-        return this.errorResponse(403);
-      }
       const bsn = new Bsn(this.params.body.bsn);
       const brpData = await this.brpData(bsn);
       console.debug('handling link request: retrieved data');
