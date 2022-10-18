@@ -1,8 +1,8 @@
-import { mockClient } from 'aws-sdk-client-mock';
 import { DynamoDBClient, GetItemCommand, GetItemCommandOutput } from '@aws-sdk/client-dynamodb';
 import { SecretsManagerClient, GetSecretValueCommandOutput, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
-import { LinkUser } from '../LinkUser';
 import { Session } from '@gemeentenijmegen/session';
+import { mockClient } from 'aws-sdk-client-mock';
+import { LinkUser } from '../LinkUser';
 beforeAll(() => {
 
   // if (process.env.VERBOSETESTS!='True') {
@@ -75,13 +75,13 @@ test('refresh token gets generated', async () => {
           loggedin: { BOOL: true },
           access_token: { S: 'access' },
           refresh_token: { S: 'refresh' },
-          expires_at: { N: "2000" },
+          expires_at: { N: '2000' },
         },
       },
     },
   };
   const secondRefreshToken = 'refresh2';
-  const refreshedExpiry = "4000";
+  const refreshedExpiry = '4000';
   const getItemOutputSecond: Partial<GetItemCommandOutput> = {
     Item: {
       data: {
