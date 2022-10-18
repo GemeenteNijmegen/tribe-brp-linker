@@ -1,6 +1,7 @@
 import { Session } from '@gemeentenijmegen/session';
 import { Bsn } from '@gemeentenijmegen/utils/lib/Bsn';
 import { BrpApi } from './BrpApi';
+import { OpenIDConnect } from './OpenIDConnect';
 import { TribeApi } from './TribeApi';
 import { TribeUser } from './TribeUser';
 
@@ -20,6 +21,7 @@ export class LinkUser {
     this.session = new Session(this.params.cookies, this.dynamoDBClient, { ttlInMinutes: 240 });
     await this.session.init();
     if (this.session.isLoggedIn() == true) {
+      await this.refreshSessionIfExpired(this.session);
       return this.loggedInResponse();
     }
     return this.redirectResponse(`/login?contact_id=${this.params.contact_id}`);
@@ -98,6 +100,38 @@ export class LinkUser {
     return data;
   }
 
+  /**
+   * Uses the refresh token to refresh the session
+   * Stores the new acces/refresh tokens and expiration
+   * Also refreshes the xsrf token.
+   * @param session The active session
+   */
+  async refreshSessionIfExpired(session: Session) {
+    try {
+      const OIDC = new OpenIDConnect();
+      const refreshToken = session.getValue('refresh_token');
+      const expiresAt = session.getValue('expires_at');
+      if (expiresAt > Date.now()) {
+        return;
+      }
+      const tokenSet = await OIDC.refresh(refreshToken);
+      if (tokenSet) {
+        const expires_at = Date.now() + (tokenSet.expires_in ?? 60) * 1000; // Seconds to millis
+        await session.updateSession({
+          loggedin: { BOOL: true },
+          access_token: { S: tokenSet.access_token },
+          refresh_token: { S: tokenSet.refresh_token },
+          expires_at: { N: `${expires_at}` },
+          xsrf_token: { S: OIDC.generateState() },
+        });
+      } else {
+        throw Error('Could not refresh session');
+      }
+    } catch (error: any) {
+      console.error(error.message);
+      // Do not rethrow error as this is no critical functionality
+    }
+  }
 
   /**
    * Check if the request is a valid post. For now only checks XSRF token.

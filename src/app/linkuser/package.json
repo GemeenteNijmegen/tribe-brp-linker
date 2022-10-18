@@ -20,7 +20,8 @@
     "@gemeentenijmegen/utils": "^0.0.0",
     "@types/aws-lambda": "^8.10.107",
     "axios": "^1.1.2",
-    "cookie": "^0.5.0"
+    "cookie": "^0.5.0",
+    "openid-client": "^5.1.10"
   },
   "devDependencies": {
     "@aws-sdk/types": "3.186.0",
