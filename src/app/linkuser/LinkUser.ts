@@ -98,13 +98,13 @@ export class LinkUser {
     return data;
   }
 
-  
+
   /**
    * Check if the request is a valid post. For now only checks XSRF token.
    *
    * @returns boolean
    */
-   is_valid_post() {
+  is_valid_post() {
     const xsrf_token = this.session?.getValue('xsrf_token');
     if (xsrf_token == undefined || xsrf_token !== this.params.body.xsrf_token) {
       console.debug('xsrf tokens do not match');

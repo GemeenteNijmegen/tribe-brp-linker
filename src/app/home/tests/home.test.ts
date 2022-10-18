@@ -36,7 +36,7 @@ beforeEach(() => {
           loggedin: { BOOL: true },
           bsn: { S: '12345678' },
           state: { S: '12345' },
-          xsrf_token: { S: xsrf_token }
+          xsrf_token: { S: xsrf_token },
         },
       },
     },
@@ -111,7 +111,7 @@ describe('Requests to home route', () => {
     secretsMock.on(GetSecretValueCommand).resolves(output);
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-    
+
     const tokenlessResult = await homeRequestHandler({
       method: 'POST',
       cookies: 'session=12345',
