@@ -13,12 +13,12 @@ const sandboxEnvironment = {
 };
 
 const acceptanceEnvironment = {
-  account: '315037222840',
+  account: '229631103712',
   region: 'eu-west-1',
 };
 
 const productionEnvironment = {
-  account: '196212984627',
+  account: '487749583954',
   region: 'eu-west-1',
 };
 
