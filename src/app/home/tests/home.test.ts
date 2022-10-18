@@ -24,6 +24,8 @@ beforeAll(() => {
 const ddbMock = mockClient(DynamoDBClient);
 const secretsMock = mockClient(SecretsManagerClient);
 
+const xsrf_token = '1234';
+
 beforeEach(() => {
   ddbMock.reset();
   secretsMock.reset();
@@ -34,6 +36,7 @@ beforeEach(() => {
           loggedin: { BOOL: true },
           bsn: { S: '12345678' },
           state: { S: '12345' },
+          xsrf_token: { S: xsrf_token },
         },
       },
     },
@@ -95,8 +98,35 @@ describe('Requests to home route', () => {
       method: 'POST',
       cookies: 'session=12345',
       contact_id: 'test',
-      body: { bsn: '900222670' },
+      body: { bsn: '900222670', xsrf_token: xsrf_token },
     }, apiClient, dynamoDBClient);
     expect(result.body).toMatch('Geboortedatum');
+  });
+
+  test('Invalid or missing xsrf token fails', async () => {
+    const output: GetSecretValueCommandOutput = {
+      $metadata: {},
+      SecretString: 'ditiseennepgeheim',
+    };
+    secretsMock.on(GetSecretValueCommand).resolves(output);
+    const apiClient = new FileApiClient();
+    const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
+
+    const tokenlessResult = await homeRequestHandler({
+      method: 'POST',
+      cookies: 'session=12345',
+      contact_id: 'test',
+      body: { bsn: '900222670' },
+    }, apiClient, dynamoDBClient);
+    expect(tokenlessResult.statusCode).toBe(403);
+
+
+    const incorrectTokenResult = await homeRequestHandler({
+      method: 'POST',
+      cookies: 'session=12345',
+      contact_id: 'test',
+      body: { bsn: '900222670', xsrf_token: 'wrong' },
+    }, apiClient, dynamoDBClient);
+    expect(incorrectTokenResult.statusCode).toBe(403);
   });
 });
