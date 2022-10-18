@@ -69,7 +69,7 @@ export class OpenIDConnect {
       scope: process.env.OIDC_SCOPE,
       resource: process.env.AUTH_URL_BASE,
       state: state,
-      organization_id: process.env.AUTH_ORG_ID,
+      organization_id: process.env.AUTH_ORG_ID, // TODO check if this is needer (it is never set in cdk)
     });
     return authUrl;
   }

@@ -106,14 +106,17 @@ export class LinkUser {
    * Also refreshes the xsrf token.
    * @param session The active session
    */
-  async refreshSessionIfExpired(session: Session) {
+  async refreshSessionIfExpired(session: Session): Promise<boolean> {
     try {
       const OIDC = new OpenIDConnect();
       const refreshToken = session.getValue('refresh_token');
-      const expiresAt = session.getValue('expires_at');
+      const expiresAt = session.getValue('expires_at', 'N');
+      console.debug(expiresAt, Date.now());
       if (expiresAt > Date.now()) {
-        return;
+        console.debug('not expired');
+        return false;
       }
+      console.debug('requesting refresh token');
       const tokenSet = await OIDC.refresh(refreshToken);
       if (tokenSet) {
         const expires_at = Date.now() + (tokenSet.expires_in ?? 60) * 1000; // Seconds to millis
@@ -124,12 +127,14 @@ export class LinkUser {
           expires_at: { N: `${expires_at}` },
           xsrf_token: { S: OIDC.generateState() },
         });
+        return true;
       } else {
         throw Error('Could not refresh session');
       }
     } catch (error: any) {
-      console.error(error.message);
       // Do not rethrow error as this is no critical functionality
+      console.error(error.message);
+      return false;
     }
   }
 
