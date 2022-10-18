@@ -24,11 +24,12 @@ export async function handleRequest(cookies: any, queryStringParamCode: string, 
   try {
     const tokenSet = await OIDC.authorize(queryStringParamCode, state, queryStringParamState);
     if (tokenSet) {
+      const expires_at = Date.now() + tokenSet.expires_in * 1000; // Seconds to millis
       await session.createSession({
         loggedin: { BOOL: true },
         access_token: { S: tokenSet.access_token },
         refresh_token: { S: tokenSet.refresh_token },
-        expires_at: { N: tokenSet.expires_at },
+        expires_at: { N: `${expires_at}` },
         xsrf_token: { S: OIDC.generateState() },
       });
     } else {
