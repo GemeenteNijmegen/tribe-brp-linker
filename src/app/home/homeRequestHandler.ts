@@ -107,10 +107,12 @@ class Home {
    * @returns boolean
    */
   is_valid_post() {
+    if (this.params.method != 'POST') {
+      return true;
+    }
     const xsrf_token = this.session?.getValue('xsrf_token');
     const invalid_xsrf_token = xsrf_token == undefined || xsrf_token !== this.params.body.xsrf_token;
-    const is_post = this.params.method == 'POST';
-    if (is_post && invalid_xsrf_token) {
+    if (invalid_xsrf_token) {
       console.debug('xsrf tokens do not match');
       return false;
     }
