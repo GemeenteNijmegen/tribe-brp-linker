@@ -24,8 +24,8 @@ export class PipelineStack extends Stack {
     const pipeline = this.pipeline(source);
     pipeline.addStage(new ParameterStage(this, 'parameters', { env: props.deployToEnvironment }));
 
-    const apiStage = pipeline.addStage(new ApiStage(this, 'tribebrp', { env: props.deployToEnvironment, branch: this.branchName }));
-    this.runValidationChecks(apiStage, source);
+    pipeline.addStage(new ApiStage(this, 'tribebrp', { env: props.deployToEnvironment, branch: this.branchName }));
+    // this.runValidationChecks(apiStage, source);
 
   }
 
