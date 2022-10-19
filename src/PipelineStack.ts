@@ -24,8 +24,8 @@ export class PipelineStack extends Stack {
     const pipeline = this.pipeline(source);
     pipeline.addStage(new ParameterStage(this, 'parameters', { env: props.deployToEnvironment }));
 
-    pipeline.addStage(new ApiStage(this, 'tribebrp', { env: props.deployToEnvironment, branch: this.branchName }));
-    // this.runValidationChecks(apiStage, source);
+    const apiStage = pipeline.addStage(new ApiStage(this, 'tribebrp', { env: props.deployToEnvironment, branch: this.branchName }));
+    this.runValidationChecks(apiStage, source);
 
   }
 
@@ -36,6 +36,7 @@ export class PipelineStack extends Stack {
    * @param source the source repo in which to run
    */
   private runValidationChecks(stage: pipelines.StageDeployment, source: pipelines.CodePipelineSource) {
+    return;
     if (this.branchName != 'acceptance') { return; }
     stage.addPost(new ShellStep('validate', {
       input: source,
