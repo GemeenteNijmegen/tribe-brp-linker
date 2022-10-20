@@ -23,12 +23,16 @@ beforeAll(() => {
 
 const ddbMock = mockClient(DynamoDBClient);
 const secretsMock = mockClient(SecretsManagerClient);
+const output: GetSecretValueCommandOutput = {
+  $metadata: {},
+  SecretString: 'ditiseennepgeheim',
+};
+secretsMock.on(GetSecretValueCommand).resolves(output);
 
 const xsrf_token = '1234';
 
 beforeEach(() => {
   ddbMock.reset();
-  secretsMock.reset();
   const getItemOutput: Partial<GetItemCommandOutput> = {
     Item: {
       data: {
@@ -52,11 +56,6 @@ describe('Requests to home route', () => {
   };
 
   test('Returns 200 when logged in', async () => {
-    const output: GetSecretValueCommandOutput = {
-      $metadata: {},
-      SecretString: 'ditiseennepgeheim',
-    };
-    secretsMock.on(GetSecretValueCommand).resolves(output);
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
     const result = await homeRequestHandler({ ...baseParams, contact_id: 'test' }, apiClient, dynamoDBClient);
@@ -67,11 +66,6 @@ describe('Requests to home route', () => {
   });
 
   test('Returns 400 when no contact id is provided', async () => {
-    const output: GetSecretValueCommandOutput = {
-      $metadata: {},
-      SecretString: 'ditiseennepgeheim',
-    };
-    secretsMock.on(GetSecretValueCommand).resolves(output);
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
     const result = await homeRequestHandler(baseParams, apiClient, dynamoDBClient);
@@ -80,11 +74,6 @@ describe('Requests to home route', () => {
   });
 
   test('Shows overview page', async () => {
-    const output: GetSecretValueCommandOutput = {
-      $metadata: {},
-      SecretString: 'ditiseennepgeheim',
-    };
-    secretsMock.on(GetSecretValueCommand).resolves(output);
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
     const result = await homeRequestHandler({ ...baseParams, contact_id: 'test' }, apiClient, dynamoDBClient);
@@ -93,11 +82,6 @@ describe('Requests to home route', () => {
 
 
   test('After sending form details are shown', async () => {
-    const output: GetSecretValueCommandOutput = {
-      $metadata: {},
-      SecretString: 'ditiseennepgeheim',
-    };
-    secretsMock.on(GetSecretValueCommand).resolves(output);
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
     const result = await homeRequestHandler({
@@ -110,11 +94,6 @@ describe('Requests to home route', () => {
   });
 
   test('Invalid or missing xsrf token fails', async () => {
-    const output: GetSecretValueCommandOutput = {
-      $metadata: {},
-      SecretString: 'ditiseennepgeheim',
-    };
-    secretsMock.on(GetSecretValueCommand).resolves(output);
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
 
