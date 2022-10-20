@@ -1,0 +1,40 @@
+{
+  "Persoon": {
+      "BSN": {
+          "BSN": "900222670"
+      },
+      "Persoonsgegevens": {
+          "Voorletters": "A.",
+          "Voornamen": "Arnoud",
+          "Voorvoegsel": "de",
+          "Geslachtsnaam": "Smit",
+          "Achternaam": "de Smit",
+          "Naam": "A. de Smit",
+          "Geboortedatum": "01-01-1937",
+          "Geslacht": "M",
+          "NederlandseNationaliteit": "Ja",
+          "Geboorteplaats": "Hilversum",
+          "Geboorteland": "Nederland"
+      },
+      "Adres": {
+          "Straat": "Korte Nieuwstraat",
+          "Huisnummer": "6",
+          "Gemeente": "Nijmegen",
+          "Postcode": "6511 PP",
+          "Woonplaats": "Nijmegen"
+      },
+      "Reisdocument": {
+          "Documentsoort": "",
+          "Documentnummer": "",
+          "Uitgiftedatum": "",
+          "Verloopdatum": ""
+      },
+      "ageLimits": {
+          "over12": "Yes",
+          "over16": "Yes",
+          "over18": "Yes",
+          "over21": "Yes",
+          "over65": "Yes"
+      }
+  }
+}

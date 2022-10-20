@@ -20,8 +20,13 @@
     </form>
     <form action="/linkuser" method="POST">
       <h2>Controlegegevens</h2>
+      {{^controle_data }}
       <p>Zoek een persoon om controlegegevens weer te geven.</p>
+      {{/controle_data}}
       {{#controle_data }}
+      {{ ^isNijmegen }}
+      <div class="warning">{{name}} woont niet in de gemeente Nijmegen.</div>
+      {{ /isNijmegen }}
       <input type="hidden" name="bsn" value="{{bsn}}" />
       <input type="hidden" name="contact_id" value="{{contact_id}}" />
       <input type="hidden" name="xsrf_token" value="{{xsrf_token}}" />
@@ -33,16 +38,16 @@
           {{birthday}}
         </dd>
         <dt>
-          Achternaam
+          Naam
         </dt>
         <dd>
-          {{lastname}}
+          {{name}}
         </dd>
         <dt>
-          Woonplaats
+          Postcode + huisnummer
         </dt>
         <dd>
-          {{city}}
+          {{postcode}} {{huisnummer}}
         </dd>
       </dl>
       {{/controle_data}}

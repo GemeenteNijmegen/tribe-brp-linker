@@ -62,8 +62,10 @@ class Home {
     const brpData = await brpApi.getBrpData(bsn.bsn);
     const data = {
       birthday: brpData?.Persoon?.Persoonsgegevens?.Geboortedatum,
-      lastname: brpData?.Persoon?.Persoonsgegevens?.Achternaam,
-      city: brpData?.Persoon?.Adres?.Woonplaats,
+      name: brpData?.Persoon?.Persoonsgegevens?.Naam,
+      postcode: brpData?.Persoon?.Adres?.Postcode,
+      huisnummer: brpData?.Persoon?.Adres?.Huisnummer,
+      isNijmegen: brpData?.Persoon?.Adres?.Gemeente == 'Nijmegen',
     };
     return data;
   }
