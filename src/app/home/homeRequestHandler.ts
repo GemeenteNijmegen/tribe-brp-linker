@@ -49,7 +49,7 @@ class Home {
       }
     }
     // render page
-    if(this.params.accept == 'application/json') {
+    if(this.params.accepts == 'application/json') {
       return this.jsonResponse(data);
     } else {
       const html = await render(data, __dirname + '/templates/home.mustache', {
