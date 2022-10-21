@@ -147,10 +147,10 @@ class Home {
     };
   }
 
-  jsonResponse(body: string) {
+  jsonResponse(body: object) {
     return {
       statusCode: 200,
-      body,
+      body: JSON.stringify(body),
       headers: {
         'Content-type': 'application/json',
       },

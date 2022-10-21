@@ -115,3 +115,19 @@ describe('Requests to home route', () => {
     expect(incorrectTokenResult.statusCode).toBe(403);
   });
 });
+
+describe('Requests can return json', () => {
+  test('POSTs with accept header `application/json` return json', async () => {
+    const apiClient = new FileApiClient();
+    const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
+    const result = await homeRequestHandler({
+      method: 'POST',
+      cookies: 'session=12345',
+      contact_id: 'test',
+      body: { bsn: '900222670', xsrf_token: xsrf_token },
+      accepts: 'application/json'
+    }, apiClient, dynamoDBClient);
+    console.debug(result.body);
+    expect(JSON.parse(result.body).bsn).toBe('900222670');
+  });
+})
