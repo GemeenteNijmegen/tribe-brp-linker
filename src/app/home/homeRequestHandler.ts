@@ -49,7 +49,7 @@ class Home {
       }
     }
     // render page
-    if(this.params.accepts == 'application/json') {
+    if (this.params.accepts == 'application/json') {
       const html = await render(data, __dirname + '/templates/controle_form.mustache', {});
       data.html = html;
       return this.jsonResponse(data);
@@ -57,7 +57,7 @@ class Home {
       const html = await render(data, __dirname + '/templates/home.mustache', {
         header: `${__dirname}/shared/header.mustache`,
         footer: `${__dirname}/shared/footer.mustache`,
-        controle_form: `${__dirname}/templates/controle_form.mustache`
+        controle_form: `${__dirname}/templates/controle_form.mustache`,
       });
       return this.htmlResponse(html);
     }

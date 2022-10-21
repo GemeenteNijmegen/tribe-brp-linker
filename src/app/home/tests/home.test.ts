@@ -125,9 +125,9 @@ describe('Requests can return json', () => {
       cookies: 'session=12345',
       contact_id: 'test',
       body: { bsn: '900222670', xsrf_token: xsrf_token },
-      accepts: 'application/json'
+      accepts: 'application/json',
     }, apiClient, dynamoDBClient);
     console.debug(result.body);
     expect(JSON.parse(result.body).bsn).toBe('900222670');
   });
-})
+});

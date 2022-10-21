@@ -10,7 +10,7 @@ export class Response {
   }
 
   static htmlResponse(body: string, cookies: string[]|string|undefined) {
-    if(cookies != undefined && !Array.isArray(cookies)) {
+    if (cookies != undefined && !Array.isArray(cookies)) {
       cookies = [cookies];
     }
     return {

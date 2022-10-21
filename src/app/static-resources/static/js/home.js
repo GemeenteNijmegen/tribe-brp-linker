@@ -54,7 +54,7 @@ function post(url, params, sendingButton) {
   sendingButton.disabled = true;
   sendingButton.dataset.originalValue = sendingButton.value;
   sendingButton.value = 'Bezig…';
-  fetch(document.location.href, {
+  fetch(url, {
     method: 'POST',
     credentials: "same-origin",
     headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'accept': 'application/json' },

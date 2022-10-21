@@ -111,6 +111,10 @@ body {
     display: block;
   }
 
+  input[type=submit]:disabled {
+    background-color: #a6c0c9;
+  }
+
   button {
     padding: .25em .5em;
     border: 1px solid black;

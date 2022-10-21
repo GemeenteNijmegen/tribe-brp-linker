@@ -24,7 +24,7 @@ function parseEvent(event: APIGatewayProxyEventV2): any {
     body,
     method: event.requestContext.http.method,
     contact_id: event?.queryStringParameters?.contact_id ? event?.queryStringParameters?.contact_id : body?.contact_id,
-    accepts: event.headers?.accept
+    accepts: event.headers?.accept,
   };
 }
 

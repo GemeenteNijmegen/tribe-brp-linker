@@ -75,8 +75,8 @@ export class LinkUser {
         });
       }
       await tribeUser.addToContactMoment(this.params.body.contact_id);
-      if(this.params.accepts == 'application/json') {
-        return this.jsonResponse({ redirect_to: `https://app.tribecrm.nl/entity/${this.params.body.contact_id}`});
+      if (this.params.accepts == 'application/json') {
+        return this.jsonResponse({ redirect_to: `https://app.tribecrm.nl/entity/${this.params.body.contact_id}` });
       } else {
         return this.redirectResponse(`https://app.tribecrm.nl/entity/${this.params.body.contact_id}`);
       }
