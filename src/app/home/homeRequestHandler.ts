@@ -49,12 +49,15 @@ class Home {
       }
     }
     // render page
-    const html = await render(data, __dirname + '/templates/home.mustache', {
-      header: `${__dirname}/shared/header.mustache`,
-      footer: `${__dirname}/shared/footer.mustache`,
-    });
-
-    return this.htmlResponse(html);
+    if(this.params.accept == 'application/json') {
+      return this.jsonResponse(data);
+    } else {
+      const html = await render(data, __dirname + '/templates/home.mustache', {
+        header: `${__dirname}/shared/header.mustache`,
+        footer: `${__dirname}/shared/footer.mustache`,
+      });
+      return this.htmlResponse(html);
+    }
   }
 
   async brpData(bsn: Bsn) {
@@ -137,6 +140,19 @@ class Home {
       body,
       headers: {
         'Content-type': 'text/html',
+      },
+      cookies: [
+        this.session?.getCookie(),
+      ],
+    };
+  }
+
+  jsonResponse(body: string) {
+    return {
+      statusCode: 200,
+      body,
+      headers: {
+        'Content-type': 'application/json',
       },
       cookies: [
         this.session?.getCookie(),
