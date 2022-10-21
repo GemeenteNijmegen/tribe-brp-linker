@@ -89,7 +89,7 @@ export class LinkUser {
     const data = {
       birthday: brpData?.Persoon?.Persoonsgegevens?.Geboortedatum,
       firstName: brpData?.Persoon?.Persoonsgegevens?.Voornamen,
-      lastName: brpData?.Persoon?.Persoonsgegevens?.Achternaam,
+      lastName: brpData?.Persoon?.Persoonsgegevens?.Geslachtsnaam,
       middleName: brpData?.Persoon?.Persoonsgegevens?.Voorvoegsel,
       city: brpData?.Persoon?.Adres?.Woonplaats,
       street: brpData?.Persoon?.Adres?.Straat,
