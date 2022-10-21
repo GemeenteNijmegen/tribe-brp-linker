@@ -75,7 +75,11 @@ export class LinkUser {
         });
       }
       await tribeUser.addToContactMoment(this.params.body.contact_id);
-      return this.redirectResponse(`https://app.tribecrm.nl/entity/${this.params.body.contact_id}`);
+      if(this.params.accepts == 'application/json') {
+        return this.jsonResponse({ redirect_to: `https://app.tribecrm.nl/entity/${this.params.body.contact_id}`});
+      } else {
+        return this.redirectResponse(`https://app.tribecrm.nl/entity/${this.params.body.contact_id}`);
+      }
     } catch (error) {
       console.error(error);
       return this.errorResponse();
@@ -154,6 +158,19 @@ export class LinkUser {
       return false;
     }
     return true;
+  }
+
+  jsonResponse(body: object) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify(body),
+      headers: {
+        'Content-type': 'application/json',
+      },
+      cookies: [
+        this.session?.getCookie(),
+      ],
+    };
   }
 
   redirectResponse(location: string, code = 302) {

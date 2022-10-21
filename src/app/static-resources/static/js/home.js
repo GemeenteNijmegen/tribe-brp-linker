@@ -46,11 +46,11 @@ function addFormEventHandlers() {
   document.addEventListener('submit', event => {
       event.preventDefault();
       const data = formAsURLSearchParams(event.target);
-      post(data, event.submitter);
+      post(event.target.action, data, event.submitter);
   });
 }
 
-function post(params, sendingButton) {
+function post(url, params, sendingButton) {
   sendingButton.disabled = true;
   sendingButton.dataset.originalValue = sendingButton.value;
   sendingButton.value = 'Bezig…';
@@ -65,8 +65,15 @@ function post(params, sendingButton) {
     console.log(data);
     sendingButton.disabled = false;
     sendingButton.value = sendingButton.dataset.originalValue;
-    replaceElement(data.html);
-    refreshXsrfToken(data.xsrf_token);
+    if(data.xsrf_token) {
+      refreshXsrfToken(data.xsrf_token);
+    }
+    if(data.html) {
+      replaceElement(data.html);
+    }
+    if(data.redirect_to) {
+      window.location.replace(data.redirect_to);
+    }
   })
   .catch(error => {
     console.error(error);
