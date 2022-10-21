@@ -7,57 +7,20 @@
 <p class="notice">{{error}}</p>
 {{/error}}
 {{^error}}
-    <form action="/" method="POST">
+    <form id="checkbsn" action="/" method="POST">
       <input type="hidden" name="contact_id" value="{{contact_id}}" />
       <input type="hidden" name="xsrf_token" value="{{xsrf_token}}" />
       <fieldset>
         <legend>Controleer op BSN</legend>
         <div class="input">
           <label>Wat is uw BSN</label>
-          <input type="number" name="bsn" value="{{bsn}}" />
+          <input type="number" name="bsn" value="{{bsn}}" data-copy />
         </div>
       </fieldset>
       <div class="actions">
         <input type="submit" value="Controleren" />
       </div>
     </form>
-    <form action="/linkuser" method="POST">
-      <h2>Controlegegevens</h2>
-      {{^controle_data }}
-      <p>Zoek een persoon om controlegegevens weer te geven.</p>
-      {{/controle_data}}
-      {{#controle_data }}
-      {{ ^isNijmegen }}
-      <div class="warning">{{name}} woont niet in de gemeente Nijmegen.</div>
-      {{ /isNijmegen }}
-      <input type="hidden" name="bsn" value="{{bsn}}" />
-      <input type="hidden" name="contact_id" value="{{contact_id}}" />
-      <input type="hidden" name="xsrf_token" value="{{xsrf_token}}" />
-      <dl>
-        <dt>
-          Geboortedatum
-        </dt>
-        <dd>
-          {{birthday}}
-        </dd>
-        <dt>
-          Naam
-        </dt>
-        <dd>
-          {{name}}
-        </dd>
-        <dt>
-          Postcode + huisnummer
-        </dt>
-        <dd>
-          {{postcode}} {{huisnummer}}
-        </dd>
-      </dl>
-      {{/controle_data}}
-      <div class="actions">
-        <input type="submit" value="Koppelen aan afhandeling" />
-        <a href="https://app.tribecrm.nl/entity/{{contact_id}}">Terug zonder koppelen</a>
-      </div>
-    </form>
+    {{>controle_form}}
 {{/error}}
 </main>
