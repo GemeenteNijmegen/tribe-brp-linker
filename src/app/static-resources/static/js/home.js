@@ -17,6 +17,12 @@ function addCopyToClipboardButtons() {
   });
 }
 
+/**
+ * Transform an html-string to an actual nodetree
+ * 
+ * @param {string} html the valid HTML as as string
+ * @returns {Node} the html node
+ */
 function htmlStringToElement(html) {
   var template = document.createElement('template');
   html = html.trim(); // Never return a text node of whitespace as the result
@@ -24,6 +30,12 @@ function htmlStringToElement(html) {
   return template.content.firstChild;
 }
 
+/**
+ * Convert a form's formData to URLSearchParams.
+ * 
+ * @param {Node} form a form node
+ * @returns {URLSearchParams} the formData as urlsearchparams
+ */
 function formAsURLSearchParams(form) {
   const data = new URLSearchParams();
   for (const pair of new FormData(form)) {
@@ -32,16 +44,35 @@ function formAsURLSearchParams(form) {
   return data;
 }
 
+/**
+ * Replace a DOM-element with another element
+ * 
+ * It will replace an element with the same ID value
+ * as the replacing element.
+ * 
+ * @param {Node} data 
+ */
 function replaceElement(data) {
   const element = htmlStringToElement(data);
   const old = document.getElementById(element.id);
   old.replaceWith(element);
 }
 
+/**
+ * Replace the value for all inputs with name=xsrf_token
+ * 
+ * @param {*} token 
+ */
 function refreshXsrfToken(token) {
   document.querySelectorAll("input[name='xsrf_token']").forEach(el => el.value = token);
 }
 
+/**
+ * Add form submit listener to document
+ * 
+ * Submit will call post() with the current form's data + action url
+ * NB: It will always 'POST', even if the form method = 'GET'.
+ */
 function addFormEventHandlers() {
   document.addEventListener('submit', event => {
       event.preventDefault();
@@ -50,6 +81,21 @@ function addFormEventHandlers() {
   });
 }
 
+/**
+ * Do a post request
+ * 
+ * This function assumes a form is submitted. It will
+ * add visual feedback to the submit-button used, and 
+ * handle the returned data:
+ * - if a data.html-key is returned, it will replace the nodetree
+ *   with the same ID as the return data.html-nodetree
+ * - if a data.redirect_to key is returned, it will redirect to the 
+ *   provided URL.
+ * 
+ * @param {string} url
+ * @param {URLSearchParams} params 
+ * @param {Node} sendingButton 
+ */
 function post(url, params, sendingButton) {
   sendingButton.disabled = true;
   sendingButton.dataset.originalValue = sendingButton.value;
