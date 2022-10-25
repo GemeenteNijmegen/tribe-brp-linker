@@ -32,7 +32,7 @@
   </dl>
   {{/controle_data}}
   <div class="actions">
-    <input type="submit" value="Koppelen aan afhandeling" />
+    {{#controle_data }}<input type="submit" value="Koppelen aan afhandeling" />{{/controle_data}}
     <a href="https://app.tribecrm.nl/entity/{{contact_id}}">Terug zonder koppelen</a>
   </div>
 </form>
