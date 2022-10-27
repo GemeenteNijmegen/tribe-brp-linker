@@ -88,11 +88,14 @@ export class ApiStack extends Stack {
         MTLS_CLIENT_CERT_NAME: Statics.ssmMTLSClientCert,
         MTLS_ROOT_CA_NAME: Statics.ssmMTLSRootCA,
         BRP_API_URL: SSM.StringParameter.valueForStringParameter(this, Statics.ssmBrpApiEndpointUrl),
+        CLIENT_SECRET_ARN: oidcSecret.secretArn,
       },
     });
     secretMTLSPrivateKey.grantRead(homeFunction.lambda);
     tlskeyParam.grantRead(homeFunction.lambda);
     tlsRootCAParam.grantRead(homeFunction.lambda);
+    oidcSecret.grantRead(homeFunction.lambda);
+
 
     const linkUserFunction = new ApiFunction(this, 'linkuser-function', {
       description: 'Link user-lambda voor de BRP koppeling.',
@@ -105,11 +108,14 @@ export class ApiStack extends Stack {
         MTLS_CLIENT_CERT_NAME: Statics.ssmMTLSClientCert,
         MTLS_ROOT_CA_NAME: Statics.ssmMTLSRootCA,
         BRP_API_URL: SSM.StringParameter.valueForStringParameter(this, Statics.ssmBrpApiEndpointUrl),
+        CLIENT_SECRET_ARN: oidcSecret.secretArn,
       },
     });
     secretMTLSPrivateKey.grantRead(linkUserFunction.lambda);
     tlskeyParam.grantRead(linkUserFunction.lambda);
     tlsRootCAParam.grantRead(linkUserFunction.lambda);
+    oidcSecret.grantRead(linkUserFunction.lambda);
+
 
     this.api.addRoutes({
       integration: new HttpLambdaIntegration('login', loginFunction.lambda),

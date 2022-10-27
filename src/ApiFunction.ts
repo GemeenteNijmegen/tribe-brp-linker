@@ -25,7 +25,7 @@ export class ApiFunction extends Construct {
     const insightsArn = 'arn:aws:lambda:eu-west-1:580247275435:layer:LambdaInsightsExtension:21';
     this.lambda = new NodejsFunction(this, 'lambda', {
       runtime: Lambda.Runtime.NODEJS_16_X,
-      timeout: Duration.seconds(5),
+      timeout: Duration.seconds(30),
       memorySize: 512,
       handler: 'handler',
       entry: path.join(__dirname, props.codePath, 'index.ts'),

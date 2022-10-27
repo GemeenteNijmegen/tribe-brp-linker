@@ -113,7 +113,7 @@ export class CloudfrontStack extends Stack {
             'Referer',
             'Accept-Language',
             'Accept-Datetime',
-            'Authoriz',
+            'Content-Type',
           ),
         }),
         viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
@@ -228,11 +228,11 @@ export class CloudfrontStack extends Stack {
     const cspValues = 'default-src \'self\';\
     frame-ancestors \'self\';\
     frame-src \'self\';\
-    connect-src \'self\' https://componenten.nijmegen.nl;\
-    style-src \'self\' https://componenten.nijmegen.nl https://fonts.googleapis.com https://fonts.gstatic.com \
-    script-src \'self\' https://componenten.nijmegen.nl https://siteimproveanalytics.com;\
-    font-src \'self\' https://componenten.nijmegen.nl https://fonts.gstatic.com;\
-    img-src \'self\' https://componenten.nijmegen.nl data: https://*.siteimproveanalytics.io;\
+    connect-src \'self\';\
+    style-src \'self\'\
+    script-src \'self\'\
+    font-src \'self\'\
+    img-src \'self\'\
     object-src \'none\';\
     ';
     return cspValues.replace(/[ ]+/g, ' ').trim();

@@ -1,0 +1,38 @@
+<form id="brpcontrole" action="/linkuser" method="POST">
+  <h2>Controlegegevens</h2>
+  {{^controle_data }}
+  <p>Zoek een persoon om controlegegevens weer te geven.</p>
+  {{/controle_data}}
+  {{#controle_data }}
+  {{ ^isNijmegen }}
+  <div class="warning">{{name}} woont niet in de gemeente Nijmegen.</div>
+  {{ /isNijmegen }}
+  <input type="hidden" name="bsn" value="{{bsn}}" />
+  <input type="hidden" name="contact_id" value="{{contact_id}}" />
+  <input type="hidden" name="xsrf_token" value="{{xsrf_token}}" />
+  <dl>
+    <dt>
+      Geboortedatum
+    </dt>
+    <dd>
+      {{birthday}}
+    </dd>
+    <dt>
+      Naam
+    </dt>
+    <dd>
+      {{name}}
+    </dd>
+    <dt>
+      Postcode + huisnummer
+    </dt>
+    <dd>
+      {{postcode}} {{huisnummer}}
+    </dd>
+  </dl>
+  {{/controle_data}}
+  <div class="actions">
+    {{#controle_data }}<input type="submit" value="Koppelen aan afhandeling" />{{/controle_data}}
+    <a href="https://app.tribecrm.nl/entity/{{contact_id}}">Terug zonder koppelen</a>
+  </div>
+</form>

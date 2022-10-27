@@ -75,6 +75,16 @@ body {
     margin: 1em;
   }
 
+  form div.input {
+    display: flex;
+    align-items: stretch;
+    gap: .5em;
+  }
+
+  form div.input label {
+    align-self: center;
+  }
+
   form .actions {
     background-color: #D6D6D6;
     margin: 0;
@@ -86,6 +96,12 @@ body {
     margin-top: auto;
   }
 
+  input {
+    padding: .25em .5em;
+    border: 1px solid black;
+    font-size: 1em;
+  }
+
   input[type=submit] {
     background-color: #009DD8;
     color: white;
@@ -93,6 +109,16 @@ body {
     border: 1px solid #333;
     padding: .5em 1em .5em 1em;
     display: block;
+  }
+
+  input[type=submit]:disabled {
+    background-color: #a6c0c9;
+  }
+
+  button {
+    padding: .25em .5em;
+    border: 1px solid black;
+    font-size: 1em;
   }
 
   fieldset {
@@ -105,4 +131,15 @@ body {
     font-weight: bold;
     margin: 0;
     padding: 0;
+  }
+
+  .warning {
+    padding: 1em .5em;
+    border-radius: .25em;
+    background-color: rgb(255, 140, 26);
+    color: black;
+  }
+
+  .warning::before {
+    content: "⚠️ ";
   }

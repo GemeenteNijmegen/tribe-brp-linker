@@ -20,6 +20,9 @@ class Home {
     this.session = new Session(this.params.cookies, this.dynamoDBClient, { ttlInMinutes: 240 });
     await this.session.init();
     if (this.session.isLoggedIn() == true) {
+      if (!this.is_valid_post()) {
+        return this.errorResponse(403);
+      };
       await this.refreshSessionIfExpired(this.session);
       return this.loggedInResponse();
     }
@@ -37,9 +40,6 @@ class Home {
 
     if (this.params.method == 'POST') {
       try {
-        if (!this.is_valid_post()) {
-          return this.errorResponse(403);
-        };
         const bsn = new Bsn(this.params.body.bsn);
         data.controle_data = await this.brpData(bsn);
         data.bsn = bsn.bsn;
@@ -49,12 +49,18 @@ class Home {
       }
     }
     // render page
-    const html = await render(data, __dirname + '/templates/home.mustache', {
-      header: `${__dirname}/shared/header.mustache`,
-      footer: `${__dirname}/shared/footer.mustache`,
-    });
-
-    return this.htmlResponse(html);
+    if (this.params.accepts == 'application/json') {
+      const html = await render(data, __dirname + '/templates/controle_form.mustache', {});
+      data.html = html;
+      return this.jsonResponse(data);
+    } else {
+      const html = await render(data, __dirname + '/templates/home.mustache', {
+        header: `${__dirname}/shared/header.mustache`,
+        footer: `${__dirname}/shared/footer.mustache`,
+        controle_form: `${__dirname}/templates/controle_form.mustache`,
+      });
+      return this.htmlResponse(html);
+    }
   }
 
   async brpData(bsn: Bsn) {
@@ -62,14 +68,15 @@ class Home {
     const brpData = await brpApi.getBrpData(bsn.bsn);
     const data = {
       birthday: brpData?.Persoon?.Persoonsgegevens?.Geboortedatum,
-      lastname: brpData?.Persoon?.Persoonsgegevens?.Achternaam,
-      city: brpData?.Persoon?.Adres?.Woonplaats,
+      name: brpData?.Persoon?.Persoonsgegevens?.Naam,
+      postcode: brpData?.Persoon?.Adres?.Postcode,
+      huisnummer: brpData?.Persoon?.Adres?.Huisnummer,
+      isNijmegen: brpData?.Persoon?.Adres?.Gemeente == 'Nijmegen',
     };
     return data;
   }
 
   /**
-<<<<<<< HEAD
    * Uses the refresh token to refresh the session
    * Stores the new acces/refresh tokens and expiration
    * Also refreshes the xsrf token.
@@ -108,8 +115,12 @@ class Home {
    * @returns boolean
    */
   is_valid_post() {
+    if (this.params.method != 'POST') {
+      return true;
+    }
     const xsrf_token = this.session?.getValue('xsrf_token');
-    if (xsrf_token == undefined || xsrf_token !== this.params.body.xsrf_token) {
+    const invalid_xsrf_token = xsrf_token == undefined || xsrf_token !== this.params.body.xsrf_token;
+    if (invalid_xsrf_token) {
       console.debug('xsrf tokens do not match');
       return false;
     }
@@ -132,6 +143,19 @@ class Home {
       body,
       headers: {
         'Content-type': 'text/html',
+      },
+      cookies: [
+        this.session?.getCookie(),
+      ],
+    };
+  }
+
+  jsonResponse(body: object) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify(body),
+      headers: {
+        'Content-type': 'application/json',
       },
       cookies: [
         this.session?.getCookie(),

@@ -23,12 +23,16 @@ beforeAll(() => {
 
 const ddbMock = mockClient(DynamoDBClient);
 const secretsMock = mockClient(SecretsManagerClient);
+const output: GetSecretValueCommandOutput = {
+  $metadata: {},
+  SecretString: 'ditiseennepgeheim',
+};
+secretsMock.on(GetSecretValueCommand).resolves(output);
 
 const xsrf_token = '1234';
 
 beforeEach(() => {
   ddbMock.reset();
-  secretsMock.reset();
   const getItemOutput: Partial<GetItemCommandOutput> = {
     Item: {
       data: {
@@ -45,15 +49,16 @@ beforeEach(() => {
 });
 
 describe('Requests to home route', () => {
+
+  const baseParams = {
+    cookies: 'session=12345',
+    body: { xsrf_token },
+  };
+
   test('Returns 200 when logged in', async () => {
-    const output: GetSecretValueCommandOutput = {
-      $metadata: {},
-      SecretString: 'ditiseennepgeheim',
-    };
-    secretsMock.on(GetSecretValueCommand).resolves(output);
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-    const result = await homeRequestHandler({ cookies: 'session=12345', contact_id: 'test' }, apiClient, dynamoDBClient);
+    const result = await homeRequestHandler({ ...baseParams, contact_id: 'test' }, apiClient, dynamoDBClient);
 
     expect(result.statusCode).toBe(200);
     let cookies = result.cookies.filter((cookie: string) => cookie.indexOf('HttpOnly; Secure'));
@@ -61,37 +66,22 @@ describe('Requests to home route', () => {
   });
 
   test('Returns 400 when no contact id is provided', async () => {
-    const output: GetSecretValueCommandOutput = {
-      $metadata: {},
-      SecretString: 'ditiseennepgeheim',
-    };
-    secretsMock.on(GetSecretValueCommand).resolves(output);
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-    const result = await homeRequestHandler({ cookies: 'session=12345' }, apiClient, dynamoDBClient);
+    const result = await homeRequestHandler(baseParams, apiClient, dynamoDBClient);
 
     expect(result.statusCode).toBe(400);
   });
 
   test('Shows overview page', async () => {
-    const output: GetSecretValueCommandOutput = {
-      $metadata: {},
-      SecretString: 'ditiseennepgeheim',
-    };
-    secretsMock.on(GetSecretValueCommand).resolves(output);
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-    const result = await homeRequestHandler({ cookies: 'session=12345', contact_id: 'test' }, apiClient, dynamoDBClient);
+    const result = await homeRequestHandler({ ...baseParams, contact_id: 'test' }, apiClient, dynamoDBClient);
     expect(result.body).toMatch('BRP');
   });
 
 
   test('After sending form details are shown', async () => {
-    const output: GetSecretValueCommandOutput = {
-      $metadata: {},
-      SecretString: 'ditiseennepgeheim',
-    };
-    secretsMock.on(GetSecretValueCommand).resolves(output);
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
     const result = await homeRequestHandler({
@@ -104,11 +94,6 @@ describe('Requests to home route', () => {
   });
 
   test('Invalid or missing xsrf token fails', async () => {
-    const output: GetSecretValueCommandOutput = {
-      $metadata: {},
-      SecretString: 'ditiseennepgeheim',
-    };
-    secretsMock.on(GetSecretValueCommand).resolves(output);
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
 
@@ -128,5 +113,21 @@ describe('Requests to home route', () => {
       body: { bsn: '900222670', xsrf_token: 'wrong' },
     }, apiClient, dynamoDBClient);
     expect(incorrectTokenResult.statusCode).toBe(403);
+  });
+});
+
+describe('Requests can return json', () => {
+  test('POSTs with accept header `application/json` return json', async () => {
+    const apiClient = new FileApiClient();
+    const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
+    const result = await homeRequestHandler({
+      method: 'POST',
+      cookies: 'session=12345',
+      contact_id: 'test',
+      body: { bsn: '900222670', xsrf_token: xsrf_token },
+      accepts: 'application/json',
+    }, apiClient, dynamoDBClient);
+    console.debug(result.body);
+    expect(JSON.parse(result.body).bsn).toBe('900222670');
   });
 });
