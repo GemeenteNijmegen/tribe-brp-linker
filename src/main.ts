@@ -18,7 +18,7 @@ const acceptanceEnvironment = {
 };
 
 const productionEnvironment = {
-  account: '196212984627',
+  account: '487749583954',
   region: 'eu-west-1',
 };
 
