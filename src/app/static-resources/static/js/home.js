@@ -59,6 +59,18 @@ function replaceElement(data) {
 }
 
 /**
+ * Remove multiple elements matching a selector
+ * 
+ * Used for removing warnings before sending form.
+ * 
+ * @param {valid selector} selector 
+ */
+function removeElements(selector) {
+  const elements = document.querySelectorAll(selector); 
+  elements.forEach((element) => { element.remove });
+}
+
+/**
  * Replace the value for all inputs with name=xsrf_token
  * 
  * @param {*} token 
@@ -79,6 +91,11 @@ function addFormEventHandlers() {
       const data = formAsURLSearchParams(event.target);
       post(event.target.action, data, event.submitter);
   });
+}
+
+function resetButton(sendingButton) {
+  sendingButton.disabled = false;
+  sendingButton.value = sendingButton.dataset.originalValue;
 }
 
 /**
@@ -108,9 +125,10 @@ function post(url, params, sendingButton) {
   })
   .then(response => response.json())
   .then(data => {
-    console.log(data);
-    sendingButton.disabled = false;
-    sendingButton.value = sendingButton.dataset.originalValue;
+    if (!response.ok) {
+      throw new Error('Network response was not OK');
+    }
+    resetButton(sendingButton);
     if(data.xsrf_token) {
       refreshXsrfToken(data.xsrf_token);
     }
@@ -123,10 +141,12 @@ function post(url, params, sendingButton) {
   })
   .catch(error => {
     console.error(error);
-    sendingButton.disabled = false;
-    sendingButton.value = sendingButton.dataset.originalValue;
+    resetButton(sendingButton);
+    const error = htmlStringToElement('<p class="warning">Er is iets misgegaan. Probeer het opnieuw.</p>');
+    sendingButton.parentElement.appendChild(error);
   });
 }
 
 addFormEventHandlers();
 addCopyToClipboardButtons();
+
