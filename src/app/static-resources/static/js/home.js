@@ -142,8 +142,8 @@ function post(url, params, sendingButton) {
   .catch(error => {
     console.error(error);
     resetButton(sendingButton);
-    const error = htmlStringToElement('<p class="warning">Er is iets misgegaan. Probeer het opnieuw.</p>');
-    sendingButton.parentElement.appendChild(error);
+    const errorElement = htmlStringToElement('<p class="warning">Er is iets misgegaan. Probeer het opnieuw.</p>');
+    sendingButton.parentElement.appendChild(errorElement);
   });
 }
 
