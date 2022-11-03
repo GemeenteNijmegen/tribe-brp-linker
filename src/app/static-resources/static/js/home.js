@@ -128,7 +128,7 @@ function post(url, params, sendingButton) {
       throw new Error('Network response was not OK');
     }
     response.json();
-  )
+  })
   .then(data => {
     resetButton(sendingButton);
     if(data.xsrf_token) {
