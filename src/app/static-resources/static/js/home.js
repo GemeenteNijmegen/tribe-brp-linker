@@ -67,7 +67,7 @@ function replaceElement(data) {
  */
 function removeElements(selector) {
   const elements = document.querySelectorAll(selector); 
-  elements.forEach((element) => { element.remove });
+  elements.forEach((element) => { element.remove(); });
 }
 
 /**
@@ -114,6 +114,7 @@ function resetButton(sendingButton) {
  * @param {Node} sendingButton 
  */
 function post(url, params, sendingButton) {
+  removeElements('.warning');
   sendingButton.disabled = true;
   sendingButton.dataset.originalValue = sendingButton.value;
   sendingButton.value = 'Bezig…';
