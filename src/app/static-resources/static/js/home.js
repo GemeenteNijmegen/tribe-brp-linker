@@ -127,7 +127,7 @@ function post(url, params, sendingButton) {
     if (!response.ok) {
       throw new Error('Network response was not OK');
     }
-    response.json();
+    return response.json();
   })
   .then(data => {
     resetButton(sendingButton);
