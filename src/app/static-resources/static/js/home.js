@@ -123,11 +123,13 @@ function post(url, params, sendingButton) {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'accept': 'application/json' },
     body: params
   })
-  .then(response => response.json())
-  .then(data => {
+  .then(response => {  
     if (!response.ok) {
       throw new Error('Network response was not OK');
     }
+    response.json();
+  )
+  .then(data => {
     resetButton(sendingButton);
     if(data.xsrf_token) {
       refreshXsrfToken(data.xsrf_token);
