@@ -11,9 +11,10 @@ const axiosMock = new MockAdapter(axios);
 
 beforeAll(() => {
   if (process.env.VERBOSETESTS != 'True') {
-    // global.console.error = jest.fn();
+    global.console.error = jest.fn();
     global.console.time = jest.fn();
     global.console.log = jest.fn();
+    global.console.debug = jest.fn();
   }
 });
 
@@ -46,11 +47,11 @@ describe('Tribe User', () => {
 
     const api = new TribeApi('access-token-goes-here');
     const tribeUser = new TribeUser('900070341', api);
-    expect(await tribeUser.update({
-      LastName: 'Joost de nieuwe Tester',
+    expect(await tribeUser.create({
+      FirstName: 'Joost',
+      LastName: 'Nieuwe tester',
     })).toBe('1234');
   });
-
 
   test('create new person and inwoner relationship', async() => {
     axiosMock.onPost().reply(200, { ID: '1234' });
@@ -110,14 +111,12 @@ describe('Handling addresses', () => {
     const api = new TribeApi('access-token-goes-here');
     const tribeUser = new TribeUser('900070341', api);
     let result;
-    if (await tribeUser.hasAddress()) {
-      result = await tribeUser.updateAddress({
-        Street: 'Some street',
-        HouseNumber: 12,
-        Postalcode: '6511 PP',
-        City: 'Nijmegen',
-      });
-    }
+    result = await tribeUser.updateAddress({
+      Street: 'Some street',
+      HouseNumber: 12,
+      Postalcode: '6511 PP',
+      City: 'Nijmegen',
+    });
     expect(result).toBe('1234');
   });
 
@@ -129,14 +128,12 @@ describe('Handling addresses', () => {
     const api = new TribeApi('access-token-goes-here');
     const tribeUser = new TribeUser('900070341', api);
     let result;
-    if (!await tribeUser.hasAddress()) {
-      result = await tribeUser.createAddress({
-        Street: 'Some street',
-        HouseNumber: 12,
-        Postalcode: '6511 PP',
-        City: 'Nijmegen',
-      });
-    }
+    result = await tribeUser.createAddress({
+      Street: 'Some street',
+      HouseNumber: 12,
+      Postalcode: '6511 PP',
+      City: 'Nijmegen',
+    });
     expect(result).toBe('1234');
   });
 
@@ -150,20 +147,11 @@ describe('Linking flow', () => {
     axiosMock.onPost().reply(200, { ID: '1234' });
     const api = new TribeApi('access-token-goes-here');
     const tribeUser = new TribeUser('900070341', api);
-    const exists = tribeUser.exists();
-    if (!exists) {
-      await tribeUser.create({
-        FirstName: 'Jan',
-        MiddleName: 'van de',
-        LastName: 'Tester',
-      });
-    } else {
-      await tribeUser.update({
-        FirstName: 'Jan',
-        MiddleName: 'van de',
-        LastName: 'Tester',
-      });
-    }
+    await tribeUser.create({
+      FirstName: 'Jan',
+      MiddleName: 'van de',
+      LastName: 'Tester',
+    });
     await tribeUser.addToContactMoment('1234');
   });
 
@@ -173,31 +161,17 @@ describe('Linking flow', () => {
     axiosMock.onPost().reply(200, { ID: '1234' });
     const api = new TribeApi('access-token-goes-here');
     const tribeUser = new TribeUser('900070341', api);
-    const exists = await tribeUser.exists();
-    console.debug(exists);
-    if (!exists) {
-      await tribeUser.create({
-        FirstName: 'Jan',
-        MiddleName: 'van de',
-        LastName: 'Tester',
-      });
-    } else {
-      await tribeUser.update({
-        FirstName: 'Jan',
-        MiddleName: 'van de',
-        LastName: 'Tester',
-      });
-    }
-    if (await tribeUser.hasAddress()) {
-      await tribeUser.updateAddress({
-        City: 'Nijmegen',
-        HouseNumber: 13,
-        Postalcode: '1234AB',
-        Street: 'Somestreet',
-      });
-    } else {
-
-    }
+    await tribeUser.create({
+      FirstName: 'Jan',
+      MiddleName: 'van de',
+      LastName: 'Tester',
+    });
+    await tribeUser.createAddress({
+      City: 'Nijmegen',
+      HouseNumber: 13,
+      Postalcode: '1234AB',
+      Street: 'Somestreet',
+    });
     await tribeUser.addToContactMoment('1234');
   });
 });

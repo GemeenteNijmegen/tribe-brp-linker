@@ -44,7 +44,7 @@ class Home {
         data.controle_data = await this.brpData(bsn);
         data.bsn = bsn.bsn;
       } catch (error) {
-        data.error = 'Er is iets misgegaan, probeer het opnieuw';
+        data.error = 'Er is iets misgegaan, probeer het opnieuw.';
         console.error(error);
       }
     }
@@ -72,6 +72,7 @@ class Home {
       postcode: brpData?.Persoon?.Adres?.Postcode,
       huisnummer: brpData?.Persoon?.Adres?.Huisnummer,
       isNijmegen: brpData?.Persoon?.Adres?.Gemeente == 'Nijmegen',
+      error: brpData?.error,
     };
     return data;
   }

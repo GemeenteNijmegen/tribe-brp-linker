@@ -59,6 +59,18 @@ function replaceElement(data) {
 }
 
 /**
+ * Remove multiple elements matching a selector
+ * 
+ * Used for removing warnings before sending form.
+ * 
+ * @param {valid selector} selector 
+ */
+function removeElements(selector) {
+  const elements = document.querySelectorAll(selector); 
+  elements.forEach((element) => { element.remove(); });
+}
+
+/**
  * Replace the value for all inputs with name=xsrf_token
  * 
  * @param {*} token 
@@ -81,6 +93,11 @@ function addFormEventHandlers() {
   });
 }
 
+function resetButton(sendingButton) {
+  sendingButton.disabled = false;
+  sendingButton.value = sendingButton.dataset.originalValue;
+}
+
 /**
  * Do a post request
  * 
@@ -97,6 +114,7 @@ function addFormEventHandlers() {
  * @param {Node} sendingButton 
  */
 function post(url, params, sendingButton) {
+  removeElements('.warning');
   sendingButton.disabled = true;
   sendingButton.dataset.originalValue = sendingButton.value;
   sendingButton.value = 'Bezig…';
@@ -106,11 +124,14 @@ function post(url, params, sendingButton) {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'accept': 'application/json' },
     body: params
   })
-  .then(response => response.json())
+  .then(response => {  
+    if (!response.ok) {
+      throw new Error('Network response was not OK');
+    }
+    return response.json();
+  })
   .then(data => {
-    console.log(data);
-    sendingButton.disabled = false;
-    sendingButton.value = sendingButton.dataset.originalValue;
+    resetButton(sendingButton);
     if(data.xsrf_token) {
       refreshXsrfToken(data.xsrf_token);
     }
@@ -123,10 +144,12 @@ function post(url, params, sendingButton) {
   })
   .catch(error => {
     console.error(error);
-    sendingButton.disabled = false;
-    sendingButton.value = sendingButton.dataset.originalValue;
+    resetButton(sendingButton);
+    const errorElement = htmlStringToElement('<p class="warning">Er is iets misgegaan. Probeer het opnieuw.</p>');
+    sendingButton.parentElement.appendChild(errorElement);
   });
 }
 
 addFormEventHandlers();
 addCopyToClipboardButtons();
+
