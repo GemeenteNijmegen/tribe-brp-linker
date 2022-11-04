@@ -49,7 +49,7 @@ describe('Tribe User', () => {
     const tribeUser = new TribeUser('900070341', api);
     expect(await tribeUser.create({
       FirstName: 'Joost',
-      LastName: 'Nieuwe tester'
+      LastName: 'Nieuwe tester',
     })).toBe('1234');
   });
 

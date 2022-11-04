@@ -72,7 +72,7 @@ class Home {
       postcode: brpData?.Persoon?.Adres?.Postcode,
       huisnummer: brpData?.Persoon?.Adres?.Huisnummer,
       isNijmegen: brpData?.Persoon?.Adres?.Gemeente == 'Nijmegen',
-      error: brpData?.error
+      error: brpData?.error,
     };
     return data;
   }

@@ -43,7 +43,7 @@ export class LinkUser {
       console.debug('handling link request: retrieved data');
       const tribeApi = new TribeApi(this.session.getValue('access_token'));
       const tribeUser = new TribeUser(bsn, tribeApi);
-      
+
       await tribeUser.create({
         FirstName: brpData.firstName,
         LastName: brpData.lastName,

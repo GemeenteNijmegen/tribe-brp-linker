@@ -80,7 +80,7 @@ export class TribeUser {
     console.debug('updating user', fields);
     if (!this.relationId) {
       console.debug('no relation id');
-      const ids = await this.getRelationAndInwonerIDs();  
+      const ids = await this.getRelationAndInwonerIDs();
       if (!ids) {
         console.error('id error in person update');
         throw Error('No person with this BSN found to update');
@@ -103,8 +103,8 @@ export class TribeUser {
 
   async create(fields: PersonRelation): Promise<boolean> {
     // If user already exists, don't create but update
-    if(await this.exists()) {
-      return await this.update(fields);
+    if (await this.exists()) {
+      return this.update(fields);
     }
     console.debug('creating user', fields);
     try {
@@ -179,8 +179,8 @@ export class TribeUser {
 
   async createAddress(fields: Partial<Address>) {
     console.debug('updating address', fields);
-    if(await this.hasAddress()) {
-      this.updateAddress(fields);
+    if (await this.hasAddress()) {
+      return this.updateAddress(fields);
     }
     if (!this.relationId) {
       await this.getRelationAndInwonerIDs();
