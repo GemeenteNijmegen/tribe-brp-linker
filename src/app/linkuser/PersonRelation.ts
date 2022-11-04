@@ -14,6 +14,6 @@ export interface PersonRelation {
    */
   [TribeApi.bsnField]?: string;
   FirstName: string;
-  LastName: string;
-  MiddleName: string;
+  LastName?: string;
+  MiddleName?: string;
 }
