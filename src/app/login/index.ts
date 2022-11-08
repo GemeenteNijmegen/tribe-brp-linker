@@ -1,4 +1,5 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
 import { handleLoginRequest } from './loginRequestHandler';
 
 const dynamoDBClient = new DynamoDBClient({});
@@ -17,9 +18,6 @@ export async function handler(event: any, _context: any) {
     return response;
   } catch (err) {
     console.error(err);
-    const response = {
-      statusCode: 500,
-    };
-    return response;
+    return Response.error(500);
   }
 };
