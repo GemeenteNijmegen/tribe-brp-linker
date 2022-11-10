@@ -176,6 +176,16 @@ describe('Linking flow', () => {
   });
 });
 
+describe('BRP birthday to YYYY-MM-dd', () => {
+  test('api can return formatted birthdates', async () => {
+    const client = new ApiClient();
+    const api = new BrpApi(client);
+    expect(api.iso8601FormattedBirthday('01-12-1854')).toBe('1854-12-01');
+    expect(api.iso8601FormattedBirthday('10-11-2022')).toBe('2022-11-10');
+    expect(api.iso8601FormattedBirthday('11-2022')).toBeUndefined();
+  });
+});
+
 describe('BRP housenumber', () => {
   test('house number', () => {
     const client = new ApiClient();

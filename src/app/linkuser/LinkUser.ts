@@ -48,6 +48,7 @@ export class LinkUser {
         FirstName: brpData.firstName,
         LastName: brpData.lastName,
         MiddleName: brpData.middleName,
+        BirthDate: brpData.iso8601Birthday,
       });
       await tribeUser.createAddress({
         Street: brpData.street,
@@ -73,8 +74,10 @@ export class LinkUser {
     const brpApi = new BrpApi(this.apiClient);
     const brpData = await brpApi.getBrpData(bsn.bsn);
     const splitNumber = brpApi.houseNumberHelper(brpData?.Persoon?.Adres?.Huisnummer);
+    const birthday = brpData?.Persoon?.Persoonsgegevens?.Geboortedatum;
     const data = {
-      birthday: brpData?.Persoon?.Persoonsgegevens?.Geboortedatum,
+      birthday: birthday,
+      iso8601Birthday: brpApi.iso8601FormattedBirthday(birthday),
       firstName: brpData?.Persoon?.Persoonsgegevens?.Voornamen,
       lastName: brpData?.Persoon?.Persoonsgegevens?.Geslachtsnaam,
       middleName: brpData?.Persoon?.Persoonsgegevens?.Voorvoegsel,

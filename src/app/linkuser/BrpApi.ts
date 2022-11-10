@@ -47,4 +47,19 @@ export class BrpApi {
     }
     return { number: 0, suffix: brpNumber };
   }
+
+  /**
+   *
+   * @param brpDirthDay the birthday as provided by the API (dd-mm-yyyy format)
+   * @returns iso 8601 'extended' formatted date (YYYY-MM-DD)
+   */
+  iso8601FormattedBirthday(brpDirthDay: string) {
+    // Ignore incomplete dates.
+    if (brpDirthDay.length !== 'yyyy-mm-dd'.length) { return undefined; }
+
+    const year = brpDirthDay.substring('dd-mm-'.length, 'dd-mm-yyyy'.length);
+    const month = brpDirthDay.substring('dd-'.length, 'dd-mm'.length);
+    const day = brpDirthDay.substring(0, 'dd'.length);
+    return `${year}-${month}-${day}`;
+  }
 }
