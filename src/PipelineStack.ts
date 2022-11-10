@@ -36,6 +36,7 @@ export class PipelineStack extends Stack {
    * @param source the source repo in which to run
    */
   private runValidationChecks(stage: pipelines.StageDeployment, source: pipelines.CodePipelineSource) {
+    return;
     if (this.branchName != 'acceptance') { return; }
     stage.addPost(new ShellStep('validate', {
       input: source,
