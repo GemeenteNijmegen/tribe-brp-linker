@@ -1,6 +1,6 @@
+import { Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
 import { Session } from '@gemeentenijmegen/session';
 import { OpenIDConnect } from './shared/OpenIDConnect';
-import { Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
 
 export async function handleRequest(cookies: any, queryStringParamCode: string, queryStringParamState: string, dynamoDBClient: any): Promise<any> {
   let session = new Session(cookies, dynamoDBClient, { ttlInMinutes: 240 });

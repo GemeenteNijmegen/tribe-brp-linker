@@ -1,18 +1,7 @@
+import { Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
 import { Session } from '@gemeentenijmegen/session';
 import cookie from 'cookie';
 import { render } from './shared/render';
-
-function htmlResponse(body: string, cookies: string[]) {
-  const response = {
-    statusCode: 200,
-    body: body,
-    headers: {
-      'Content-type': 'text/html',
-    },
-    cookies: cookies,
-  };
-  return response;
-}
 
 export async function handleLogoutRequest(cookies:string, dynamoDBClient: any) {
   let session = new Session(cookies, dynamoDBClient);
@@ -30,5 +19,5 @@ export async function handleLogoutRequest(cookies:string, dynamoDBClient: any) {
     httpOnly: true,
     secure: true,
   });
-  return htmlResponse(html, [emptyCookie]);
+  return Response.html(html, 200, [emptyCookie]);
 }

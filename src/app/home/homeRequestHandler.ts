@@ -1,3 +1,4 @@
+import { Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
 import { Session } from '@gemeentenijmegen/session';
 import { Bsn } from '@gemeentenijmegen/utils/lib/Bsn';
 import { OpenIDConnect } from '../auth/shared/OpenIDConnect';
@@ -16,17 +17,17 @@ class Home {
   }
 
   async handleRequest(): Promise<any> {
-    if (!this.params.contact_id) { return this.errorResponse(400); }
+    if (!this.params.contact_id) { return Response.error(400); }
     this.session = new Session(this.params.cookies, this.dynamoDBClient, { ttlInMinutes: 240 });
     await this.session.init();
     if (this.session.isLoggedIn() == true) {
       if (!this.is_valid_post()) {
-        return this.errorResponse(403);
+        return Response.error(403);
       };
       await this.refreshSessionIfExpired(this.session);
       return this.loggedInResponse();
     }
-    return this.redirectResponse(`/login?contact_id=${this.params.contact_id}`);
+    return Response.redirect(`/login?contact_id=${this.params.contact_id}`);
   }
 
   async loggedInResponse() {
@@ -52,14 +53,14 @@ class Home {
     if (this.params.accepts == 'application/json') {
       const html = await render(data, __dirname + '/templates/controle_form.mustache', {});
       data.html = html;
-      return this.jsonResponse(data);
+      return Response.json(data, 200, this.session?.getCookie());
     } else {
       const html = await render(data, __dirname + '/templates/home.mustache', {
         header: `${__dirname}/shared/header.mustache`,
         footer: `${__dirname}/shared/footer.mustache`,
         controle_form: `${__dirname}/templates/controle_form.mustache`,
       });
-      return this.htmlResponse(html);
+      return Response.html(html, 200, this.session?.getCookie());
     }
   }
 
@@ -126,48 +127,6 @@ class Home {
       return false;
     }
     return true;
-  }
-
-  redirectResponse(location: string, code = 302) {
-    return {
-      statusCode: code,
-      body: '',
-      headers: {
-        Location: location,
-      },
-    };
-  }
-
-  htmlResponse(body: string) {
-    return {
-      statusCode: 200,
-      body,
-      headers: {
-        'Content-type': 'text/html',
-      },
-      cookies: [
-        this.session?.getCookie(),
-      ],
-    };
-  }
-
-  jsonResponse(body: object) {
-    return {
-      statusCode: 200,
-      body: JSON.stringify(body),
-      headers: {
-        'Content-type': 'application/json',
-      },
-      cookies: [
-        this.session?.getCookie(),
-      ],
-    };
-  }
-
-  errorResponse(code = 500) {
-    return {
-      statusCode: code,
-    };
   }
 }
 

@@ -1,5 +1,3 @@
-import { writeFile } from 'fs';
-import * as path from 'path';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { handleLogoutRequest } from '../handleLogoutRequest';
 
@@ -29,12 +27,13 @@ test('Return logout page', async () => {
   const result = await handleLogoutRequest('', dynamoDBClient);
   expect(result.body).toMatch('Uitgelogd');
   expect(result.statusCode).toBe(200);
-  writeFile(path.join(__dirname, 'output', 'test.html'), result.body, () => {});
 });
 
 test('Return empty session cookie', async () => {
   const result = await handleLogoutRequest('', dynamoDBClient);
-  let cookies = result.cookies.filter((cookie: string) => cookie.indexOf('sessionid=;'));
+  let cookies = result.cookies?.filter((cookie: string) => cookie.indexOf('sessionid=;'));
+  expect(cookies).toBeDefined();
+  if (!cookies) { return; }
   expect(cookies.length).toBe(1);
   expect(result.statusCode).toBe(200);
 });
