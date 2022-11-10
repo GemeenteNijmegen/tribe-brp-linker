@@ -1,6 +1,7 @@
 import { parse } from 'querystring';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { ApiClient } from '@gemeentenijmegen/apiclient';
+import { Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
 import { APIGatewayProxyEventV2 } from 'aws-lambda';
 import { homeRequestHandler } from './homeRequestHandler';
 
@@ -34,18 +35,9 @@ exports.handler = async (event: any, _context: any) => {
   try {
     const params = parseEvent(event);
     await initPromise;
-    console.debug(params);
-    if (params.method == 'GET') {
-      return await homeRequestHandler(params, apiClient, dynamoDBClient);
-    } else if (params.method == 'POST') {
-      return await homeRequestHandler(params, apiClient, dynamoDBClient);
-    }
-
+    return await homeRequestHandler(params, apiClient, dynamoDBClient);
   } catch (err) {
     console.error(err);
-    const response = {
-      statusCode: 500,
-    };
-    return response;
+    return Response.error(500);
   }
 };

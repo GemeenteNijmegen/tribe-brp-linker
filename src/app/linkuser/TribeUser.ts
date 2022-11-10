@@ -20,13 +20,12 @@ export class TribeUser {
   }
 
   async exists() {
-    const result = await this.getRelationAndInwonerIDs();
-    if (result) {
+    await this.getRelationAndInwonerIDs();
+    if (this.relationId) {
       return true;
     }
     return false;
   }
-
 
   async hasAddress() {
     await this.getRelationAndInwonerIDs();
@@ -58,7 +57,7 @@ export class TribeUser {
         }
       }
     }
-    return false;
+    return false; //TODO: BUG?
   }
 
   async getRelationId() {
@@ -83,7 +82,7 @@ export class TribeUser {
       console.debug('no relation id');
       const ids = await this.getRelationAndInwonerIDs();
       if (!ids) {
-        console.error('id error');
+        console.error('id error in person update');
         throw Error('No person with this BSN found to update');
       }
     }
@@ -103,6 +102,10 @@ export class TribeUser {
   }
 
   async create(fields: PersonRelation): Promise<boolean> {
+    // If user already exists, don't create but update
+    if (await this.exists()) {
+      return this.update(fields);
+    }
     console.debug('creating user', fields);
     try {
       // Add BSN to new relation in Tribe.
@@ -151,11 +154,11 @@ export class TribeUser {
       console.debug('no address id, you should create an address. Not update this one.');
       await this.getRelationAndInwonerIDs();
       if (!this.relationId) {
-        console.error('id error');
+        console.error('id error in address update (no relation');
         throw Error('No person with this BSN found to update');
       }
       if (!this.addressId) {
-        console.error('id error');
+        console.error('id error in address update (no address)');
         throw Error('No address found for this person, use createAddress');
       }
     }
@@ -176,10 +179,13 @@ export class TribeUser {
 
   async createAddress(fields: Partial<Address>) {
     console.debug('updating address', fields);
+    if (await this.hasAddress()) {
+      return this.updateAddress(fields);
+    }
     if (!this.relationId) {
       await this.getRelationAndInwonerIDs();
       if (!this.relationId) {
-        console.error('id error');
+        console.error('id error (no person)');
         throw Error('No person with this BSN found to update');
       }
     }

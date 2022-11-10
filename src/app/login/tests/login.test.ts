@@ -34,7 +34,7 @@ test('index is ok', async () => {
 test('Return login page with correct link', async () => {
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
   const result = await handleLoginRequest({ cookies: '', contact_id: 'test' }, dynamoDBClient);
-  expect(result.headers.Location).toContain(process.env.AUTH_URL_BASE);
+  expect(result.headers?.Location).toContain(process.env.AUTH_URL_BASE);
   expect(result.statusCode).toBe(302);
 });
 
@@ -43,7 +43,7 @@ test('Redirect to auth url if session cookie doesn\'t exist', async () => {
 
   const result = await handleLoginRequest({ cookies: 'demo=12345', contact_id: 'test' }, dynamoDBClient);
   expect(result.statusCode).toBe(302);
-  expect(result.headers.Location).toContain(process.env.AUTH_URL_BASE);
+  expect(result.headers?.Location).toContain(process.env.AUTH_URL_BASE);
 });
 
 test('Create session if no session exists', async () => {
@@ -70,7 +70,7 @@ test('Redirect to home if already logged in', async () => {
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
   const sessionId = '12345';
   const result = await handleLoginRequest({ cookies: `session=${sessionId}`, contact_id: 'test' }, dynamoDBClient);
-  expect(result.headers.Location).toBe('/');
+  expect(result.headers?.Location).toBe('/');
   expect(result.statusCode).toBe(302);
 });
 
@@ -90,7 +90,7 @@ test('Unknown session returns login page', async () => {
   const result = await handleLoginRequest({ cookies: `session=${sessionId}`, contact_id: 'test' }, dynamoDBClient);
   expect(ddbMock.calls().length).toBe(2);
   expect(result.statusCode).toBe(302);
-  expect(result.headers.Location).toContain(process.env.AUTH_URL_BASE);
+  expect(result.headers?.Location).toContain(process.env.AUTH_URL_BASE);
 });
 
 test('Known session without login redirects to login url, without creating new session', async () => {
@@ -107,7 +107,7 @@ test('Known session without login redirects to login url, without creating new s
   const result = await handleLoginRequest({ cookies: `session=${sessionId}`, contact_id: 'test' }, dynamoDBClient);
   expect(ddbMock.calls().length).toBe(2);
   expect(result.statusCode).toBe(302);
-  expect(result.headers.Location).toContain(process.env.AUTH_URL_BASE);
+  expect(result.headers?.Location).toContain(process.env.AUTH_URL_BASE);
 });
 
 test('Request without session returns session cookie', async () => {

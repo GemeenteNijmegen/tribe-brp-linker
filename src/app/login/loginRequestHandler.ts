@@ -1,30 +1,14 @@
+import { ApiGatewayV2Response, Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
 import { Session } from '@gemeentenijmegen/session';
 import { OpenIDConnect } from './shared/OpenIDConnect';
 
-function redirectResponse(location: string, status = 302, cookies?: any[]) {
-  const response = {
-    statusCode: status,
-    headers: {
-      Location: location,
-    },
-    cookies: cookies,
-  };
-  return response;
-}
-
-function errorResponse(code = 500) {
-  return {
-    statusCode: code,
-  };
-}
-
-export async function handleLoginRequest(params: any, dynamoDBClient: any): Promise<{ statusCode: number; headers?: any; cookies?: any }> {
-  if (!params.contact_id) { return errorResponse(400); }
+export async function handleLoginRequest(params: any, dynamoDBClient: any): Promise<ApiGatewayV2Response> {
+  if (!params.contact_id) { return Response.error(400); }
   let session = new Session(params.cookies, dynamoDBClient);
   await session.init();
   if (session.isLoggedIn() === true) {
     console.debug('redirect to home');
-    return redirectResponse('/');
+    return Response.redirect('/');
   }
   let OIDC = new OpenIDConnect();
   const state = OIDC.generateState();
@@ -36,5 +20,5 @@ export async function handleLoginRequest(params: any, dynamoDBClient: any): Prom
   const authUrl = OIDC.getLoginUrl(state);
 
   const newCookies = [session.getCookie()];
-  return redirectResponse(authUrl, 302, newCookies);
+  return Response.redirect(authUrl, 302, newCookies);
 }
