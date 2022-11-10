@@ -16,4 +16,8 @@ export interface PersonRelation {
   FirstName: string;
   LastName?: string;
   MiddleName?: string;
+  /**
+   * Format: YYYY-MM-DD
+   */
+  BirthDate?: string;
 }
