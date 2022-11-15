@@ -166,13 +166,15 @@ describe('Linking flow', () => {
       MiddleName: 'van de',
       LastName: 'Tester',
     });
-    await tribeUser.createAddress({
-      City: 'Nijmegen',
-      HouseNumber: 13,
-      Postalcode: '1234AB',
-      Street: 'Somestreet',
-    });
-    await tribeUser.addToContactMoment('1234');
+    await Promise.all([
+      await tribeUser.createAddress({
+        City: 'Nijmegen',
+        HouseNumber: 13,
+        Postalcode: '1234AB',
+        Street: 'Somestreet',
+      }),
+      await tribeUser.addToContactMoment('1234'),
+    ]);
   });
 });
 
