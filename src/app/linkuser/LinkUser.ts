@@ -50,14 +50,17 @@ export class LinkUser {
         MiddleName: brpData.middleName,
         BirthDate: brpData.iso8601Birthday,
       });
-      await tribeUser.createAddress({
-        Street: brpData.street,
-        HouseNumber: brpData.number,
-        HouseNumberSuffix: brpData.suffix,
-        City: brpData.city,
-        Postalcode: brpData.postalCode,
-      });
-      await tribeUser.addToContactMoment(this.params.body.contact_id);
+
+      await Promise.all([
+        tribeUser.createAddress({
+          Street: brpData.street,
+          HouseNumber: brpData.number,
+          HouseNumberSuffix: brpData.suffix,
+          City: brpData.city,
+          Postalcode: brpData.postalCode,
+        }),
+        tribeUser.addToContactMoment(this.params.body.contact_id),
+      ]);
 
       if (this.params.accepts == 'application/json') {
         return this.jsonResponse({ redirect_to: `https://app.tribecrm.nl/entity/${this.params.body.contact_id}` });
