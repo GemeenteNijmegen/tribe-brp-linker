@@ -1,10 +1,10 @@
-const { GemeenteNijmegenCdkApp } = require('@gemeentenijmegen/modules-projen');
+const { GemeenteNijmegenCdkApp } = require('@gemeentenijmegen/projen-project-type');
+
 const project = new GemeenteNijmegenCdkApp({
   cdkVersion: '2.45.0',
   defaultReleaseBranch: 'main',
-  devDeps: ['@gemeentenijmegen/modules-projen'],
+  devDeps: ['@gemeentenijmegen/projen-project-type'],
   name: 'tribe-brp-linker',
-
   deps: [
     'dotenv',
     '@aws-cdk/aws-apigatewayv2-alpha',
