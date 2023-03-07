@@ -1,9 +1,9 @@
 import { Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
 import { Session } from '@gemeentenijmegen/session';
 import { Bsn } from '@gemeentenijmegen/utils/lib/Bsn';
-import { OpenIDConnect } from '../auth/shared/OpenIDConnect';
 import { BrpApi } from './BrpApi';
 import { render } from './shared/render';
+import { OpenIDConnect } from '../auth/shared/OpenIDConnect';
 
 class Home {
   private params: any;
