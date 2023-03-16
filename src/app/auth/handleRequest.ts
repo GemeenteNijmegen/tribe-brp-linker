@@ -2,7 +2,12 @@ import { Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
 import { Session } from '@gemeentenijmegen/session';
 import { OpenIDConnect } from './shared/OpenIDConnect';
 
-export async function handleRequest(cookies: any, queryStringParamCode: string, queryStringParamState: string, dynamoDBClient: any, oidcClient?: OpenIDConnect): Promise<any> {
+export async function handleRequest(
+  cookies: any, queryStringParamCode: string,
+  queryStringParamState: string,
+  dynamoDBClient: any,
+  oidcClient?: OpenIDConnect,
+): Promise<any> {
   let session = new Session(cookies, dynamoDBClient, { ttlInMinutes: 240 });
   await session.init();
   if (session.sessionId === false) {
@@ -10,11 +15,15 @@ export async function handleRequest(cookies: any, queryStringParamCode: string, 
   }
   const state = session.getValue('state');
   const contact_id = session.getValue('contact_id');
-  if(!oidcClient) {
+  if (!oidcClient) {
     oidcClient = new OpenIDConnect();
   }
   try {
-    const tokenSet = await oidcClient.authorize(queryStringParamCode, state, queryStringParamState);
+    const tokenSet = await oidcClient.authorize(
+      queryStringParamCode,
+      state,
+      queryStringParamState,
+    );
     if (tokenSet) {
       const expires_at = Date.now() + tokenSet.expires_in * 1000; // Seconds to millis
       await session.createSession({
