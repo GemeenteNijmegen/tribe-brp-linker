@@ -1,5 +1,4 @@
 import { DynamoDBClient, GetItemCommand, GetItemCommandOutput } from '@aws-sdk/client-dynamodb';
-import { SecretsManagerClient, GetSecretValueCommandOutput, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import { mockClient } from 'aws-sdk-client-mock';
 import { handleRequest } from '../handleRequest';
 import { OpenIDConnect } from '../shared/OpenIDConnect';
@@ -19,31 +18,9 @@ beforeAll(() => {
   process.env.CLIENT_SECRET_ARN = '123';
   process.env.OIDC_CLIENT_ID = '1234';
   process.env.OIDC_SCOPE = 'openid';
-
-  const output: GetSecretValueCommandOutput = {
-    $metadata: {},
-    SecretString: 'ditiseennepgeheim',
-  };
-  secretsMock.on(GetSecretValueCommand).resolves(output);
 });
 
-jest.mock('../shared/OpenIDConnect', () => ({
-  ...jest.requireActual('../shared/OpenIDConnect'),
-  getOidcClientSecret: async () => {
-    return 123;
-  },
-  authorize: () => {
-    console.debug('aegaeghea');
-    return {
-      aud: process.env.OIDC_CLIENT_ID,
-      sub: '900222670',
-      acr: 'urn:oasis:names:tc:SAML:2.0:ac:classes:MobileTwoFactorContract',
-    };
-  }
-}));
-
 const ddbMock = mockClient(DynamoDBClient);
-const secretsMock = mockClient(SecretsManagerClient);
 
 beforeEach(() => {
   ddbMock.reset();
