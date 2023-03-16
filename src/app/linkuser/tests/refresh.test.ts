@@ -1,5 +1,4 @@
 import { DynamoDBClient, GetItemCommand, GetItemCommandOutput } from '@aws-sdk/client-dynamodb';
-// import { SecretsManagerClient, GetSecretValueCommandOutput, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import { Session } from '@gemeentenijmegen/session';
 import { mockClient } from 'aws-sdk-client-mock';
 import { LinkUser } from '../LinkUser';
@@ -32,7 +31,7 @@ test('refresh token gets generated', async () => {
 test('Not expired: No new token', async () => {
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
   returnValidSessionOutput();
-  const linkUser = new LinkUser({}, null, null);
+  const linkUser = new LinkUser({}, null, null, mockedOidcClient());
   const session = new Session('session=12345;', dynamoDBClient);
   await session.init();
   const result = await linkUser.refreshSessionIfExpired(session);

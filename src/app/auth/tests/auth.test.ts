@@ -73,7 +73,8 @@ test('Successful auth creates new session', async () => {
 
 test('No session redirects to login', async () => {
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-  const result = await handleRequest('', 'state', 'state', dynamoDBClient);
+  const oidc = mockedOidcClient();
+  const result = await handleRequest('', 'state', 'state', dynamoDBClient, oidc);
   expect(result.statusCode).toBe(302);
   expect(result.headers.Location).toBe('/login');
 });
