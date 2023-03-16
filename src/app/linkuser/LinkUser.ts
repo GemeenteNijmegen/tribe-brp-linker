@@ -103,7 +103,7 @@ export class LinkUser {
    */
   async refreshSessionIfExpired(session: Session): Promise<boolean> {
     try {
-      if(!this.oidcClient) {
+      if (!this.oidcClient) {
         this.oidcClient = new OpenIDConnect();
       }
       const refreshToken = session.getValue('refresh_token');

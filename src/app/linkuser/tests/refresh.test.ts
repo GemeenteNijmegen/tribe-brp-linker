@@ -100,11 +100,11 @@ function mockedOidcClient() {
     };
   };
   oidc.refresh = jest.fn(() => Promise.resolve({
-      access_token: 'bla',
-      refresh_token: 'die',
-      expires_in: 86400,
-      expired: () => false,
-      claims: jest.fn()
+    access_token: 'bla',
+    refresh_token: 'die',
+    expires_in: 86400,
+    expired: () => false,
+    claims: jest.fn(),
   }));
   return oidc;
 }
