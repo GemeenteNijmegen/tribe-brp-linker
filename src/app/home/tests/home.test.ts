@@ -1,8 +1,8 @@
 import { DynamoDBClient, GetItemCommand, GetItemCommandOutput } from '@aws-sdk/client-dynamodb';
-import { SecretsManagerClient, GetSecretValueCommandOutput, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import { mockClient } from 'aws-sdk-client-mock';
 import { FileApiClient } from '../FileApiClient';
-import { homeRequestHandler } from '../homeRequestHandler';
+import { Home } from '../homeRequestHandler';
+import { OpenIDConnect } from '../shared/OpenIDConnect';
 
 beforeAll(() => {
 
@@ -22,12 +22,6 @@ beforeAll(() => {
 
 
 const ddbMock = mockClient(DynamoDBClient);
-const secretsMock = mockClient(SecretsManagerClient);
-const output: GetSecretValueCommandOutput = {
-  $metadata: {},
-  SecretString: 'ditiseennepgeheim',
-};
-secretsMock.on(GetSecretValueCommand).resolves(output);
 
 const xsrf_token = '1234';
 
@@ -58,7 +52,8 @@ describe('Requests to home route', () => {
   test('Returns 200 when logged in', async () => {
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-    const result = await homeRequestHandler({ ...baseParams, contact_id: 'test' }, apiClient, dynamoDBClient);
+    const home = new Home({ ...baseParams, contact_id: 'test' }, apiClient, dynamoDBClient, mockedOidcClient());
+    const result = await home.handleRequest();
 
     expect(result.statusCode).toBe(200);
     let cookies = result.cookies.filter((cookie: string) => cookie.indexOf('HttpOnly; Secure'));
@@ -68,7 +63,8 @@ describe('Requests to home route', () => {
   test('Returns 400 when no contact id is provided', async () => {
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-    const result = await homeRequestHandler(baseParams, apiClient, dynamoDBClient);
+    const home = new Home(baseParams, apiClient, dynamoDBClient, mockedOidcClient());
+    const result = await home.handleRequest();
 
     expect(result.statusCode).toBe(400);
   });
@@ -76,7 +72,8 @@ describe('Requests to home route', () => {
   test('Shows overview page', async () => {
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-    const result = await homeRequestHandler({ ...baseParams, contact_id: 'test' }, apiClient, dynamoDBClient);
+    const home = new Home({ ...baseParams, contact_id: 'test' }, apiClient, dynamoDBClient, mockedOidcClient());
+    const result = await home.handleRequest();
     expect(result.body).toMatch('BRP');
   });
 
@@ -84,12 +81,13 @@ describe('Requests to home route', () => {
   test('After sending form details are shown', async () => {
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-    const result = await homeRequestHandler({
+    const home = new Home({
       method: 'POST',
       cookies: 'session=12345',
       contact_id: 'test',
       body: { bsn: '900222670', xsrf_token: xsrf_token },
-    }, apiClient, dynamoDBClient);
+    }, apiClient, dynamoDBClient, mockedOidcClient());
+    const result = await home.handleRequest();
     expect(result.body).toMatch('Geboortedatum');
   });
 
@@ -97,21 +95,23 @@ describe('Requests to home route', () => {
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
 
-    const tokenlessResult = await homeRequestHandler({
+    const home = new Home({
       method: 'POST',
       cookies: 'session=12345',
       contact_id: 'test',
       body: { bsn: '900222670' },
-    }, apiClient, dynamoDBClient);
+    }, apiClient, dynamoDBClient, mockedOidcClient());
+    const tokenlessResult = await home.handleRequest();
     expect(tokenlessResult.statusCode).toBe(403);
 
 
-    const incorrectTokenResult = await homeRequestHandler({
+    const incorrectHome = new Home({
       method: 'POST',
       cookies: 'session=12345',
       contact_id: 'test',
       body: { bsn: '900222670', xsrf_token: 'wrong' },
-    }, apiClient, dynamoDBClient);
+    }, apiClient, dynamoDBClient, mockedOidcClient());
+    const incorrectTokenResult = await incorrectHome.handleRequest();
     expect(incorrectTokenResult.statusCode).toBe(403);
   });
 });
@@ -120,14 +120,35 @@ describe('Requests can return json', () => {
   test('POSTs with accept header `application/json` return json', async () => {
     const apiClient = new FileApiClient();
     const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-    const result = await homeRequestHandler({
+    const home = new Home({
       method: 'POST',
       cookies: 'session=12345',
       contact_id: 'test',
       body: { bsn: '900222670', xsrf_token: xsrf_token },
       accepts: 'application/json',
-    }, apiClient, dynamoDBClient);
+    }, apiClient, dynamoDBClient, mockedOidcClient());
+    const result = await home.handleRequest();
     console.debug(result.body);
     expect(JSON.parse(result.body).bsn).toBe('900222670');
   });
 });
+
+function mockedOidcClient() {
+  const oidc = new OpenIDConnect();
+  oidc.getOidcClientSecret = async () => '123';
+  oidc.authorize = async () => {
+    return {
+      aud: process.env.OIDC_CLIENT_ID,
+      sub: '900222670',
+      acr: 'urn:oasis:names:tc:SAML:2.0:ac:classes:MobileTwoFactorContract',
+    };
+  };
+  oidc.refresh = jest.fn(() => Promise.resolve({
+    access_token: 'bla',
+    refresh_token: 'die',
+    expires_in: 86400,
+    expired: () => false,
+    claims: jest.fn(),
+  }));
+  return oidc;
+}
