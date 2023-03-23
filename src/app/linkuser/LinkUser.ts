@@ -10,10 +10,12 @@ export class LinkUser {
   private apiClient: any;
   private dynamoDBClient: any;
   private session?: Session;
-  constructor(params: any, apiClient: any, dynamoDBClient: any) {
+  private oidcClient?: OpenIDConnect;
+  constructor(params: any, apiClient: any, dynamoDBClient: any, oidcClient?: any) {
     this.params = params;
     this.apiClient = apiClient;
     this.dynamoDBClient = dynamoDBClient;
+    this.oidcClient = oidcClient;
   }
 
   async handleRequest(): Promise<any> {
@@ -48,15 +50,19 @@ export class LinkUser {
         FirstName: brpData.firstName,
         LastName: brpData.lastName,
         MiddleName: brpData.middleName,
+        BirthDate: brpData.iso8601Birthday,
       });
-      await tribeUser.createAddress({
-        Street: brpData.street,
-        HouseNumber: brpData.number,
-        HouseNumberSuffix: brpData.suffix,
-        City: brpData.city,
-        Postalcode: brpData.postalCode,
-      });
-      await tribeUser.addToContactMoment(this.params.body.contact_id);
+
+      await Promise.all([
+        tribeUser.createAddress({
+          Street: brpData.street,
+          HouseNumber: brpData.number,
+          HouseNumberSuffix: brpData.suffix,
+          City: brpData.city,
+          Postalcode: brpData.postalCode,
+        }),
+        tribeUser.addToContactMoment(this.params.body.contact_id),
+      ]);
 
       if (this.params.accepts == 'application/json') {
         return this.jsonResponse({ redirect_to: `https://app.tribecrm.nl/entity/${this.params.body.contact_id}` });
@@ -73,8 +79,10 @@ export class LinkUser {
     const brpApi = new BrpApi(this.apiClient);
     const brpData = await brpApi.getBrpData(bsn.bsn);
     const splitNumber = brpApi.houseNumberHelper(brpData?.Persoon?.Adres?.Huisnummer);
+    const birthday = brpData?.Persoon?.Persoonsgegevens?.Geboortedatum;
     const data = {
-      birthday: brpData?.Persoon?.Persoonsgegevens?.Geboortedatum,
+      birthday: birthday,
+      iso8601Birthday: brpApi.iso8601FormattedBirthday(birthday),
       firstName: brpData?.Persoon?.Persoonsgegevens?.Voornamen,
       lastName: brpData?.Persoon?.Persoonsgegevens?.Geslachtsnaam,
       middleName: brpData?.Persoon?.Persoonsgegevens?.Voorvoegsel,
@@ -95,7 +103,9 @@ export class LinkUser {
    */
   async refreshSessionIfExpired(session: Session): Promise<boolean> {
     try {
-      const OIDC = new OpenIDConnect();
+      if (!this.oidcClient) {
+        this.oidcClient = new OpenIDConnect();
+      }
       const refreshToken = session.getValue('refresh_token');
       const expiresAt = session.getValue('expires_at', 'N');
       console.debug(expiresAt, Date.now());
@@ -104,7 +114,7 @@ export class LinkUser {
         return false;
       }
       console.debug('requesting refresh token');
-      const tokenSet = await OIDC.refresh(refreshToken);
+      const tokenSet = await this.oidcClient.refresh(refreshToken);
       if (tokenSet) {
         const expires_at = Date.now() + (tokenSet.expires_in ?? 60) * 1000; // Seconds to millis
         await session.updateSession({
@@ -112,7 +122,7 @@ export class LinkUser {
           access_token: { S: tokenSet.access_token },
           refresh_token: { S: tokenSet.refresh_token },
           expires_at: { N: `${expires_at}` },
-          xsrf_token: { S: OIDC.generateState() },
+          xsrf_token: { S: this.oidcClient.generateState() },
         });
         return true;
       } else {

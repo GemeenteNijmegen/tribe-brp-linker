@@ -3,6 +3,7 @@
     ".eslintrc.json",
     ".gitattributes",
     ".github/pull_request_template.md",
+    ".github/workflows/auto-merge.yml",
     ".github/workflows/build.yml",
     ".github/workflows/emergency.yml",
     ".github/workflows/pull-request-lint.yml",

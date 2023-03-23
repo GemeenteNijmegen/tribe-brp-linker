@@ -1,65 +1,10 @@
 import { DynamoDBClient, GetItemCommand, GetItemCommandOutput } from '@aws-sdk/client-dynamodb';
-import { SecretsManagerClient, GetSecretValueCommandOutput, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import { Session } from '@gemeentenijmegen/session';
 import { mockClient } from 'aws-sdk-client-mock';
 import { LinkUser } from '../LinkUser';
-beforeAll(() => {
-
-  // if (process.env.VERBOSETESTS!='True') {
-  //   global.console.error = jest.fn();
-  //   global.console.time = jest.fn();
-  //   global.console.log = jest.fn();
-  // }
-
-  // // Set env variables
-  // process.env.SESSION_TABLE = 'mijnuitkering-sessions';
-  // process.env.AUTH_URL_BASE = 'https://authenticatie-accp.nijmegen.nl';
-  process.env.APPLICATION_URL_BASE = 'https://testing.example.com/';
-  // process.env.CLIENT_SECRET_ARN = '123';
-  process.env.OIDC_CLIENT_ID = '1234';
-  // process.env.OIDC_SCOPE = 'openid';
-
-  const output: GetSecretValueCommandOutput = {
-    $metadata: {},
-    SecretString: 'ditiseennepgeheim',
-  };
-  secretsMock.on(GetSecretValueCommand).resolves(output);
-
-});
-
-jest.mock('openid-client', () => {
-  const originalClient = jest.requireActual('openid-client');
-  return {
-    ...originalClient,
-    Issuer: jest.fn(() => {
-      return {
-        Client: jest.fn(() => {
-          return {
-            oauthCallback: jest.fn(() => {
-              return {
-                access_token: 'bla',
-                refresh_token: 'die',
-                expires: 1234,
-              };
-            }),
-            callbackParams: jest.fn(() => {}),
-            refresh: jest.fn(() => {
-              return {
-                access_token: 'bla',
-                refresh_token: 'die',
-                expires_in: 86400,
-              };
-            }),
-          };
-        }),
-        ...originalClient.issuer,
-      };
-    }),
-  };
-});
+import { OpenIDConnect } from '../OpenIDConnect';
 
 const ddbMock = mockClient(DynamoDBClient);
-const secretsMock = mockClient(SecretsManagerClient);
 
 beforeEach(() => {
   ddbMock.reset();
@@ -67,7 +12,34 @@ beforeEach(() => {
 
 test('refresh token gets generated', async () => {
   const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-  // const sessionId = '12345';
+  const { refreshedExpiry, secondRefreshToken } = returnExpiredAndThenValidSessionOutput();
+
+  const linkUser = new LinkUser({}, null, null, mockedOidcClient());
+  const session = new Session('session=12345;', dynamoDBClient);
+  await session.init();
+  const result = await linkUser.refreshSessionIfExpired(session);
+
+  //new session for now (updateSession doesn't update the session var)
+  const session2 = new Session('session=12345;', dynamoDBClient);
+  await session2.init();
+  expect(session2.getValue('expires_at', 'N')).toBe(refreshedExpiry);
+  expect(session2.getValue('refresh_token')).toBe(secondRefreshToken);
+  expect(result).toBe(true);
+});
+
+
+test('Not expired: No new token', async () => {
+  const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
+  returnValidSessionOutput();
+  const linkUser = new LinkUser({}, null, null, mockedOidcClient());
+  const session = new Session('session=12345;', dynamoDBClient);
+  await session.init();
+  const result = await linkUser.refreshSessionIfExpired(session);
+  expect(result).toBe(false);
+});
+
+
+function returnExpiredAndThenValidSessionOutput() {
   const getItemOutput: Partial<GetItemCommandOutput> = {
     Item: {
       data: {
@@ -97,24 +69,10 @@ test('refresh token gets generated', async () => {
   ddbMock.on(GetItemCommand)
     .resolvesOnce(getItemOutput)
     .resolvesOnce(getItemOutputSecond);
+  return { refreshedExpiry, secondRefreshToken };
+}
 
-  const linkUser = new LinkUser({}, null, null);
-  const session = new Session('session=12345;', dynamoDBClient);
-  await session.init();
-  const result = await linkUser.refreshSessionIfExpired(session);
-
-  //new session for now (updateSession doesn't update the session var)
-  const session2 = new Session('session=12345;', dynamoDBClient);
-  await session2.init();
-  expect(session2.getValue('expires_at', 'N')).toBe(refreshedExpiry);
-  expect(session2.getValue('refresh_token')).toBe(secondRefreshToken);
-  expect(result).toBe(true);
-});
-
-
-test('Not expired: No new token', async () => {
-  const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
-  // const sessionId = '12345';
+function returnValidSessionOutput() {
   const getItemOutput: Partial<GetItemCommandOutput> = {
     Item: {
       data: {
@@ -128,9 +86,24 @@ test('Not expired: No new token', async () => {
     },
   };
   ddbMock.on(GetItemCommand).resolves(getItemOutput);
-  const linkUser = new LinkUser({}, null, null);
-  const session = new Session('session=12345;', dynamoDBClient);
-  await session.init();
-  const result = await linkUser.refreshSessionIfExpired(session);
-  expect(result).toBe(false);
-});
+}
+
+function mockedOidcClient() {
+  const oidc = new OpenIDConnect();
+  oidc.getOidcClientSecret = async () => '123';
+  oidc.authorize = async () => {
+    return {
+      aud: process.env.OIDC_CLIENT_ID,
+      sub: '900222670',
+      acr: 'urn:oasis:names:tc:SAML:2.0:ac:classes:MobileTwoFactorContract',
+    };
+  };
+  oidc.refresh = jest.fn(() => Promise.resolve({
+    access_token: 'bla',
+    refresh_token: 'die',
+    expires_in: 86400,
+    expired: () => false,
+    claims: jest.fn(),
+  }));
+  return oidc;
+}
