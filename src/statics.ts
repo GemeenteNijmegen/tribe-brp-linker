@@ -45,7 +45,7 @@ export abstract class Statics {
   static readonly ssmAuthOrgId: string = `/cdk/${this.projectName}/AuthOrgId`;
 
   /**
-   * 
+   *
     * OpenID Connect client ID (sent in URL as querystring-param, not secret)
     */
   static readonly ssmOIDCClientID: string = `/cdk/${this.projectName}/authClientID`;
