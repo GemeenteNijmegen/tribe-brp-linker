@@ -61,6 +61,11 @@ export class ssmParamsConstruct extends Construct {
       parameterName: Statics.ssmOIDCScope,
     });
 
+    new SSM.StringParameter(this, 'ssm_auth_4', {
+      stringValue: '-',
+      parameterName: Statics.ssmAuthOrgId,
+    });
+
     new SSM.StringParameter(this, 'ssm_uitkering_2', {
       stringValue: '-',
       parameterName: Statics.ssmMTLSClientCert,
