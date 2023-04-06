@@ -38,7 +38,14 @@ export abstract class Statics {
    * Authentication URL base, used in auth and login lambda
    */
   static readonly ssmAuthUrlBaseParameter: string = `/cdk/${this.projectName}/authUrlBase`;
+
   /**
+   * Authentication URL base, used in auth and login lambda
+   */
+  static readonly ssmAuthOrgId: string = `/cdk/${this.projectName}/AuthOrgId`;
+
+  /**
+   * 
     * OpenID Connect client ID (sent in URL as querystring-param, not secret)
     */
   static readonly ssmOIDCClientID: string = `/cdk/${this.projectName}/authClientID`;

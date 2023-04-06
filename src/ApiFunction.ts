@@ -51,6 +51,7 @@ export class ApiFunction extends Construct {
         SESSION_TABLE: props.table.tableName,
         APPLICATION_URL_BASE: props.applicationUrlBase || '',
         AUTH_URL_BASE: StringParameter.valueForStringParameter(this, Statics.ssmAuthUrlBaseParameter),
+        AUTH_ORG_ID: StringParameter.valueForStringParameter(this, Statics.ssmAuthOrgId),
         OIDC_CLIENT_ID: StringParameter.valueForStringParameter(this, Statics.ssmOIDCClientID),
         OIDC_SCOPE: StringParameter.valueForStringParameter(this, Statics.ssmOIDCScope),
         ...props.environment,
