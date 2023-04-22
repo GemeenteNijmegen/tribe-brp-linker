@@ -18,7 +18,7 @@
     "@gemeentenijmegen/session": "^0.0.6",
     "cookie": "^0.5.0",
     "mustache": "^4.2.0",
-    "openid-client": "^5.4.0"
+    "openid-client": "^5.4.1"
   },
   "devDependencies": {
     "@aws-sdk/types": "3.310.0",
