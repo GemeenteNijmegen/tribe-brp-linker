@@ -12,9 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "3.321.1",
-    "@aws-sdk/client-secrets-manager": "3.321.1",
-    "@aws-sdk/client-ssm": "3.321.1",
+    "@aws-sdk/client-dynamodb": "3.325.0",
+    "@aws-sdk/client-secrets-manager": "3.325.0",
+    "@aws-sdk/client-ssm": "3.325.0",
     "@gemeentenijmegen/apiclient": "0.0.4",
     "@gemeentenijmegen/apigateway-http": "^0.0.4",
     "@gemeentenijmegen/session": "^0.0.6",
