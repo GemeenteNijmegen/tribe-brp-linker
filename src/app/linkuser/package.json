@@ -12,13 +12,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "3.325.0",
-    "@aws-sdk/client-secrets-manager": "3.325.0",
-    "@aws-sdk/client-ssm": "3.325.0",
+    "@aws-sdk/client-dynamodb": "3.326.0",
+    "@aws-sdk/client-secrets-manager": "3.326.0",
+    "@aws-sdk/client-ssm": "3.326.0",
     "@gemeentenijmegen/apiclient": "0.0.4",
     "@gemeentenijmegen/session": "^0.0.6",
     "@gemeentenijmegen/utils": "^0.0.3",
-    "@types/aws-lambda": "^8.10.114",
+    "@types/aws-lambda": "^8.10.115",
     "axios": "^1.4.0",
     "cookie": "^0.5.0",
     "openid-client": "^5.4.2"
