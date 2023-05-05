@@ -3,8 +3,8 @@ import { PipelineStack } from './PipelineStack';
 
 // for development, use sandbox account
 const deploymentEnvironmentNewLZ = {
-  account: '418648875085',
-  region: 'eu-west-1',
+  account: '836443378780',
+  region: 'eu-central-1',
 };
 
 const developmentEnvironment = {
