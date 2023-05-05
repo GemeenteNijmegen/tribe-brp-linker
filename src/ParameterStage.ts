@@ -1,6 +1,7 @@
-import { Stack, Tags, Stage, aws_ssm as SSM, aws_secretsmanager as SecretsManager, StageProps } from 'aws-cdk-lib';
+import { Stack, Tags, Stage, aws_ssm as SSM, aws_secretsmanager as SecretsManager, StageProps, Aspects } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Statics } from './statics';
+import { PermissionsBoundaryAspect } from '@gemeentenijmegen/aws-constructs';
 
 /**
  * Stage for creating SSM parameters. This needs to run
@@ -10,6 +11,8 @@ import { Statics } from './statics';
 export class ParameterStage extends Stage {
   constructor(scope: Construct, id: string, props: StageProps) {
     super(scope, id, props);
+    
+    Aspects.of(this).add(new PermissionsBoundaryAspect());
     Tags.of(this).add('cdkManaged', 'yes');
     Tags.of(this).add('Project', Statics.projectName);
 

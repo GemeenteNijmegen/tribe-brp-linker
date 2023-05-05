@@ -1,4 +1,4 @@
-import { Stage, StageProps } from 'aws-cdk-lib';
+import { Aspects, Stage, StageProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { ApiStack } from './ApiStack';
 import { CloudfrontStack } from './CloudfrontStack';
@@ -6,6 +6,7 @@ import { DNSStack } from './DNSStack';
 import { KeyStack } from './keystack';
 import { SessionsStack } from './SessionsStack';
 import { UsEastCertificateStack } from './UsEastCertificateStack';
+import { PermissionsBoundaryAspect } from '@gemeentenijmegen/aws-constructs';
 
 export interface ApiStageProps extends StageProps {
   branch: string;
@@ -17,6 +18,7 @@ export interface ApiStageProps extends StageProps {
 export class ApiStage extends Stage {
   constructor(scope: Construct, id: string, props: ApiStageProps) {
     super(scope, id, props);
+    Aspects.of(this).add(new PermissionsBoundaryAspect());
     const keyStack = new KeyStack(this, 'key-stack');
     const sessionsStack = new SessionsStack(this, 'sessions-stack', { key: keyStack.key });
     const dnsStack = new DNSStack(this, 'dns-stack');

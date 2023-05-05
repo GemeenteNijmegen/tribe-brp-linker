@@ -1,9 +1,9 @@
-import { Stack, StackProps, Tags, pipelines, CfnParameter, Environment } from 'aws-cdk-lib';
-import { ShellStep } from 'aws-cdk-lib/pipelines';
+import { Stack, StackProps, Tags, pipelines, CfnParameter, Environment, Aspects } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { ApiStage } from './ApiStage';
 import { ParameterStage } from './ParameterStage';
 import { Statics } from './statics';
+import { PermissionsBoundaryAspect } from '@gemeentenijmegen/aws-constructs';
 
 export interface PipelineStackProps extends StackProps{
   branchName: string;
@@ -14,6 +14,7 @@ export class PipelineStack extends Stack {
   branchName: string;
   constructor(scope: Construct, id: string, props: PipelineStackProps) {
     super(scope, id, props);
+    Aspects.of(this).add(new PermissionsBoundaryAspect());
     Tags.of(this).add('cdkManaged', 'yes');
     Tags.of(this).add('Project', Statics.projectName);
     this.branchName = props.branchName;
@@ -23,34 +24,10 @@ export class PipelineStack extends Stack {
 
     const pipeline = this.pipeline(source);
     pipeline.addStage(new ParameterStage(this, 'parameters', { env: props.deployToEnvironment }));
-
-    const apiStage = pipeline.addStage(new ApiStage(this, 'tribebrp', { env: props.deployToEnvironment, branch: this.branchName }));
-    this.runValidationChecks(apiStage, source);
+    pipeline.addStage(new ApiStage(this, 'tribebrp', { env: props.deployToEnvironment, branch: this.branchName }));
 
   }
 
-  /**
-   * Run validation checks on the finished deployment (for now this runs playwright e2e tests)
-   *
-   * @param stage stage after which to run
-   * @param source the source repo in which to run
-   */
-  private runValidationChecks(stage: pipelines.StageDeployment, source: pipelines.CodePipelineSource) {
-    return;
-    if (this.branchName != 'acceptance') { return; }
-    stage.addPost(new ShellStep('validate', {
-      input: source,
-      env: {
-        CI: 'true',
-      },
-      commands: [
-        'yarn install --frozen-lockfile',
-        'npx playwright install',
-        'npx playwright install-deps',
-        'npx playwright test',
-      ],
-    }));
-  }
 
   pipeline(source: pipelines.CodePipelineSource): pipelines.CodePipeline {
     const synthStep = new pipelines.ShellStep('Synth', {
@@ -67,8 +44,6 @@ export class PipelineStack extends Stack {
 
     const pipeline = new pipelines.CodePipeline(this, `tribebrp-${this.branchName}`, {
       pipelineName: `tribebrp-${this.branchName}`,
-      dockerEnabledForSelfMutation: true,
-      dockerEnabledForSynth: true,
       crossAccountKeys: true,
       synth: synthStep,
     });
@@ -76,7 +51,7 @@ export class PipelineStack extends Stack {
   }
 
   private connectionSource(connectionArn: CfnParameter): pipelines.CodePipelineSource {
-    return pipelines.CodePipelineSource.connection(`GemeenteNijmegen/${Statics.repository}`, this.branchName, {
+    return pipelines.CodePipelineSource.connection(`${Statics.repositoryOwner}/${Statics.repository}`, this.branchName, {
       connectionArn: connectionArn.valueAsString,
     });
   }
