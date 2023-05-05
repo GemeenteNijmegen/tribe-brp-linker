@@ -5,6 +5,7 @@ import { ApiStack } from './ApiStack';
 import { CloudfrontStack } from './CloudfrontStack';
 import { DNSStack } from './DNSStack';
 import { KeyStack } from './keystack';
+import { ParameterStack } from './ParameterStack';
 import { SessionsStack } from './SessionsStack';
 import { UsEastCertificateStack } from './UsEastCertificateStack';
 
@@ -19,9 +20,12 @@ export class ApiStage extends Stage {
   constructor(scope: Construct, id: string, props: ApiStageProps) {
     super(scope, id, props);
     Aspects.of(this).add(new PermissionsBoundaryAspect());
+    const paramStack = new ParameterStack(this, 'params');
     const keyStack = new KeyStack(this, 'key-stack');
     const sessionsStack = new SessionsStack(this, 'sessions-stack', { key: keyStack.key });
     const dnsStack = new DNSStack(this, 'dns-stack');
+    dnsStack.addDependency(paramStack);
+
     const usEastCertificateStack = new UsEastCertificateStack(this, 'us-cert-stack', { branch: props.branch, env: { region: 'us-east-1' } });
     usEastCertificateStack.addDependency(dnsStack);
 
@@ -29,7 +33,9 @@ export class ApiStage extends Stage {
       branch: props.branch,
       sessionsTable: sessionsStack.sessionsTable,
     });
+    apiStack.addDependency(paramStack);
     const cloudfrontStack = new CloudfrontStack(this, 'cloudfront-stack');
+    cloudfrontStack.addDependency(paramStack);
     cloudfrontStack.addDependency(usEastCertificateStack);
     cloudfrontStack.addDependency(apiStack);
   }

@@ -2,7 +2,6 @@ import { PermissionsBoundaryAspect } from '@gemeentenijmegen/aws-constructs';
 import { Stack, StackProps, Tags, pipelines, CfnParameter, Environment, Aspects } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { ApiStage } from './ApiStage';
-import { ParameterStage } from './ParameterStage';
 import { Statics } from './statics';
 
 export interface PipelineStackProps extends StackProps{
@@ -23,7 +22,6 @@ export class PipelineStack extends Stack {
     const source = this.connectionSource(connectionArn);
 
     const pipeline = this.pipeline(source);
-    pipeline.addStage(new ParameterStage(this, 'parameters', { env: props.deployToEnvironment }));
     pipeline.addStage(new ApiStage(this, 'tribebrp', { env: props.deployToEnvironment, branch: this.branchName }));
 
   }
