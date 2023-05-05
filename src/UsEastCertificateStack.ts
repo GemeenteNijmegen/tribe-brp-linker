@@ -27,7 +27,7 @@ export class UsEastCertificateStack extends Stack {
   createCertificate() {
     const parameters = new RemoteParameters(this, 'params', {
       path: `${Statics.ssmZonePath}/`,
-      region: 'eu-west-1',
+      region: Stack.of(this).region,
     });
     const zoneParams = this.getZoneAttributes(parameters, Statics.ssmZoneId, Statics.ssmZoneName);
     const zone = HostedZone.fromHostedZoneAttributes(this, 'zone', zoneParams);
