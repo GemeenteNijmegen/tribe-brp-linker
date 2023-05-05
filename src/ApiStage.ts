@@ -1,3 +1,4 @@
+import { PermissionsBoundaryAspect } from '@gemeentenijmegen/aws-constructs';
 import { Aspects, Stage, StageProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { ApiStack } from './ApiStack';
@@ -6,7 +7,6 @@ import { DNSStack } from './DNSStack';
 import { KeyStack } from './keystack';
 import { SessionsStack } from './SessionsStack';
 import { UsEastCertificateStack } from './UsEastCertificateStack';
-import { PermissionsBoundaryAspect } from '@gemeentenijmegen/aws-constructs';
 
 export interface ApiStageProps extends StageProps {
   branch: string;
