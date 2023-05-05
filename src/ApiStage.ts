@@ -26,7 +26,7 @@ export class ApiStage extends Stage {
     const dnsStack = new DNSStack(this, 'dns-stack');
     dnsStack.addDependency(paramStack);
 
-    const usEastCertificateStack = new UsEastCertificateStack(this, 'us-cert-stack', { branch: props.branch, env: { region: 'us-east-1' } });
+    const usEastCertificateStack = new UsEastCertificateStack(this, 'us-cert-stack', { branch: props.branch, env: { region: 'us-east-1' }, appRegion: props.env?.region ?? 'eu-central-1' });
     usEastCertificateStack.addDependency(dnsStack);
 
     const apiStack = new ApiStack(this, 'api-stack', {
