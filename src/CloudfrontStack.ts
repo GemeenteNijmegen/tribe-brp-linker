@@ -31,7 +31,6 @@ import { IHostedZone } from 'aws-cdk-lib/aws-route53';
 import { RemoteParameters } from 'cdk-remote-stack';
 import { Construct } from 'constructs';
 import { Statics } from './statics';
-import { ServerSideEncryption } from 'aws-cdk-lib/aws-s3-deployment';
 
 export class CloudfrontStack extends Stack {
   private zone?: IHostedZone;
