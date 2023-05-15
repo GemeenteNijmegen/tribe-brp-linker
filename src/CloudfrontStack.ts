@@ -295,7 +295,7 @@ export class CloudfrontStack extends Stack {
       destinationBucket: bucket,
       distribution: distribution,
       distributionPaths: ['/static/*'],
-      serverSideEncryption: aws_s3_deployment.ServerSideEncryption.AES_256
+      serverSideEncryption: aws_s3_deployment.ServerSideEncryption.AES_256,
     });
   }
 }
