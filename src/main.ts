@@ -12,6 +12,11 @@ const developmentEnvironment = {
   region: 'eu-central-1',
 };
 
+const acceptanceEnvironmentNewLz = {
+  account: '987304085258',
+  region: 'eu-central-1',
+};
+
 // Old LZ
 const deploymentEnvironment = {
   account: '418648875085',
@@ -37,6 +42,22 @@ if ('BRANCH_NAME' in process.env == false || process.env.BRANCH_NAME == 'develop
       env: deploymentEnvironmentNewLZ,
       branchName: 'development',
       deployToEnvironment: developmentEnvironment,
+    },
+  );
+} else if (process.env.BRANCH_NAME == 'acceptance-new-lz') {
+  new PipelineStack(app, 'tribebrp-pipeline-acceptance',
+    {
+      env: deploymentEnvironment,
+      branchName: 'acceptance-new-lz',
+      deployToEnvironment: acceptanceEnvironmentNewLz,
+    },
+  );
+} else if (process.env.BRANCH_NAME == 'main-new-lz') {
+  new PipelineStack(app, 'tribebrp-pipeline-production',
+    {
+      env: deploymentEnvironment,
+      branchName: 'main-new-lz',
+      deployToEnvironment: productionEnvironment,
     },
   );
 } else if (process.env.BRANCH_NAME == 'acceptance') {
