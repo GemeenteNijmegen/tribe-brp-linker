@@ -19,7 +19,7 @@
     "@gemeentenijmegen/apigateway-http": "^0.0.5",
     "@gemeentenijmegen/session": "^0.0.6",
     "@gemeentenijmegen/utils": "^0.0.3",
-    "@types/aws-lambda": "^8.10.116",
+    "@types/aws-lambda": "^8.10.117",
     "axios": "^1.4.0",
     "cookie": "^0.5.0",
     "mustache": "^4.2.0",
