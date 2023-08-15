@@ -12,15 +12,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.388.0",
-    "@aws-sdk/client-secrets-manager": "^3.389.0",
+    "@aws-sdk/client-dynamodb": "^3.391.0",
+    "@aws-sdk/client-secrets-manager": "^3.391.0",
     "@gemeentenijmegen/apigateway-http": "^0.0.7",
     "@gemeentenijmegen/session": "^0.0.8",
     "cookie": "^0.5.0",
     "mustache": "^4.2.0"
   },
   "devDependencies": {
-    "@aws-sdk/types": "3.387.0",
+    "@aws-sdk/types": "3.391.0",
     "@types/cookie": "^0.5.1",
     "@types/mustache": "^4.2.2"
   }
