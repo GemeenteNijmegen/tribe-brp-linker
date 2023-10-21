@@ -12,10 +12,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "3.431.0",
-    "@aws-sdk/client-secrets-manager": "3.432.0",
-    "@aws-sdk/client-ssm": "3.431.0",
-    "@gemeentenijmegen/apiclient": "0.0.8",
+    "@aws-sdk/client-dynamodb": "3.433.0",
+    "@aws-sdk/client-secrets-manager": "3.433.0",
+    "@aws-sdk/client-ssm": "3.433.0",
+    "@gemeentenijmegen/apiclient": "0.0.9",
     "@gemeentenijmegen/session": "^0.0.8",
     "@gemeentenijmegen/utils": "^0.0.5",
     "@types/aws-lambda": "^8.10.125",
@@ -24,7 +24,7 @@
     "openid-client": "^5.6.1"
   },
   "devDependencies": {
-    "@aws-sdk/types": "3.428.0",
+    "@aws-sdk/types": "3.433.0",
     "aws-sdk-client-mock": "^3.0.0",
     "axios-mock-adapter": "^1.22.0",
     "dotenv": "^16.3.1"
