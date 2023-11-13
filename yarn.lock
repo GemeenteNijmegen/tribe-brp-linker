@@ -30,10 +30,10 @@
   resolved "https://registry.yarnpkg.com/@aws-cdk/asset-node-proxy-agent-v6/-/asset-node-proxy-agent-v6-2.0.1.tgz#6dc9b7cdb22ff622a7176141197962360c33e9ac"
   integrity sha512-DDt4SLdLOwWCjGtltH4VCST7hpOI5DzieuhGZsBpZ+AgJdSI2GCjklCXm0GCTwJG/SolkL5dtQXyUKgg9luBDg==
 
-"@aws-cdk/aws-apigatewayv2-alpha@^2.106.0-alpha.0":
-  version "2.106.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-apigatewayv2-alpha/-/aws-apigatewayv2-alpha-2.106.0-alpha.0.tgz#4abefc63808f75bf7349002e1168975b45829660"
-  integrity sha512-CJsFzyBeQCVk8ofvYqxfJauybe42jKHWIBpo+zDV2qpQCWLVZgoVvyfSj05Iz7zEztLMiiAQOQaYeIouSvZPNg==
+"@aws-cdk/aws-apigatewayv2-alpha@^2.106.1-alpha.0":
+  version "2.106.1-alpha.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-apigatewayv2-alpha/-/aws-apigatewayv2-alpha-2.106.1-alpha.0.tgz#3555487985d775469ba8e183e54ff065da99e878"
+  integrity sha512-r/b8MS3pr0VURcPMydRcakyEOM9yQdbrNQPWaU/IL0DhqG/eGHNr5ukQgUh6WjeGZJrSM/aDaQ2zkIIgtkOzzw==
 
 "@aws-cdk/aws-apigatewayv2-integrations-alpha@^2.106.1-alpha.0":
   version "2.106.1-alpha.0"
