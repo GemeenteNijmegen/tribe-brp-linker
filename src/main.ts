@@ -2,24 +2,24 @@ import { App } from 'aws-cdk-lib';
 import { PipelineStack } from './PipelineStack';
 
 // for development, use sandbox account
-const deploymentEnvironment = {
-  account: '418648875085',
-  region: 'eu-west-1',
+const deploymentEnvironmentNewLZ = {
+  account: '836443378780',
+  region: 'eu-central-1',
 };
 
-const sandboxEnvironment = {
-  account: '122467643252',
-  region: 'eu-west-1',
+const developmentEnvironment = {
+  account: '471236387053',
+  region: 'eu-central-1',
 };
 
-const acceptanceEnvironment = {
-  account: '229631103712',
-  region: 'eu-west-1',
+const acceptanceEnvironmentNewLz = {
+  account: '987304085258',
+  region: 'eu-central-1',
 };
 
-const productionEnvironment = {
-  account: '487749583954',
-  region: 'eu-west-1',
+const productionEnvironmentNewLz = {
+  account: '962664892091',
+  region: 'eu-central-1',
 };
 
 const app = new App();
@@ -28,25 +28,25 @@ const app = new App();
 if ('BRANCH_NAME' in process.env == false || process.env.BRANCH_NAME == 'development') {
   new PipelineStack(app, 'tribebrp-pipeline-development',
     {
-      env: deploymentEnvironment,
+      env: deploymentEnvironmentNewLZ,
       branchName: 'development',
-      deployToEnvironment: sandboxEnvironment,
+      deployToEnvironment: developmentEnvironment,
     },
   );
-} else if (process.env.BRANCH_NAME == 'acceptance') {
+} else if (process.env.BRANCH_NAME == 'acceptance-new-lz' || process.env.BRANCH_NAME == 'acceptance') {
   new PipelineStack(app, 'tribebrp-pipeline-acceptance',
     {
-      env: deploymentEnvironment,
+      env: deploymentEnvironmentNewLZ,
       branchName: 'acceptance',
-      deployToEnvironment: acceptanceEnvironment,
+      deployToEnvironment: acceptanceEnvironmentNewLz,
     },
   );
-} else if (process.env.BRANCH_NAME == 'main') {
+} else if (process.env.BRANCH_NAME == 'main-new-lz' || process.env.BRANCH_NAME == 'main') {
   new PipelineStack(app, 'tribebrp-pipeline-production',
     {
-      env: deploymentEnvironment,
+      env: deploymentEnvironmentNewLZ,
       branchName: 'main',
-      deployToEnvironment: productionEnvironment,
+      deployToEnvironment: productionEnvironmentNewLz,
     },
   );
 }
