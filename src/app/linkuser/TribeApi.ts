@@ -61,7 +61,6 @@ export class TribeApi {
       if (typeof response.data === 'string') {
         return JSON.parse(response.data);
       }
-      console.debug(response.data);
       return response.data;
     } catch (error: any) {
       if (error.response) {
