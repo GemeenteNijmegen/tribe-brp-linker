@@ -10,7 +10,7 @@
     },
     {
       "name": "@types/node",
-      "version": "^16",
+      "version": "^18",
       "type": "build"
     },
     {
@@ -30,10 +30,6 @@
     },
     {
       "name": "esbuild",
-      "type": "build"
-    },
-    {
-      "name": "eslint-import-resolver-node",
       "type": "build"
     },
     {
@@ -90,6 +86,10 @@
     },
     {
       "name": "@aws-cdk/aws-apigatewayv2-integrations-alpha",
+      "type": "runtime"
+    },
+    {
+      "name": "@gemeentenijmegen/aws-constructs",
       "type": "runtime"
     },
     {
