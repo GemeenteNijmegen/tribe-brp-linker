@@ -32,7 +32,6 @@ import { RemoteParameters } from 'cdk-remote-stack';
 import { Construct } from 'constructs';
 import { Statics } from './statics';
 
-
 export class CloudfrontStack extends Stack {
   private zone?: IHostedZone;
   constructor(scope: Construct, id: string) {
@@ -189,6 +188,7 @@ export class CloudfrontStack extends Stack {
       eventBridgeEnabled: true,
       enforceSSL: true,
       encryption: S3.BucketEncryption.S3_MANAGED,
+      objectOwnership: S3.ObjectOwnership.OBJECT_WRITER,
       lifecycleRules: [
         {
           id: 'delete objects after 180 days',
@@ -295,6 +295,7 @@ export class CloudfrontStack extends Stack {
       destinationBucket: bucket,
       distribution: distribution,
       distributionPaths: ['/static/*'],
+      serverSideEncryption: aws_s3_deployment.ServerSideEncryption.AES_256,
     });
   }
 }

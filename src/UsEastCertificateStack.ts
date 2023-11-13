@@ -6,13 +6,14 @@ import { Statics } from './statics';
 
 export interface UsEastCertificateStackProps extends StackProps {
   branch: string;
+  appRegion: string;
 }
 
 export class UsEastCertificateStack extends Stack {
 
   constructor(scope: Construct, id: string, props: UsEastCertificateStackProps) {
     super(scope, id, props);
-    this.createCertificate();
+    this.createCertificate(props.appRegion);
   }
 
   getZoneAttributes(parameters: RemoteParameters, id: string, name: string): { hostedZoneId: string; zoneName: string} {
@@ -24,10 +25,10 @@ export class UsEastCertificateStack extends Stack {
     };
   }
 
-  createCertificate() {
+  createCertificate(region: string) {
     const parameters = new RemoteParameters(this, 'params', {
       path: `${Statics.ssmZonePath}/`,
-      region: 'eu-west-1',
+      region,
     });
     const zoneParams = this.getZoneAttributes(parameters, Statics.ssmZoneId, Statics.ssmZoneName);
     const zone = HostedZone.fromHostedZoneAttributes(this, 'zone', zoneParams);
