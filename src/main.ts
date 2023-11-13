@@ -22,22 +22,6 @@ const productionEnvironmentNewLz = {
   region: 'eu-central-1',
 };
 
-// Old LZ
-const deploymentEnvironment = {
-  account: '418648875085',
-  region: 'eu-west-1',
-};
-
-const acceptanceEnvironment = {
-  account: '229631103712',
-  region: 'eu-west-1',
-};
-
-const productionEnvironment = {
-  account: '487749583954',
-  region: 'eu-west-1',
-};
-
 const app = new App();
 
 
@@ -49,7 +33,7 @@ if ('BRANCH_NAME' in process.env == false || process.env.BRANCH_NAME == 'develop
       deployToEnvironment: developmentEnvironment,
     },
   );
-} else if (process.env.BRANCH_NAME == 'acceptance-new-lz') {
+} else if (process.env.BRANCH_NAME == 'acceptance-new-lz' || process.env.BRANCH_NAME == 'acceptance') {
   new PipelineStack(app, 'tribebrp-pipeline-acceptance',
     {
       env: deploymentEnvironmentNewLZ,
@@ -57,28 +41,12 @@ if ('BRANCH_NAME' in process.env == false || process.env.BRANCH_NAME == 'develop
       deployToEnvironment: acceptanceEnvironmentNewLz,
     },
   );
-} else if (process.env.BRANCH_NAME == 'main-new-lz') {
+} else if (process.env.BRANCH_NAME == 'main-new-lz' || process.env.BRANCH_NAME == 'main') {
   new PipelineStack(app, 'tribebrp-pipeline-production',
     {
       env: deploymentEnvironmentNewLZ,
       branchName: 'main-new-lz',
       deployToEnvironment: productionEnvironmentNewLz,
-    },
-  );
-} else if (process.env.BRANCH_NAME == 'acceptance') {
-  new PipelineStack(app, 'tribebrp-pipeline-acceptance',
-    {
-      env: deploymentEnvironment,
-      branchName: 'acceptance',
-      deployToEnvironment: acceptanceEnvironment,
-    },
-  );
-} else if (process.env.BRANCH_NAME == 'main') {
-  new PipelineStack(app, 'tribebrp-pipeline-production',
-    {
-      env: deploymentEnvironment,
-      branchName: 'main',
-      deployToEnvironment: productionEnvironment,
     },
   );
 }
