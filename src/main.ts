@@ -37,7 +37,7 @@ if ('BRANCH_NAME' in process.env == false || process.env.BRANCH_NAME == 'develop
   new PipelineStack(app, 'tribebrp-pipeline-acceptance',
     {
       env: deploymentEnvironmentNewLZ,
-      branchName: 'acceptance-new-lz',
+      branchName: 'acceptance',
       deployToEnvironment: acceptanceEnvironmentNewLz,
     },
   );
