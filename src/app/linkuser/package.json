@@ -18,7 +18,7 @@
     "@gemeentenijmegen/apiclient": "0.0.9",
     "@gemeentenijmegen/session": "^0.0.8",
     "@gemeentenijmegen/utils": "^0.0.5",
-    "@types/aws-lambda": "^8.10.129",
+    "@types/aws-lambda": "^8.10.130",
     "axios": "^1.6.2",
     "cookie": "^0.6.0",
     "openid-client": "^5.6.1"
