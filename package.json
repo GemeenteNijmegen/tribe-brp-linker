@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@aws-cdk/aws-apigatewayv2-alpha": "^2.111.0-alpha.0",
-    "@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.111.0-alpha.0",
+    "@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.113.0-alpha.0",
     "@gemeentenijmegen/aws-constructs": "^0.0.4",
     "aws-cdk-lib": "^2.45.0",
     "cdk-remote-stack": "^2.0.101",
