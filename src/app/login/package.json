@@ -12,8 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "3.481.0",
-    "@aws-sdk/client-secrets-manager": "3.481.0",
+    "@aws-sdk/client-dynamodb": "3.484.0",
+    "@aws-sdk/client-secrets-manager": "3.484.0",
     "@gemeentenijmegen/apigateway-http": "^0.0.7",
     "@gemeentenijmegen/session": "^0.0.8",
     "cookie": "^0.6.0",
