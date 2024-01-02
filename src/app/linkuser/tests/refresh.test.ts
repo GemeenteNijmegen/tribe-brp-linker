@@ -1,8 +1,8 @@
 import { DynamoDBClient, GetItemCommand, GetItemCommandOutput } from '@aws-sdk/client-dynamodb';
 import { Session } from '@gemeentenijmegen/session';
 import { mockClient } from 'aws-sdk-client-mock';
+import { OpenIDConnect } from '../../shared/OpenIDConnect';
 import { LinkUser } from '../LinkUser';
-import { OpenIDConnect } from '../OpenIDConnect';
 
 const ddbMock = mockClient(DynamoDBClient);
 

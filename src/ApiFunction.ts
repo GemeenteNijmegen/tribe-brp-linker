@@ -1,13 +1,14 @@
-import * as path from 'path';
 import { aws_lambda as Lambda, aws_dynamodb, RemovalPolicy, Duration, Stack } from 'aws-cdk-lib';
 import { Alarm } from 'aws-cdk-lib/aws-cloudwatch';
-import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { FilterPattern, IFilterPattern, MetricFilter, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
 import { Statics } from './statics';
 
+type T = Lambda.Function;
+
 export interface ApiFunctionProps {
+  apiFunction: {new(scope: Construct, id:string, props?: Lambda.FunctionProps): T };
   description: string;
   codePath: string;
   table: aws_dynamodb.ITable;
@@ -19,31 +20,17 @@ export interface ApiFunctionProps {
 
 export class ApiFunction extends Construct {
   lambda: Lambda.Function;
+
   constructor(scope: Construct, id: string, props: ApiFunctionProps) {
     super(scope, id);
     // See https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Lambda-Insights-extension-versionsx86-64.html
     const insightsArn = `arn:aws:lambda:${Stack.of(this).region}:580247275435:layer:LambdaInsightsExtension:21`;
-    this.lambda = new NodejsFunction(this, 'lambda', {
-      runtime: Lambda.Runtime.NODEJS_16_X,
-      timeout: Duration.seconds(30),
+
+    this.lambda = new props.apiFunction(this, 'lambda', {
+      runtime: Lambda.Runtime.NODEJS_18_X, // requred but overwritten
+      handler: 'index.handler', // required but overwritten
+      code: Lambda.Code.fromInline('empty'), // required but overwritten
       memorySize: 512,
-      handler: 'handler',
-      entry: path.join(__dirname, props.codePath, 'index.ts'),
-      depsLockFilePath: path.join(__dirname, props.codePath, 'package-lock.json'),
-      bundling: {
-        commandHooks: {
-          beforeBundling(_inputDir, _outputDir) {
-            return ['npm install'];
-          },
-          beforeInstall(_inputDir, _outputDir) {
-            return [];
-          },
-          // Copy a file so that it will be included in the bundled asset
-          afterBundling(inputDir: string, outputDir: string): string[] {
-            return [`cp -r ${inputDir}/. ${outputDir}`];
-          },
-        },
-      },
       description: props.description,
       insightsVersion: Lambda.LambdaInsightsVersion.fromInsightVersionArn(insightsArn),
       logRetention: RetentionDays.ONE_MONTH,
@@ -58,7 +45,6 @@ export class ApiFunction extends Construct {
       },
     });
     props.table.grantReadWriteData(this.lambda.grantPrincipal);
-
     this.monitor(props.monitorFilterPattern);
   }
 

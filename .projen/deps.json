@@ -1,11 +1,27 @@
 {
   "dependencies": [
     {
+      "name": "@aws-sdk/types",
+      "type": "build"
+    },
+    {
       "name": "@gemeentenijmegen/projen-project-type",
       "type": "build"
     },
     {
+      "name": "@glen/jest-raw-loader",
+      "type": "build"
+    },
+    {
+      "name": "@types/cookie",
+      "type": "build"
+    },
+    {
       "name": "@types/jest",
+      "type": "build"
+    },
+    {
+      "name": "@types/mustache",
       "type": "build"
     },
     {
@@ -26,6 +42,18 @@
     {
       "name": "aws-cdk",
       "version": "^2.45.0",
+      "type": "build"
+    },
+    {
+      "name": "aws-sdk-client-mock",
+      "type": "build"
+    },
+    {
+      "name": "axios-mock-adapter",
+      "type": "build"
+    },
+    {
+      "name": "dotenv",
       "type": "build"
     },
     {
@@ -93,12 +121,48 @@
       "type": "runtime"
     },
     {
+      "name": "@aws-sdk/client-dynamodb",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-sdk/client-secrets-manager",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-sdk/client-ssm",
+      "type": "runtime"
+    },
+    {
+      "name": "@gemeentenijmegen/apiclient",
+      "type": "runtime"
+    },
+    {
+      "name": "@gemeentenijmegen/apigateway-http",
+      "type": "runtime"
+    },
+    {
       "name": "@gemeentenijmegen/aws-constructs",
+      "type": "runtime"
+    },
+    {
+      "name": "@gemeentenijmegen/session",
+      "type": "runtime"
+    },
+    {
+      "name": "@gemeentenijmegen/utils",
+      "type": "runtime"
+    },
+    {
+      "name": "@types/aws-lambda",
       "type": "runtime"
     },
     {
       "name": "aws-cdk-lib",
       "version": "^2.45.0",
+      "type": "runtime"
+    },
+    {
+      "name": "axios",
       "type": "runtime"
     },
     {
@@ -111,7 +175,19 @@
       "type": "runtime"
     },
     {
+      "name": "cookie",
+      "type": "runtime"
+    },
+    {
       "name": "dotenv",
+      "type": "runtime"
+    },
+    {
+      "name": "mustache",
+      "type": "runtime"
+    },
+    {
+      "name": "openid-client",
       "type": "runtime"
     }
   ],
