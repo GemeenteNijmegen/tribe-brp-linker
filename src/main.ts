@@ -1,8 +1,7 @@
 import { App } from 'aws-cdk-lib';
 import { PipelineStack } from './PipelineStack';
 
-// for development, use sandbox account
-const deploymentEnvironmentNewLZ = {
+const deploymentEnvironment = {
   account: '836443378780',
   region: 'eu-central-1',
 };
@@ -12,25 +11,14 @@ const developmentEnvironment = {
   region: 'eu-central-1',
 };
 
-const acceptanceEnvironmentNewLz = {
+const acceptanceEnvironment = {
   account: '987304085258',
   region: 'eu-central-1',
 };
 
-// Old LZ
-const deploymentEnvironment = {
-  account: '418648875085',
-  region: 'eu-west-1',
-};
-
-const acceptanceEnvironment = {
-  account: '229631103712',
-  region: 'eu-west-1',
-};
-
 const productionEnvironment = {
-  account: '487749583954',
-  region: 'eu-west-1',
+  account: '962664892091',
+  region: 'eu-central-1',
 };
 
 const app = new App();
@@ -39,25 +27,9 @@ const app = new App();
 if ('BRANCH_NAME' in process.env == false || process.env.BRANCH_NAME == 'development') {
   new PipelineStack(app, 'tribebrp-pipeline-development',
     {
-      env: deploymentEnvironmentNewLZ,
+      env: deploymentEnvironment,
       branchName: 'development',
       deployToEnvironment: developmentEnvironment,
-    },
-  );
-} else if (process.env.BRANCH_NAME == 'acceptance-new-lz') {
-  new PipelineStack(app, 'tribebrp-pipeline-acceptance',
-    {
-      env: deploymentEnvironmentNewLZ,
-      branchName: 'acceptance-new-lz',
-      deployToEnvironment: acceptanceEnvironmentNewLz,
-    },
-  );
-} else if (process.env.BRANCH_NAME == 'main-new-lz') {
-  new PipelineStack(app, 'tribebrp-pipeline-production',
-    {
-      env: deploymentEnvironment,
-      branchName: 'main-new-lz',
-      deployToEnvironment: productionEnvironment,
     },
   );
 } else if (process.env.BRANCH_NAME == 'acceptance') {
