@@ -1,9 +1,14 @@
-import * as apigatewayv2 from '@aws-cdk/aws-apigatewayv2-alpha';
-import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha';
 import { aws_secretsmanager, Stack, StackProps, aws_ssm as SSM } from 'aws-cdk-lib';
+import { HttpApi, HttpMethod } from 'aws-cdk-lib/aws-apigatewayv2';
+import { HttpLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations';
 import { Table } from 'aws-cdk-lib/aws-dynamodb';
 import { Construct } from 'constructs';
 import { ApiFunction } from './ApiFunction';
+import { AuthFunction } from './app/auth/auth-function';
+import { HomeFunction } from './app/home/home-function';
+import { LinkuserFunction } from './app/linkuser/linkuser-function';
+import { LoginFunction } from './app/login/login-function';
+import { LogoutFunction } from './app/logout/logout-function';
 import { SessionsTable } from './SessionsTable';
 import { Statics } from './statics';
 
@@ -20,12 +25,12 @@ export interface ApiStackProps extends StackProps {
  */
 export class ApiStack extends Stack {
   private sessionsTable: Table;
-  api: apigatewayv2.HttpApi;
+  api: HttpApi;
 
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id);
     this.sessionsTable = props.sessionsTable.table;
-    this.api = new apigatewayv2.HttpApi(this, 'api', {
+    this.api = new HttpApi(this, 'api', {
       description: 'Tribe to BRP webapplicatie',
     });
 
@@ -46,6 +51,7 @@ export class ApiStack extends Stack {
    */
   setFunctions(baseUrl: string) {
     const loginFunction = new ApiFunction(this, 'login-function', {
+      apiFunction: LoginFunction,
       description: 'Login-pagina voor de BRP koppeling.',
       codePath: 'app/login',
       table: this.sessionsTable,
@@ -54,6 +60,7 @@ export class ApiStack extends Stack {
     });
 
     const logoutFunction = new ApiFunction(this, 'logout-function', {
+      apiFunction: LogoutFunction,
       description: 'Uitlog-pagina voor de BRP koppeling.',
       codePath: 'app/logout',
       table: this.sessionsTable,
@@ -63,6 +70,7 @@ export class ApiStack extends Stack {
 
     const oidcSecret = aws_secretsmanager.Secret.fromSecretNameV2(this, 'oidc-secret', Statics.secretOIDCClientSecret);
     const authFunction = new ApiFunction(this, 'auth-function', {
+      apiFunction: AuthFunction,
       description: 'Authenticatie-lambd voor de BRP koppeling.',
       codePath: 'app/auth',
       table: this.sessionsTable,
@@ -78,6 +86,7 @@ export class ApiStack extends Stack {
     const tlskeyParam = SSM.StringParameter.fromStringParameterName(this, 'tlskey', Statics.ssmMTLSClientCert);
     const tlsRootCAParam = SSM.StringParameter.fromStringParameterName(this, 'tlsrootca', Statics.ssmMTLSRootCA);
     const homeFunction = new ApiFunction(this, 'home-function', {
+      apiFunction: HomeFunction,
       description: 'Home-lambda voor de BRP koppeling.',
       codePath: 'app/home',
       table: this.sessionsTable,
@@ -98,6 +107,7 @@ export class ApiStack extends Stack {
 
 
     const linkUserFunction = new ApiFunction(this, 'linkuser-function', {
+      apiFunction: LinkuserFunction,
       description: 'Link user-lambda voor de BRP koppeling.',
       codePath: 'app/linkuser',
       table: this.sessionsTable,
@@ -120,31 +130,31 @@ export class ApiStack extends Stack {
     this.api.addRoutes({
       integration: new HttpLambdaIntegration('login', loginFunction.lambda),
       path: '/login',
-      methods: [apigatewayv2.HttpMethod.GET],
+      methods: [HttpMethod.GET],
     });
 
     this.api.addRoutes({
       integration: new HttpLambdaIntegration('logout', logoutFunction.lambda),
       path: '/logout',
-      methods: [apigatewayv2.HttpMethod.GET],
+      methods: [HttpMethod.GET],
     });
 
     this.api.addRoutes({
       integration: new HttpLambdaIntegration('auth', authFunction.lambda),
       path: '/auth',
-      methods: [apigatewayv2.HttpMethod.GET],
+      methods: [HttpMethod.GET],
     });
 
     this.api.addRoutes({
       integration: new HttpLambdaIntegration('home', homeFunction.lambda),
       path: '/',
-      methods: [apigatewayv2.HttpMethod.GET, apigatewayv2.HttpMethod.POST],
+      methods: [HttpMethod.GET, HttpMethod.POST],
     });
 
     this.api.addRoutes({
       integration: new HttpLambdaIntegration('home', linkUserFunction.lambda),
       path: '/linkuser',
-      methods: [apigatewayv2.HttpMethod.POST],
+      methods: [HttpMethod.POST],
     });
   }
 

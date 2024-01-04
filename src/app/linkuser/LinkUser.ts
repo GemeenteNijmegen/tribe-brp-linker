@@ -1,9 +1,9 @@
 import { Session } from '@gemeentenijmegen/session';
 import { Bsn } from '@gemeentenijmegen/utils/lib/Bsn';
 import { BrpApi } from './BrpApi';
-import { OpenIDConnect } from './OpenIDConnect';
 import { TribeApi } from './TribeApi';
 import { TribeUser } from './TribeUser';
+import { OpenIDConnect } from '../shared/OpenIDConnect';
 
 export class LinkUser {
   private params: any;

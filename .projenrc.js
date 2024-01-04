@@ -3,35 +3,52 @@ const { GemeenteNijmegenCdkApp } = require('@gemeentenijmegen/projen-project-typ
 const project = new GemeenteNijmegenCdkApp({
   cdkVersion: '2.45.0',
   defaultReleaseBranch: 'main',
-  devDeps: ['@gemeentenijmegen/projen-project-type'],
   name: 'tribe-brp-linker',
   deps: [
     'dotenv',
-    '@aws-cdk/aws-apigatewayv2-alpha',
-    '@aws-cdk/aws-apigatewayv2-integrations-alpha',
     'cdk-remote-stack',
     '@gemeentenijmegen/aws-constructs',
+    '@aws-sdk/client-dynamodb',
+    '@aws-sdk/client-secrets-manager',
+    '@aws-sdk/client-ssm',
+    '@gemeentenijmegen/apiclient',
+    '@gemeentenijmegen/apigateway-http',
+    '@gemeentenijmegen/session',
+    '@gemeentenijmegen/utils',
+    '@types/aws-lambda',
+    'axios',
+    'cookie',
+    'mustache',
+    'openid-client',
+  ],
+  devDeps: [
+    '@gemeentenijmegen/projen-project-type',
+    '@types/mustache',
+    '@types/cookie',
+    '@aws-sdk/types',
+    'aws-sdk-client-mock',
+    'axios-mock-adapter',
+    'dotenv',
+    '@glen/jest-raw-loader',
   ],
   jestOptions: {
     jestConfig: {
       setupFiles: ['dotenv/config'],
       testPathIgnorePatterns: ['/node_modules/', '/cdk.out', '/test/playwright'],
       roots: ['src', 'test'],
+      transform: {
+        '\\.[jt]sx?$': 'ts-jest',
+        '^.+\\.mustache$': '@glen/jest-raw-loader',
+      },
+      moduleFileExtensions: [
+        'js', 'json', 'jsx', 'ts', 'tsx', 'node', 'mustache',
+      ],
     },
   },
-  scripts: {
-    'install:login': 'cd src/app/login && npm install',
-    'install:auth': 'cd src/app/auth && npm install',
-    'install:home': 'cd src/app/home && npm install',
-    'install:linkuser': 'cd src/app/linkuser && npm install',
-    'install:logout': 'cd src/app/logout && npm install',
-    'postinstall': 'npm run install:login && npm run install:auth && npm run install:home && npm run install:logout && npm run install:linkuser',
-    'post-upgrade': ' \
-      (cd src/app/login && npx npm-check-updates -u --dep prod,dev && npm install) \
-      && (cd src/app/home && npx npm-check-updates -u --dep prod,dev && npm install) \
-      && (cd src/app/auth && npx npm-check-updates -u --dep prod,dev && npm install) \
-      && (cd src/app/linkuser && npx npm-check-updates -u --dep prod,dev && npm install) \
-      && (cd src/app/logout && npx npm-check-updates -u --dep prod,dev && npm install)',
+  bundlerOptions: {
+    loaders: {
+      mustache: 'text',
+    },
   },
   eslintOptions: {
     devdirs: ['src/app/login/tests', 'src/app/auth/tests', 'src/app/home/tests', 'src/app/linkuser/tests', 'src/app/logout/tests', '/test', '/build-tools'],
