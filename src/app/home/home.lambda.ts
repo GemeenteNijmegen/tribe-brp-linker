@@ -1,9 +1,9 @@
 import { parse } from 'querystring';
+import { homeRequestHandler } from './homeRequestHandler';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { ApiClient } from '@gemeentenijmegen/apiclient';
 import { Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
 import { APIGatewayProxyEventV2 } from 'aws-lambda';
-import { homeRequestHandler } from './homeRequestHandler';
 
 const dynamoDBClient = new DynamoDBClient({});
 const apiClient = new ApiClient();

@@ -1,8 +1,8 @@
 import { parse } from 'querystring';
+import { LinkUser } from './LinkUser';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { ApiClient } from '@gemeentenijmegen/apiclient';
 import { APIGatewayProxyEventV2 } from 'aws-lambda';
-import { LinkUser } from './LinkUser';
 
 const dynamoDBClient = new DynamoDBClient({});
 const apiClient = new ApiClient();

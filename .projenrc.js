@@ -6,8 +6,6 @@ const project = new GemeenteNijmegenCdkApp({
   name: 'tribe-brp-linker',
   deps: [
     'dotenv',
-    '@aws-cdk/aws-apigatewayv2-alpha',
-    '@aws-cdk/aws-apigatewayv2-integrations-alpha',
     'cdk-remote-stack',
     '@gemeentenijmegen/aws-constructs',
     '@aws-sdk/client-dynamodb',

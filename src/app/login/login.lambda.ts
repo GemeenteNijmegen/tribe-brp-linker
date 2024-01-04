@@ -1,6 +1,6 @@
+import { handleLoginRequest } from './loginRequestHandler';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
-import { handleLoginRequest } from './loginRequestHandler';
 
 const dynamoDBClient = new DynamoDBClient({});
 

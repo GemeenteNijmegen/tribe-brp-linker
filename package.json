@@ -38,7 +38,7 @@
     "projen": "npx projen"
   },
   "devDependencies": {
-    "@aws-sdk/types": "^3.468.0",
+    "@aws-sdk/types": "^3.485.0",
     "@gemeentenijmegen/projen-project-type": "^1.5.4",
     "@glen/jest-raw-loader": "^2.0.0",
     "@types/cookie": "^0.6.0",
@@ -64,11 +64,9 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@aws-cdk/aws-apigatewayv2-alpha": "^2.114.1-alpha.0",
-    "@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.114.1-alpha.0",
-    "@aws-sdk/client-dynamodb": "^3.484.0",
-    "@aws-sdk/client-secrets-manager": "^3.484.0",
-    "@aws-sdk/client-ssm": "^3.484.0",
+    "@aws-sdk/client-dynamodb": "^3.485.0",
+    "@aws-sdk/client-secrets-manager": "^3.485.0",
+    "@aws-sdk/client-ssm": "^3.485.0",
     "@gemeentenijmegen/apiclient": "^0.0.9",
     "@gemeentenijmegen/apigateway-http": "^0.0.7",
     "@gemeentenijmegen/aws-constructs": "^0.0.4",
@@ -76,7 +74,7 @@
     "@gemeentenijmegen/utils": "^0.0.5",
     "@types/aws-lambda": "^8.10.130",
     "aws-cdk-lib": "^2.45.0",
-    "axios": "^1.6.3",
+    "axios": "^1.6.4",
     "cdk-remote-stack": "^2.0.101",
     "constructs": "^10.0.5",
     "cookie": "^0.6.0",
