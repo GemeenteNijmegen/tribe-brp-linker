@@ -151,7 +151,12 @@
           "**/src/app/linkuser/tests/**",
           "**/src/app/logout/tests/**",
           "**//test/**",
-          "**//build-tools/**"
+          "**//build-tools/**",
+          "src/app/auth/auth.lambda.ts",
+          "src/app/home/home.lambda.ts",
+          "src/app/linkuser/linkuser.lambda.ts",
+          "src/app/login/login.lambda.ts",
+          "src/app/logout/logout.lambda.ts"
         ],
         "optionalDependencies": false,
         "peerDependencies": true

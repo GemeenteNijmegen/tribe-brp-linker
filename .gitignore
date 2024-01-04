@@ -47,7 +47,6 @@ junit.xml
 /dist/changelog.md
 /dist/version.txt
 !/.github/workflows/release.yml
-!/.mergify.yml
 !/.github/workflows/upgrade-acceptance.yml
 !/.github/pull_request_template.md
 !/test/
@@ -62,5 +61,10 @@ junit.xml
 /cdk.out/
 .cdk.staging/
 .parcel-cache/
+!/src/app/auth/auth-function.ts
+!/src/app/home/home-function.ts
+!/src/app/linkuser/linkuser-function.ts
+!/src/app/login/login-function.ts
+!/src/app/logout/logout-function.ts
 !/.github/workflows/emergency.yml
 !/.github/workflows/auto-merge.yml
