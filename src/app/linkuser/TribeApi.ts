@@ -1,7 +1,7 @@
+import axios, { Axios } from 'axios';
 import { Address } from './Address';
 import { InwonerRelationship } from './InwonerRelationship';
 import { PersonRelation } from './PersonRelation';
-import axios, { Axios } from 'axios';
 
 export class TribeApi {
   public static readonly bsnField = '_9ecc8d21__f69a__4f4c__a239__5db7a5f21ddd';

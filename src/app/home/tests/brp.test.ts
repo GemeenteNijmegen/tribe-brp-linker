@@ -1,6 +1,6 @@
 import fs from 'fs';
-import { BrpApi } from '../BrpApi';
 import { ApiClient } from '@gemeentenijmegen/apiclient';
+import { BrpApi } from '../BrpApi';
 
 async function getStringFromFilePath(filePath: string): Promise<string> {
   return new Promise((res, rej) => {
