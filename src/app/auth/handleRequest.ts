@@ -1,6 +1,6 @@
-import { OpenIDConnect } from '../shared/OpenIDConnect';
 import { Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
 import { Session } from '@gemeentenijmegen/session';
+import { OpenIDConnect } from '../shared/OpenIDConnect';
 
 export async function handleRequest(
   cookies: any, queryStringParamCode: string,
