@@ -1,6 +1,6 @@
+import { handleRequest } from './handleRequest';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
-import { handleRequest } from './handleRequest';
 
 const dynamoDBClient = new DynamoDBClient({});
 

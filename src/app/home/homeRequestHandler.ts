@@ -1,9 +1,11 @@
+import { BrpApi } from './BrpApi';
+import * as controle_form from './templates/controle_form.mustache';
+import * as homeTemplate from './templates/home.mustache';
+import { OpenIDConnect } from '../shared/OpenIDConnect';
+import { render } from '../shared/render';
 import { Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
 import { Session } from '@gemeentenijmegen/session';
 import { Bsn } from '@gemeentenijmegen/utils/lib/Bsn';
-import { BrpApi } from './BrpApi';
-import { OpenIDConnect } from '../shared/OpenIDConnect';
-import { render } from '../shared/render';
 
 export class Home {
   private params: any;
@@ -53,12 +55,12 @@ export class Home {
     }
     // render page
     if (this.params.accepts == 'application/json') {
-      const html = await render(data, __dirname + '/templates/controle_form.mustache');
+      const html = await render(data, controle_form.default);
       data.html = html;
       return Response.json(data, 200, this.session?.getCookie());
     } else {
-      const html = await render(data, __dirname + '/templates/home.mustache', {
-        controle_form: `${__dirname}/templates/controle_form.mustache`,
+      const html = await render(data, homeTemplate.default, {
+        controle_form: controle_form.default,
       });
       return Response.html(html, 200, this.session?.getCookie());
     }
