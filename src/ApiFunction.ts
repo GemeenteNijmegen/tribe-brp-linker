@@ -31,6 +31,7 @@ export class ApiFunction extends Construct {
       handler: 'index.handler', // required but overwritten
       code: Lambda.Code.fromInline('empty'), // required but overwritten
       memorySize: 512,
+      timeout: Duration.seconds(10),
       description: props.description,
       insightsVersion: Lambda.LambdaInsightsVersion.fromInsightVersionArn(insightsArn),
       logRetention: RetentionDays.ONE_MONTH,
