@@ -2,8 +2,8 @@ import { Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
 import { Session } from '@gemeentenijmegen/session';
 import { Bsn } from '@gemeentenijmegen/utils/lib/Bsn';
 import { BrpApi } from './BrpApi';
-import { render } from './shared/render';
-import { OpenIDConnect } from '../auth/shared/OpenIDConnect';
+import { OpenIDConnect } from '../shared/OpenIDConnect';
+import { render } from '../shared/render';
 
 export class Home {
   private params: any;
@@ -53,13 +53,11 @@ export class Home {
     }
     // render page
     if (this.params.accepts == 'application/json') {
-      const html = await render(data, __dirname + '/templates/controle_form.mustache', {});
+      const html = await render(data, __dirname + '/templates/controle_form.mustache');
       data.html = html;
       return Response.json(data, 200, this.session?.getCookie());
     } else {
       const html = await render(data, __dirname + '/templates/home.mustache', {
-        header: `${__dirname}/shared/header.mustache`,
-        footer: `${__dirname}/shared/footer.mustache`,
         controle_form: `${__dirname}/templates/controle_form.mustache`,
       });
       return Response.html(html, 200, this.session?.getCookie());

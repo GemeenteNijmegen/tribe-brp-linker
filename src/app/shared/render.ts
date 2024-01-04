@@ -1,5 +1,7 @@
 import fs from 'fs/promises';
 import Mustache from 'mustache';
+import * as footer from './footer.mustache';
+import * as header from './header.mustache';
 
 /**
  * Render data in a mustache template
@@ -8,9 +10,12 @@ import Mustache from 'mustache';
  * @param {string} templatePath the path to the mustache template
  * @returns string
  */
-export async function render(data: any, templatePath: any, partials: any) {
+export async function render(data: any, templatePath: any, partials?: any) {
   const template = await fs.readFile(templatePath, 'utf8');
-  let partialTemplates : any = {};
+  let partialTemplates : any = {
+    header: header.default,
+    footer: footer.default,
+  };
   if (partials) {
     const keys = Object.keys(partials);
     for (let i = 0; i < keys.length; i++) {
