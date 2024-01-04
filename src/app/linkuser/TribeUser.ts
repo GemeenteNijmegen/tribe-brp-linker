@@ -1,7 +1,7 @@
-import { Bsn } from '@gemeentenijmegen/utils/lib/Bsn';
 import { Address } from './Address';
 import { PersonRelation } from './PersonRelation';
 import { TribeApi } from './TribeApi';
+import { Bsn } from '@gemeentenijmegen/utils/lib/Bsn';
 
 export class TribeUser {
   private tribeApi: TribeApi;
