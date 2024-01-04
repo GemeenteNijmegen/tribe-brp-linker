@@ -1,11 +1,11 @@
 import * as fs from 'fs';
 import path from 'path';
-import { BrpApi } from '../BrpApi';
-import { TribeApi } from '../TribeApi';
-import { TribeUser } from '../TribeUser';
 import { ApiClient } from '@gemeentenijmegen/apiclient';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import { BrpApi } from '../BrpApi';
+import { TribeApi } from '../TribeApi';
+import { TribeUser } from '../TribeUser';
 
 const axiosMock = new MockAdapter(axios);
 

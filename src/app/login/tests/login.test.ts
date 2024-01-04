@@ -1,7 +1,7 @@
-import { handler } from '../login.lambda';
-import { handleLoginRequest } from '../loginRequestHandler';
 import { DynamoDBClient, GetItemCommandOutput, GetItemCommand } from '@aws-sdk/client-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
+import { handler } from '../login.lambda';
+import { handleLoginRequest } from '../loginRequestHandler';
 
 const ddbMock = mockClient(DynamoDBClient);
 

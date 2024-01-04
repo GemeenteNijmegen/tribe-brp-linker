@@ -1,7 +1,7 @@
-import { render } from '../shared/render';
 import { Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
 import { Session } from '@gemeentenijmegen/session';
 import cookie from 'cookie';
+import { render } from '../shared/render';
 
 export async function handleLogoutRequest(cookies:string, dynamoDBClient: any) {
   let session = new Session(cookies, dynamoDBClient);
