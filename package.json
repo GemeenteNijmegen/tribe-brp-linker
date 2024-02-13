@@ -50,7 +50,7 @@
     "aws-cdk": "^2.45.0",
     "aws-sdk-client-mock": "^3.0.1",
     "axios-mock-adapter": "^1.22.0",
-    "dotenv": "^16.4.2",
+    "dotenv": "^16.4.3",
     "esbuild": "^0.20.0",
     "eslint": "^8",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -78,7 +78,7 @@
     "cdk-remote-stack": "^2.0.101",
     "constructs": "^10.0.5",
     "cookie": "^0.6.0",
-    "dotenv": "^16.4.2",
+    "dotenv": "^16.4.3",
     "mustache": "^4.2.0",
     "openid-client": "^5.6.4"
   },
