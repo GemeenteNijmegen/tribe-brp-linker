@@ -50,7 +50,7 @@
     "aws-cdk": "^2.45.0",
     "aws-sdk-client-mock": "^3.0.1",
     "axios-mock-adapter": "^1.22.0",
-    "dotenv": "^16.4.4",
+    "dotenv": "^16.4.5",
     "esbuild": "^0.20.1",
     "eslint": "^8",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -64,7 +64,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.515.0",
+    "@aws-sdk/client-dynamodb": "^3.518.0",
     "@aws-sdk/client-secrets-manager": "^3.515.0",
     "@aws-sdk/client-ssm": "^3.515.0",
     "@gemeentenijmegen/apiclient": "^0.0.12",
@@ -78,7 +78,7 @@
     "cdk-remote-stack": "^2.0.101",
     "constructs": "^10.0.5",
     "cookie": "^0.6.0",
-    "dotenv": "^16.4.4",
+    "dotenv": "^16.4.5",
     "mustache": "^4.2.0",
     "openid-client": "^5.6.4"
   },
