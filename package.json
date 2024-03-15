@@ -51,7 +51,7 @@
     "aws-sdk-client-mock": "^3.0.1",
     "axios-mock-adapter": "^1.22.0",
     "dotenv": "^16.4.5",
-    "esbuild": "^0.20.1",
+    "esbuild": "^0.20.2",
     "eslint": "^8",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
@@ -65,7 +65,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.533.0",
-    "@aws-sdk/client-secrets-manager": "^3.533.0",
+    "@aws-sdk/client-secrets-manager": "^3.534.0",
     "@aws-sdk/client-ssm": "^3.533.0",
     "@gemeentenijmegen/apiclient": "^0.0.12",
     "@gemeentenijmegen/apigateway-http": "^0.0.8",
