@@ -1076,11 +1076,13 @@
     "@aws-sdk/client-dynamodb" "^3.499.0"
     cookie "^0.6.0"
 
-"@gemeentenijmegen/utils@file:../modules/nijmegen-utils/dist/js/package":
-  version "0.0.0"
+"@gemeentenijmegen/utils@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@gemeentenijmegen/utils/-/utils-0.0.6.tgz#6a979e884a1500c883358e5533555b0e5f944d03"
+  integrity sha512-Kk6HRhdlbSBaAPjfvRSSvCT/aymjWkUamlMXbI7X4SPiaK/CIuk6OvY+EMsTd3nOH0D+T0pvbC/JkbkN9HW/4g==
   dependencies:
-    "@aws-sdk/client-secrets-manager" "^3.549.0"
-    "@aws-sdk/client-ssm" "^3.549.0"
+    "@aws-sdk/client-secrets-manager" "^3.509.0"
+    "@aws-sdk/client-ssm" "^3.509.0"
 
 "@glen/jest-raw-loader@^2.0.0":
   version "2.0.0"
