@@ -121,7 +121,7 @@
     tslib "^2.6.2"
     uuid "^9.0.1"
 
-"@aws-sdk/client-secrets-manager@^3.543.0", "@aws-sdk/client-secrets-manager@^3.549.0", "@aws-sdk/client-secrets-manager@^3.574.0":
+"@aws-sdk/client-secrets-manager@^3.509.0", "@aws-sdk/client-secrets-manager@^3.543.0", "@aws-sdk/client-secrets-manager@^3.574.0":
   version "3.574.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/client-secrets-manager/-/client-secrets-manager-3.574.0.tgz#afb7e5faad87a1f2dd90d57bef1d9f9fad301d89"
   integrity sha512-EhHHUkG7WX1ltBgjwn4eV2BW/vDSDWbEvSkrTktEukXI59lMHD2nPOzdb9Q9/EutBGnOi4g2wEEmye1N0LWg+Q==
@@ -169,7 +169,7 @@
     tslib "^2.6.2"
     uuid "^9.0.1"
 
-"@aws-sdk/client-ssm@^3.540.0", "@aws-sdk/client-ssm@^3.549.0", "@aws-sdk/client-ssm@^3.574.0":
+"@aws-sdk/client-ssm@^3.509.0", "@aws-sdk/client-ssm@^3.540.0", "@aws-sdk/client-ssm@^3.574.0":
   version "3.574.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/client-ssm/-/client-ssm-3.574.0.tgz#617eab2e5e8e4ad8d43078a22140376acb5bbd3f"
   integrity sha512-OeAX7M5PScxkUfAVmCE5ji/EuVUxbPgupsSTSUmfUSzncRHI3pd2DtA1W6q9Z3RA9il5XAVSDzEzDDN6ZFCq/A==
