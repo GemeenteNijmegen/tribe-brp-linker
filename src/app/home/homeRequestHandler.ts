@@ -45,9 +45,14 @@ export class Home {
 
     if (this.params.method == 'POST') {
       try {
-        const bsn = new Bsn(this.params.body.bsn);
-        data.controle_data = await this.brpData(bsn);
-        data.bsn = bsn.bsn;
+        const bsnValidationResult = Bsn.validate(this.params.body.bsn);
+        if (!bsnValidationResult.success) {
+          data.error = `Geen geldig bsn opgegeven: ${bsnValidationResult.message}`;
+        } else {
+          const bsn = new Bsn(this.params.body.bsn);
+          data.controle_data = await this.brpData(bsn);
+          data.bsn = bsn.bsn;
+        }
       } catch (error) {
         data.error = 'Er is iets misgegaan, probeer het opnieuw.';
         console.error(error);
