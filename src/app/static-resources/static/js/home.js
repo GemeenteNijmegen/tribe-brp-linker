@@ -141,15 +141,21 @@ function post(url, params, sendingButton) {
     if(data.redirect_to) {
       window.location.replace(data.redirect_to);
     }
+    if(data.error) {
+      showErrorMessage(sendingButton, data.error);
+    }
   })
   .catch(error => {
     console.error(error);
     resetButton(sendingButton);
-    const errorElement = htmlStringToElement('<p class="warning">Er is iets misgegaan. Probeer het opnieuw.</p>');
-    sendingButton.parentElement.appendChild(errorElement);
+    showErrorMessage(sendingButton, 'Er is iets misgegaan.');
   });
 }
 
 addFormEventHandlers();
 addCopyToClipboardButtons();
 
+function showErrorMessage(besidesElement, error) {
+  const errorElement = htmlStringToElement(`<p class="warning">${error}</p>`);
+  besidesElement.parentElement.appendChild(errorElement);
+}
