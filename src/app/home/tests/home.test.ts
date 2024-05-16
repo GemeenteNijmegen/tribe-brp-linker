@@ -114,6 +114,19 @@ describe('Requests to home route', () => {
     const incorrectTokenResult = await incorrectHome.handleRequest();
     expect(incorrectTokenResult.statusCode).toBe(403);
   });
+
+  test('Incorrect BSN shows error', async () => {
+    const apiClient = new FileApiClient();
+    const dynamoDBClient = new DynamoDBClient({ region: 'eu-west-1' });
+    const home = new Home({
+      method: 'POST',
+      cookies: 'session=12345',
+      contact_id: 'test',
+      body: { bsn: '999998620', xsrf_token: xsrf_token },
+    }, apiClient, dynamoDBClient, mockedOidcClient());
+    const result = await home.handleRequest();
+    expect(result.body).toMatch('Geen geldig bsn opgegeven');
+  });
 });
 
 describe('Requests can return json', () => {

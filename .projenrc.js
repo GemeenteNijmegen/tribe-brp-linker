@@ -51,7 +51,7 @@ const project = new GemeenteNijmegenCdkApp({
     },
   },
   eslintOptions: {
-    devdirs: ['src/app/login/tests', 'src/app/auth/tests', 'src/app/home/tests', 'src/app/linkuser/tests', 'src/app/logout/tests', '/test', '/build-tools'],
+    devdirs: ['src/**/tests', '/test', '/build-tools'],
   },
   gitignore: [
     'src/app/**/tests/output',
