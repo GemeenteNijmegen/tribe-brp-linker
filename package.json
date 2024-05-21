@@ -65,7 +65,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.577.0",
-    "@aws-sdk/client-secrets-manager": "^3.578.0",
+    "@aws-sdk/client-secrets-manager": "^3.580.0",
     "@aws-sdk/client-ssm": "^3.577.0",
     "@gemeentenijmegen/apiclient": "^0.0.14",
     "@gemeentenijmegen/apigateway-http": "^0.0.8",
@@ -74,7 +74,7 @@
     "@gemeentenijmegen/utils": "^0.0.12",
     "@types/aws-lambda": "^8.10.138",
     "aws-cdk-lib": "^2.45.0",
-    "axios": "^1.7.0",
+    "axios": "^1.7.1",
     "cdk-remote-stack": "^2.0.101",
     "constructs": "^10.0.5",
     "cookie": "^0.6.0",
