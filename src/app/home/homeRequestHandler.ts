@@ -45,11 +45,12 @@ export class Home {
 
     if (this.params.method == 'POST') {
       try {
-        const bsnValidationResult = Bsn.validate(this.params.body.bsn);
+        const providedBsnString = this.params.body.bsn.replace(/\D/g, ''); //strip all nonnumeric characters
+        const bsnValidationResult = Bsn.validate(providedBsnString);
         if (!bsnValidationResult.success) {
           data.error = `Geen geldig bsn opgegeven: ${bsnValidationResult.message}`;
         } else {
-          const bsn = new Bsn(this.params.body.bsn);
+          const bsn = new Bsn(providedBsnString);
           data.controle_data = await this.brpData(bsn);
           data.bsn = bsn.bsn;
         }

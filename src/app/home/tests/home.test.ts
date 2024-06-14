@@ -85,7 +85,7 @@ describe('Requests to home route', () => {
       method: 'POST',
       cookies: 'session=12345',
       contact_id: 'test',
-      body: { bsn: '900222670', xsrf_token: xsrf_token },
+      body: { bsn: '900.222.670', xsrf_token: xsrf_token }, //test with bsn including chars
     }, apiClient, dynamoDBClient, mockedOidcClient());
     const result = await home.handleRequest();
     expect(result.body).toMatch('Geboortedatum');
