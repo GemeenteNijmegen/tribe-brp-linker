@@ -59,7 +59,7 @@
     "jest-junit": "^15",
     "projen": "^0.84.13",
     "standard-version": "^9",
-    "ts-jest": "^29.2.4",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^4.9.5"
   },
@@ -74,7 +74,7 @@
     "@gemeentenijmegen/utils": "^0.0.15",
     "@types/aws-lambda": "^8.10.143",
     "aws-cdk-lib": "^2.45.0",
-    "axios": "^1.7.4",
+    "axios": "^1.7.5",
     "cdk-remote-stack": "^2.1.0",
     "constructs": "^10.0.5",
     "cookie": "^0.6.0",
