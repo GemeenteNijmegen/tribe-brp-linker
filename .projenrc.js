@@ -4,6 +4,7 @@ const project = new GemeenteNijmegenCdkApp({
   cdkVersion: '2.45.0',
   defaultReleaseBranch: 'main',
   name: 'tribe-brp-linker',
+  repository: 'https://github.com/GemeenteNijmegen/tribe-brp-linker.git',
   deps: [
     'dotenv',
     'cdk-remote-stack',
