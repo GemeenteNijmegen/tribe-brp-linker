@@ -1,5 +1,9 @@
 {
   "name": "tribe-brp-linker",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GemeenteNijmegen/tribe-brp-linker.git"
+  },
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -38,11 +42,11 @@
     "projen": "npx projen"
   },
   "devDependencies": {
-    "@aws-sdk/types": "^3.609.0",
-    "@gemeentenijmegen/projen-project-type": "^1.7.4",
+    "@aws-sdk/types": "^3.654.0",
+    "@gemeentenijmegen/projen-project-type": "^1.8.1",
     "@glen/jest-raw-loader": "^2.0.0",
     "@types/cookie": "^0.6.0",
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.13",
     "@types/mustache": "^4.2.5",
     "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^7",
@@ -50,28 +54,28 @@
     "aws-cdk": "^2.45.0",
     "aws-sdk-client-mock": "^3.1.0",
     "axios-mock-adapter": "^1.22.0",
+    "commit-and-tag-version": "^12",
     "dotenv": "^16.4.5",
-    "esbuild": "^0.23.1",
+    "esbuild": "^0.24.0",
     "eslint": "^8",
     "eslint-import-resolver-typescript": "^3.6.3",
-    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-import": "^2.30.0",
     "jest": "^29.7.0",
     "jest-junit": "^15",
-    "projen": "^0.84.13",
-    "standard-version": "^9",
+    "projen": "^0.88.0",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.637.0",
-    "@aws-sdk/client-secrets-manager": "^3.637.0",
-    "@aws-sdk/client-ssm": "^3.637.0",
-    "@gemeentenijmegen/apiclient": "^0.0.17",
-    "@gemeentenijmegen/apigateway-http": "^0.0.15",
-    "@gemeentenijmegen/aws-constructs": "^0.0.20",
-    "@gemeentenijmegen/session": "^0.0.14",
-    "@gemeentenijmegen/utils": "^0.0.15",
+    "@aws-sdk/client-dynamodb": "^3.658.1",
+    "@aws-sdk/client-secrets-manager": "^3.658.1",
+    "@aws-sdk/client-ssm": "^3.658.1",
+    "@gemeentenijmegen/apiclient": "^0.0.18",
+    "@gemeentenijmegen/apigateway-http": "^0.0.16",
+    "@gemeentenijmegen/aws-constructs": "^0.0.21",
+    "@gemeentenijmegen/session": "^0.0.16",
+    "@gemeentenijmegen/utils": "^0.0.17",
     "@types/aws-lambda": "^8.10.145",
     "aws-cdk-lib": "^2.45.0",
     "axios": "^1.7.7",
@@ -80,7 +84,7 @@
     "cookie": "^0.6.0",
     "dotenv": "^16.4.5",
     "mustache": "^4.2.0",
-    "openid-client": "^5.6.5"
+    "openid-client": "^5.7.0"
   },
   "license": "EUPL-1.2",
   "publishConfig": {
