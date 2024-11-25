@@ -37,7 +37,6 @@ export class TribeApi {
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        console.log(error.response.data);
         console.log(error.response.status);
         console.log(error.response.headers);
       } else if (error.request) {
@@ -56,7 +55,6 @@ export class TribeApi {
 
   async post(url: string, params?: any) {
     try {
-      console.debug('posting ', this.axios.getUri({ url, params }));
       const response = await this.axios.post(url, params);
       if (typeof response.data === 'string') {
         return JSON.parse(response.data);
@@ -66,7 +64,6 @@ export class TribeApi {
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        console.error(error.response.data);
         console.error(error.response.status);
         console.error(error.response.headers);
       } else if (error.request) {

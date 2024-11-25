@@ -106,7 +106,6 @@ export class TribeUser {
     if (await this.exists()) {
       return this.update(fields);
     }
-    console.debug('creating user', fields);
     try {
       // Add BSN to new relation in Tribe.
       fields[TribeApi.bsnField] = this.bsn.bsn;
@@ -122,7 +121,6 @@ export class TribeUser {
       });
       this.relationId = personRelationId;
       this.inwonerId = inwonerId;
-      console.debug('created user', this);
       return true;
     } catch (error) {
       console.debug(error);
@@ -178,7 +176,6 @@ export class TribeUser {
   }
 
   async createAddress(fields: Partial<Address>) {
-    console.debug('updating address', fields);
     if (await this.hasAddress()) {
       return this.updateAddress(fields);
     }
@@ -192,7 +189,6 @@ export class TribeUser {
     console.debug('about to post');
     try {
       const result = await this.tribeApi.postAddress(fields, this.relationId);
-      console.debug('created address', this);
       console.debug(result);
       return result;
     } catch (error) {
