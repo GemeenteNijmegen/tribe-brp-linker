@@ -76,7 +76,7 @@
     "@gemeentenijmegen/apigateway-http": "^0.0.19",
     "@gemeentenijmegen/aws-constructs": "^0.0.25",
     "@gemeentenijmegen/session": "^0.0.19",
-    "@gemeentenijmegen/utils": "^0.0.21",
+    "@gemeentenijmegen/utils": "^0.0.22",
     "@types/aws-lambda": "^8.10.146",
     "aws-cdk-lib": "^2.45.0",
     "axios": "^1.7.9",
