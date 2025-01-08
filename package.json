@@ -69,12 +69,12 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.723.0",
+    "@aws-sdk/client-dynamodb": "^3.724.0",
     "@aws-sdk/client-secrets-manager": "^3.723.0",
     "@aws-sdk/client-ssm": "^3.723.0",
     "@gemeentenijmegen/apiclient": "^0.0.23",
     "@gemeentenijmegen/apigateway-http": "^0.0.20",
-    "@gemeentenijmegen/aws-constructs": "^0.0.26",
+    "@gemeentenijmegen/aws-constructs": "^0.0.28",
     "@gemeentenijmegen/session": "^0.0.20",
     "@gemeentenijmegen/utils": "^0.0.23",
     "@types/aws-lambda": "^8.10.147",
