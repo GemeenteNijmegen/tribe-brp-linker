@@ -74,7 +74,7 @@
     "@aws-sdk/client-ssm": "^3.726.1",
     "@gemeentenijmegen/apiclient": "^0.0.23",
     "@gemeentenijmegen/apigateway-http": "^0.0.20",
-    "@gemeentenijmegen/aws-constructs": "^0.0.28",
+    "@gemeentenijmegen/aws-constructs": "^0.0.29",
     "@gemeentenijmegen/session": "^0.0.20",
     "@gemeentenijmegen/utils": "^0.0.23",
     "@types/aws-lambda": "^8.10.147",
