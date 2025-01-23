@@ -69,7 +69,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.731.1",
+    "@aws-sdk/client-dynamodb": "^3.733.0",
     "@aws-sdk/client-secrets-manager": "^3.731.1",
     "@aws-sdk/client-ssm": "^3.731.1",
     "@gemeentenijmegen/apiclient": "^0.0.23",
