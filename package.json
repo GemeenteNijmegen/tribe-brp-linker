@@ -71,7 +71,7 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.734.0",
     "@aws-sdk/client-secrets-manager": "^3.734.0",
-    "@aws-sdk/client-ssm": "^3.734.0",
+    "@aws-sdk/client-ssm": "^3.735.0",
     "@gemeentenijmegen/apiclient": "^0.0.23",
     "@gemeentenijmegen/apigateway-http": "^0.0.20",
     "@gemeentenijmegen/aws-constructs": "^0.0.29",
