@@ -50,7 +50,6 @@ export class LinkUser {
         FirstName: brpData.firstName,
         LastName: brpData.lastName,
         MiddleName: brpData.middleName,
-        BirthDate: brpData.iso8601Birthday,
       });
 
       await Promise.all([
