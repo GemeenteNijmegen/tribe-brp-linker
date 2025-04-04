@@ -4,8 +4,8 @@ export abstract class Statics {
   static readonly subDomain: string = 'tribebrp';
 
   /**
-   * Repo information
-   */
+    * Repo information
+    */
 
   static readonly repository: string = 'tribe-brp-linker';
   static readonly repositoryOwner: string = 'GemeenteNijmegen';
@@ -19,9 +19,9 @@ export abstract class Statics {
   static readonly ssmAccountDnsSecKmsKey: string = '/gemeente-nijmegen/account/dnssec/kmskey/arn';
 
   /**
-   * Route53 Zone ID and name for the zone for the application. decouples stacks to not pass
-   * the actual zone between stacks. This param is set by DNSStack and should not be modified after.
-   */
+    * Route53 Zone ID and name for the zone for the application. decouples stacks to not pass
+    * the actual zone between stacks. This param is set by DNSStack and should not be modified after.
+    */
   static readonly ssmZonePath: string = `/${this.projectName}/zones`;
   static readonly ssmZoneId: string = `/${this.projectName}/zones/zone-id`;
   static readonly ssmZoneName: string = `/${this.projectName}/zones/zone-name`;
@@ -35,17 +35,16 @@ export abstract class Statics {
   static readonly certificateArn: string = `/${this.projectName}/certificates/certificate-arn`;
 
   /**
-   * Authentication URL base, used in auth and login lambda
-   */
+    * Authentication URL base, used in auth and login lambda
+    */
   static readonly ssmAuthUrlBaseParameter: string = `/${this.projectName}/authUrlBase`;
 
   /**
-   * Authentication URL base, used in auth and login lambda
-   */
+    * Authentication URL base, used in auth and login lambda
+    */
   static readonly ssmAuthOrgId: string = `/${this.projectName}/AuthOrgId`;
 
   /**
-   *
     * OpenID Connect client ID (sent in URL as querystring-param, not secret)
     */
   static readonly ssmOIDCClientID: string = `/${this.projectName}/authClientID`;
@@ -70,8 +69,8 @@ export abstract class Statics {
   static readonly ssmMTLSClientCert: string = `/${this.projectName}/mtls-clientcert`;
 
   /**
-     * Root CA for mTLS (PKIO root)
-     */
+    * Root CA for mTLS (PKIO root)
+    */
   static readonly ssmMTLSRootCA: string = `/${this.projectName}/mtls-rootca`;
 
   static readonly ssmBrpApiEndpointUrl: string = `/${this.projectName}/brp-api-url`;
@@ -79,5 +78,4 @@ export abstract class Statics {
   static readonly ssmSessionsTableArn: string = `/${this.projectName}/sessionstable-arn`;
 
   static readonly ssmDataKeyArn: string = `/${this.projectName}/kms-datakey-arn`;
-
 }
