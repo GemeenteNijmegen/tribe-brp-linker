@@ -3,7 +3,7 @@ import { Issuer, generators } from 'openid-client';
 
 export class OpenIDConnect {
   issuer;
-  clientSecret : string|undefined = undefined;
+  clientSecret: string|undefined = undefined;
 
   /**
      * Helper class for our OIDC auth flow
