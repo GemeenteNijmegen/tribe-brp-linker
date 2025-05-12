@@ -4,7 +4,7 @@ import { Construct } from 'constructs';
 import { ApiStage } from './ApiStage';
 import { Statics } from './statics';
 
-export interface PipelineStackProps extends StackProps{
+export interface PipelineStackProps extends StackProps {
   branchName: string;
   deployToEnvironment: Environment;
 }
