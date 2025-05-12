@@ -16,7 +16,7 @@ export class UsEastCertificateStack extends Stack {
     this.createCertificate(props.appRegion);
   }
 
-  getZoneAttributes(parameters: RemoteParameters, id: string, name: string): { hostedZoneId: string; zoneName: string} {
+  getZoneAttributes(parameters: RemoteParameters, id: string, name: string): { hostedZoneId: string; zoneName: string } {
     const zoneId = parameters.get(id);
     const zoneName = parameters.get(name);
     return {
