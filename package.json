@@ -42,7 +42,7 @@
     "projen": "npx projen"
   },
   "devDependencies": {
-    "@aws-sdk/types": "^3.840.0",
+    "@aws-sdk/types": "^3.862.0",
     "@gemeentenijmegen/projen-project-type": "^1.11.2",
     "@glen/jest-raw-loader": "^2.0.0",
     "@stylistic/eslint-plugin": "^2",
@@ -69,9 +69,9 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.859.0",
-    "@aws-sdk/client-secrets-manager": "^3.859.0",
-    "@aws-sdk/client-ssm": "^3.859.0",
+    "@aws-sdk/client-dynamodb": "^3.862.0",
+    "@aws-sdk/client-secrets-manager": "^3.862.0",
+    "@aws-sdk/client-ssm": "^3.862.0",
     "@gemeentenijmegen/apiclient": "^0.0.34",
     "@gemeentenijmegen/apigateway-http": "^0.0.29",
     "@gemeentenijmegen/aws-constructs": "^0.0.41",
