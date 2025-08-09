@@ -69,9 +69,9 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.863.0",
-    "@aws-sdk/client-secrets-manager": "^3.863.0",
-    "@aws-sdk/client-ssm": "^3.863.0",
+    "@aws-sdk/client-dynamodb": "^3.864.0",
+    "@aws-sdk/client-secrets-manager": "^3.864.0",
+    "@aws-sdk/client-ssm": "^3.864.0",
     "@gemeentenijmegen/apiclient": "^0.0.34",
     "@gemeentenijmegen/apigateway-http": "^0.0.29",
     "@gemeentenijmegen/aws-constructs": "^0.0.41",
