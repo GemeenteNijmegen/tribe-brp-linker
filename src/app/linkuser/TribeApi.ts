@@ -1,4 +1,4 @@
-import axios, { Axios } from 'axios';
+import axios, { Axios, AxiosInstance } from 'axios';
 import { Address } from './Address';
 import { InwonerRelationship } from './InwonerRelationship';
 import { PersonRelation } from './PersonRelation';
@@ -8,7 +8,7 @@ export class TribeApi {
   public readonly inwonerType = 'e0d6534a__cc84__4cf7__bdc5__d32f9311c09e';
   private contactMomentType = 'ec99e518__c6e2__4e5c__81b5__7f20ab721737';
   private baseUrl = 'https://api.tribecrm.nl/v1/odata';
-  private axios: Axios;
+  private axios: AxiosInstance;
 
   constructor(access_token: string) {
     this.axios = axios.create(
