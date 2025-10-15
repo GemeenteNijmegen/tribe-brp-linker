@@ -1,5 +1,9 @@
 {
   "name": "tribe-brp-linker",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GemeenteNijmegen/tribe-brp-linker.git"
+  },
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",

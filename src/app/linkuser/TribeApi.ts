@@ -1,4 +1,4 @@
-import axios, { Axios, AxiosInstance } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { Address } from './Address';
 import { InwonerRelationship } from './InwonerRelationship';
 import { PersonRelation } from './PersonRelation';
