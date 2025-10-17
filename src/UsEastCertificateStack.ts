@@ -1,4 +1,4 @@
-import { aws_certificatemanager as CertificateManager, Stack, StackProps, aws_ssm as SSM, RemovalPolicy } from 'aws-cdk-lib';
+import { aws_certificatemanager as CertificateManager, Stack, StackProps, aws_ssm as SSM, RemovalPolicy, Duration } from 'aws-cdk-lib';
 import { HostedZone } from 'aws-cdk-lib/aws-route53';
 import { RemoteParameters } from 'cdk-remote-stack';
 import { Construct } from 'constructs';
@@ -29,6 +29,7 @@ export class UsEastCertificateStack extends Stack {
     const parameters = new RemoteParameters(this, 'params', {
       path: `${Statics.ssmZonePath}/`,
       region,
+      timeout: Duration.seconds(10),
     });
     const zoneParams = this.getZoneAttributes(parameters, Statics.ssmZoneId, Statics.ssmZoneName);
     const zone = HostedZone.fromHostedZoneAttributes(this, 'zone', zoneParams);
