@@ -42,7 +42,7 @@
     "projen": "npx projen"
   },
   "devDependencies": {
-    "@aws-sdk/types": "^3.973.0",
+    "@aws-sdk/types": "^3.973.1",
     "@gemeentenijmegen/projen-project-type": "^1.12.0",
     "@glen/jest-raw-loader": "^2.0.0",
     "@stylistic/eslint-plugin": "^2",
