@@ -7,7 +7,7 @@ const project = new GemeenteNijmegenCdkApp({
   repository: 'https://github.com/GemeenteNijmegen/tribe-brp-linker.git',
   deps: [
     'dotenv',
-    'cdk-remote-stack',
+    '@gemeentenijmegen/cross-region-parameters',
     '@gemeentenijmegen/aws-constructs',
     '@aws-sdk/client-dynamodb',
     '@aws-sdk/client-secrets-manager',

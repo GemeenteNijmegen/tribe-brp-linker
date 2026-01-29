@@ -242,7 +242,7 @@
     "@smithy/util-utf8" "^4.2.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-ssm@^3.901.0", "@aws-sdk/client-ssm@^3.962.0", "@aws-sdk/client-ssm@^3.978.0":
+"@aws-sdk/client-ssm@^3.901.0", "@aws-sdk/client-ssm@^3.962.0", "@aws-sdk/client-ssm@^3.975.0", "@aws-sdk/client-ssm@^3.978.0":
   version "3.978.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/client-ssm/-/client-ssm-3.978.0.tgz#192b770c7cc47307523f52b00952ea0cd479258a"
   integrity sha512-93yOT9QlGcD2WO+QdRyrIKc7F7OgDZhCe9hyytPxXQnpchmNppajAU9EFtbqj9VI9cxf17ZfAGP5/LGPK/VeuA==
@@ -1389,6 +1389,15 @@
   version "0.0.47"
   resolved "https://registry.yarnpkg.com/@gemeentenijmegen/aws-constructs/-/aws-constructs-0.0.47.tgz#f718c539d71ff567ee9dc38e0374968c27f80347"
   integrity sha512-/oedntMDPqqNQS3GawlnpWc6HXMJ77g5UjmU8N8wV5ybzPZ7wkCMbaoRmTMDITxCIBFu7n14yX7axVmK4Y0FPA==
+
+"@gemeentenijmegen/cross-region-parameters@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@gemeentenijmegen/cross-region-parameters/-/cross-region-parameters-0.0.4.tgz#446f34b966ca9ba6ce588d49e58fe0cb274291a6"
+  integrity sha512-a0XCaDxjdhnO5NRDnXEOaEGs7p3m+MJQAsPixB+Bph/P2Tfb3wtTc++Ej7+OpdaR5vx07fOfxzO2IuC1uq5rAA==
+  dependencies:
+    "@aws-sdk/client-ssm" "^3.975.0"
+    "@types/aws-lambda" "^8.10.160"
+    zod "^4.3.6"
 
 "@gemeentenijmegen/projen-project-type@^1.12.0":
   version "1.12.0"
@@ -3143,11 +3152,6 @@ case@1.6.3, case@^1.6.3:
   resolved "https://registry.yarnpkg.com/case/-/case-1.6.3.tgz#0a4386e3e9825351ca2e6216c60467ff5f1ea1c9"
   integrity sha512-mzDSXIPaFwVDvZAHqZ9VlbyF4yyXRuX6IvB06WvPYkqJVO24kX1PPhv9bfpKNFZyxYFmmgo03HUiD8iklmJYRQ==
 
-cdk-remote-stack@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/cdk-remote-stack/-/cdk-remote-stack-2.1.0.tgz#a3d4e557cd5e2fe91cd53d7e19e01f4fda04b504"
-  integrity sha512-ycEmgLuRd/SXXFoJOQwcoSVtKekC/8dJjG9ix3wNaWhOtKJ9dcTB55Rk8uL5kAcXT5Z78ho07z6sebg9UL2uXg==
-
 chalk@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
@@ -3655,9 +3659,9 @@ dunder-proto@^1.0.0, dunder-proto@^1.0.1:
     gopd "^1.2.0"
 
 electron-to-chromium@^1.5.263:
-  version "1.5.279"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.279.tgz#67dfdeb22fd81412d0d18d1d9b2c749e9b8945cb"
-  integrity sha512-0bblUU5UNdOt5G7XqGiJtpZMONma6WAfq9vsFmtn9x1+joAObr6x1chfqyxFSDCAFwFhCQDrqeAr6MYdpwJ9Hg==
+  version "1.5.282"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.282.tgz#6695816e5b170210d6aa07561546ed7d97347630"
+  integrity sha512-FCPkJtpst28UmFzd903iU7PdeVTfY0KAeJy+Lk0GLZRwgwYHn/irRcaCbQQOmr5Vytc/7rcavsYLvTM8RiHYhQ==
 
 emittery@^0.13.1:
   version "0.13.1"
@@ -7162,3 +7166,8 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+zod@^4.3.6:
+  version "4.3.6"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-4.3.6.tgz#89c56e0aa7d2b05107d894412227087885ab112a"
+  integrity sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==

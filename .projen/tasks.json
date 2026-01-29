@@ -398,13 +398,13 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@18 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@aws-sdk/types,@glen/jest-raw-loader,@types/cookie,@types/jest,@types/mustache,@types/node,aws-sdk-client-mock,axios-mock-adapter,dotenv,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,jest,ts-jest,ts-node,typescript,@aws-sdk/client-dynamodb,@aws-sdk/client-secrets-manager,@aws-sdk/client-ssm,@gemeentenijmegen/apiclient,@gemeentenijmegen/apigateway-http,@gemeentenijmegen/aws-constructs,@gemeentenijmegen/projen-project-type,@gemeentenijmegen/session,@gemeentenijmegen/utils,@types/aws-lambda,axios,cdk-remote-stack,cookie,mustache,openid-client"
+          "exec": "npx npm-check-updates@18 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@aws-sdk/types,@glen/jest-raw-loader,@types/cookie,@types/jest,@types/mustache,@types/node,aws-sdk-client-mock,axios-mock-adapter,dotenv,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,jest,ts-jest,ts-node,typescript,@aws-sdk/client-dynamodb,@aws-sdk/client-secrets-manager,@aws-sdk/client-ssm,@gemeentenijmegen/apiclient,@gemeentenijmegen/apigateway-http,@gemeentenijmegen/aws-constructs,@gemeentenijmegen/cross-region-parameters,@gemeentenijmegen/projen-project-type,@gemeentenijmegen/session,@gemeentenijmegen/utils,@types/aws-lambda,axios,cookie,mustache,openid-client"
         },
         {
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @aws-sdk/types @glen/jest-raw-loader @stylistic/eslint-plugin @types/cookie @types/jest @types/mustache @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk aws-sdk-client-mock axios-mock-adapter commit-and-tag-version dotenv esbuild eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit projen ts-jest ts-node typescript @aws-sdk/client-dynamodb @aws-sdk/client-secrets-manager @aws-sdk/client-ssm @gemeentenijmegen/apiclient @gemeentenijmegen/apigateway-http @gemeentenijmegen/aws-constructs @gemeentenijmegen/projen-project-type @gemeentenijmegen/session @gemeentenijmegen/utils @types/aws-lambda aws-cdk-lib axios cdk-remote-stack constructs cookie mustache openid-client"
+          "exec": "yarn upgrade @aws-sdk/types @glen/jest-raw-loader @stylistic/eslint-plugin @types/cookie @types/jest @types/mustache @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk aws-sdk-client-mock axios-mock-adapter commit-and-tag-version dotenv esbuild eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit projen ts-jest ts-node typescript @aws-sdk/client-dynamodb @aws-sdk/client-secrets-manager @aws-sdk/client-ssm @gemeentenijmegen/apiclient @gemeentenijmegen/apigateway-http @gemeentenijmegen/aws-constructs @gemeentenijmegen/cross-region-parameters @gemeentenijmegen/projen-project-type @gemeentenijmegen/session @gemeentenijmegen/utils @types/aws-lambda aws-cdk-lib axios constructs cookie mustache openid-client"
         },
         {
           "exec": "npx projen"
