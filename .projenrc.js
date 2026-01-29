@@ -12,6 +12,7 @@ const project = new GemeenteNijmegenCdkApp({
     '@aws-sdk/client-dynamodb',
     '@aws-sdk/client-secrets-manager',
     '@aws-sdk/client-ssm',
+    '@gemeentenijmegen/projen-project-type',
     '@gemeentenijmegen/apiclient',
     '@gemeentenijmegen/apigateway-http',
     '@gemeentenijmegen/session',
@@ -23,7 +24,6 @@ const project = new GemeenteNijmegenCdkApp({
     'openid-client',
   ],
   devDeps: [
-    '@gemeentenijmegen/projen-project-type',
     '@types/mustache',
     '@types/cookie',
     '@aws-sdk/types',

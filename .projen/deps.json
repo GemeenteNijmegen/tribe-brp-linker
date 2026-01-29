@@ -5,10 +5,6 @@
       "type": "build"
     },
     {
-      "name": "@gemeentenijmegen/projen-project-type",
-      "type": "build"
-    },
-    {
       "name": "@glen/jest-raw-loader",
       "type": "build"
     },
@@ -130,6 +126,10 @@
     },
     {
       "name": "@gemeentenijmegen/aws-constructs",
+      "type": "runtime"
+    },
+    {
+      "name": "@gemeentenijmegen/projen-project-type",
       "type": "runtime"
     },
     {
