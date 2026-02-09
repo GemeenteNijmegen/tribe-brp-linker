@@ -80,7 +80,7 @@
     "@gemeentenijmegen/utils": "^0.0.38",
     "@types/aws-lambda": "^8.10.160",
     "aws-cdk-lib": "^2.45.0",
-    "axios": "^1.13.4",
+    "axios": "^1.13.5",
     "constructs": "^10.0.5",
     "cookie": "^0.7.2",
     "dotenv": "^16.6.1",
