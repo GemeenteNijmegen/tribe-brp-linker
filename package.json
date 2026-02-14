@@ -68,13 +68,13 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.989.0",
-    "@aws-sdk/client-secrets-manager": "^3.989.0",
-    "@aws-sdk/client-ssm": "^3.989.0",
+    "@aws-sdk/client-dynamodb": "^3.990.0",
+    "@aws-sdk/client-secrets-manager": "^3.990.0",
+    "@aws-sdk/client-ssm": "^3.990.0",
     "@gemeentenijmegen/apiclient": "^0.0.40",
     "@gemeentenijmegen/apigateway-http": "^0.0.36",
     "@gemeentenijmegen/aws-constructs": "^0.0.48",
-    "@gemeentenijmegen/cross-region-parameters": "^0.0.4",
+    "@gemeentenijmegen/cross-region-parameters": "^0.0.5",
     "@gemeentenijmegen/projen-project-type": "^1.12.1",
     "@gemeentenijmegen/session": "^0.0.34",
     "@gemeentenijmegen/utils": "^0.0.38",
