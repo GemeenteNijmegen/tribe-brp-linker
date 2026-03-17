@@ -18,7 +18,7 @@ export class FileApiClient {
      * Request data from the API.
      * @returns {string|object} XML string or javascript object
      */
-  async requestData(endpoint: string, _body: string, _headers: string) {
+  async requestData(endpoint: string) {
     let file = '';
     let parse: any = false;
     if (endpoint.indexOf('mijnNijmegenData')>=0) {
@@ -36,7 +36,7 @@ export class FileApiClient {
         }
         return data;
       })
-      .catch((_err) => { return ''; });
+      .catch(() => { return ''; });
   }
 
   async getStringFromFilePath(filePath: string) {

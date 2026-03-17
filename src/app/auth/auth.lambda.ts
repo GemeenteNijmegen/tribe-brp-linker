@@ -1,6 +1,6 @@
+import { handleRequest } from './handleRequest';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { Response } from '@gemeentenijmegen/apigateway-http/lib/V2/Response';
-import { handleRequest } from './handleRequest';
 
 const dynamoDBClient = new DynamoDBClient({});
 
@@ -12,7 +12,7 @@ function parseEvent(event: any) {
   };
 }
 
-exports.handler = async (event: any, _context: any) => {
+exports.handler = async (event: any) => {
   try {
     console.log(event);
     const params = parseEvent(event);
