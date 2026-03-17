@@ -1,7 +1,7 @@
-import { OpenIDConnect } from '../../shared/OpenIDConnect';
-import { handleRequest } from '../handleRequest';
 import { DynamoDBClient, GetItemCommand, GetItemCommandOutput } from '@aws-sdk/client-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
+import { OpenIDConnect } from '../../shared/OpenIDConnect';
+import { handleRequest } from '../handleRequest';
 
 
 beforeAll(() => {
