@@ -27,7 +27,7 @@ beforeEach(() => {
 });
 
 test('index is ok', async () => {
-  const result = await handler({}, {});
+  const result = await handler({});
   expect(result.statusCode).toBe(400);
 });
 

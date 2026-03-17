@@ -11,7 +11,7 @@ function parseEvent(event: any) {
   };
 }
 
-export async function handler(event: any, _context: any) {
+export async function handler(event: any) {
   try {
     const params = parseEvent(event);
     const response = await handleLoginRequest(params, dynamoDBClient);

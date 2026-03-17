@@ -12,7 +12,7 @@ function parseEvent(event: any) {
   };
 }
 
-exports.handler = async (event: any, _context: any) => {
+exports.handler = async (event: any) => {
   try {
     console.log(event);
     const params = parseEvent(event);
