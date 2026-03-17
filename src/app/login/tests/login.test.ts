@@ -1,7 +1,7 @@
-import { DynamoDBClient, GetItemCommandOutput, GetItemCommand } from '@aws-sdk/client-dynamodb';
-import { mockClient } from 'aws-sdk-client-mock';
 import { handler } from '../login.lambda';
 import { handleLoginRequest } from '../loginRequestHandler';
+import { DynamoDBClient, GetItemCommandOutput, GetItemCommand } from '@aws-sdk/client-dynamodb';
+import { mockClient } from 'aws-sdk-client-mock';
 
 const ddbMock = mockClient(DynamoDBClient);
 
@@ -27,7 +27,7 @@ beforeEach(() => {
 });
 
 test('index is ok', async () => {
-  const result = await handler({}, {});
+  const result = await handler({});
   expect(result.statusCode).toBe(400);
 });
 

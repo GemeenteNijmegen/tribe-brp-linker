@@ -28,7 +28,7 @@ function parseEvent(event: APIGatewayProxyEventV2): any {
   };
 }
 
-exports.handler = async (event: any, _context: any) => {
+exports.handler = async (event: any) => {
   try {
     const params = parseEvent(event);
     await initPromise;
