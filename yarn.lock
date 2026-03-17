@@ -250,7 +250,7 @@
     "@smithy/util-utf8" "^4.2.2"
     tslib "^2.6.2"
 
-"@aws-sdk/client-ssm@^3.1009.0", "@aws-sdk/client-ssm@^3.1010.0", "@aws-sdk/client-ssm@^3.901.0":
+"@aws-sdk/client-ssm@^3.1009.0", "@aws-sdk/client-ssm@^3.1010.0", "@aws-sdk/client-ssm@^3.901.0", "@aws-sdk/client-ssm@^3.975.0":
   version "3.1010.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/client-ssm/-/client-ssm-3.1010.0.tgz#05852c3e6f03015504a074d518ebd7e7811376cd"
   integrity sha512-8YCdGdTG68SBEV5/CMWsZxYrwMqMbzpM5WBZfakdELbu3cp9v2z5Akq9o7dfThuLIF4kW+y11kPsTZPud4y6uQ==
@@ -1293,6 +1293,15 @@
   resolved "https://registry.yarnpkg.com/@gemeentenijmegen/aws-constructs/-/aws-constructs-0.0.49.tgz#53698c12c7becef51ac8ea8a2de41b0e9d8c8360"
   integrity sha512-f0b4ipcBpF00QbaHbFvL9UO8GqdnmN+NmUHVJ9td7FAOfZOSdPOHEMyL3uFfoGZ+QjfRhcPXTlaRmV5iI78BDQ==
 
+"@gemeentenijmegen/cross-region-parameters@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@gemeentenijmegen/cross-region-parameters/-/cross-region-parameters-0.0.5.tgz#1f754cc0fe6ed42381dbbcbaabb53ac5c5a2ac9d"
+  integrity sha512-xhL1oIdM7nMkpBUs7fXuQ7A73NOTxC28QopnyAyM6VLn7/ksRUHtOvFWVNYMlGChCc0v8KvU23l7DtOtA7kwHA==
+  dependencies:
+    "@aws-sdk/client-ssm" "^3.975.0"
+    "@types/aws-lambda" "^8.10.160"
+    zod "^4.3.6"
+
 "@gemeentenijmegen/projen-project-type@^1.12.2":
   version "1.12.2"
   resolved "https://registry.yarnpkg.com/@gemeentenijmegen/projen-project-type/-/projen-project-type-1.12.2.tgz#2caed7fe6aea335ded4c4ffcfd02b9b4bdc177b5"
@@ -2252,7 +2261,7 @@
   dependencies:
     tslib "^2.4.0"
 
-"@types/aws-lambda@^8.10.153", "@types/aws-lambda@^8.10.161":
+"@types/aws-lambda@^8.10.153", "@types/aws-lambda@^8.10.160", "@types/aws-lambda@^8.10.161":
   version "8.10.161"
   resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.161.tgz#36d95723ec46d3d555bf0684f83cf4d4369a28ad"
   integrity sha512-rUYdp+MQwSFocxIOcSsYSF3YYYC/uUpMbCY/mbO21vGqfrEYvNSoPyKYDj6RhXXpPfS0KstW9RwG3qXh9sL7FQ==
@@ -3052,11 +3061,6 @@ case@1.6.3, case@^1.6.3:
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/case/-/case-1.6.3.tgz#0a4386e3e9825351ca2e6216c60467ff5f1ea1c9"
   integrity sha512-mzDSXIPaFwVDvZAHqZ9VlbyF4yyXRuX6IvB06WvPYkqJVO24kX1PPhv9bfpKNFZyxYFmmgo03HUiD8iklmJYRQ==
-
-cdk-remote-stack@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/cdk-remote-stack/-/cdk-remote-stack-2.1.0.tgz#a3d4e557cd5e2fe91cd53d7e19e01f4fda04b504"
-  integrity sha512-ycEmgLuRd/SXXFoJOQwcoSVtKekC/8dJjG9ix3wNaWhOtKJ9dcTB55Rk8uL5kAcXT5Z78ho07z6sebg9UL2uXg==
 
 chalk@^2.4.2:
   version "2.4.2"
@@ -7092,3 +7096,8 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+zod@^4.3.6:
+  version "4.3.6"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-4.3.6.tgz#89c56e0aa7d2b05107d894412227087885ab112a"
+  integrity sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==
