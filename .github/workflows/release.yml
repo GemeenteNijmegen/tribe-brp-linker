@@ -30,12 +30,16 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Setup cfn-lint
         uses: scottbrenner/cfn-lint-action@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
       - name: Install dependencies
-        run: yarn install --check-files --frozen-lockfile
+        run: npm ci
       - name: release
         run: npx projen release
       - name: CloudFormation lint
-        run: npx projen lint
+        run: npx projen cfn-lint
       - name: Check if version has already been tagged
         id: check_tag_exists
         run: |-
@@ -54,7 +58,7 @@ jobs:
         continue-on-error: true
       - name: Upload artifact
         if: ${{ steps.git_remote.outputs.latest_commit == github.sha }}
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7
         with:
           name: build-artifact
           path: dist
@@ -69,9 +73,9 @@ jobs:
     steps:
       - uses: actions/setup-node@v5
         with:
-          node-version: lts/*
+          node-version: "24"
       - name: Download build artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: build-artifact
           path: dist
