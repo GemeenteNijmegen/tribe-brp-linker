@@ -89,7 +89,7 @@
     },
     {
       "name": "projen",
-      "version": "0.98.29",
+      "version": "0.99.27",
       "type": "build"
     },
     {
@@ -159,7 +159,7 @@
     },
     {
       "name": "constructs",
-      "version": "^10.0.5",
+      "version": "^10.5.1",
       "type": "runtime"
     },
     {

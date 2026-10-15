@@ -20,8 +20,12 @@ jobs:
           ref: acceptance
       - name: Setup cfn-lint
         uses: scottbrenner/cfn-lint-action@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
       - name: Install dependencies
-        run: yarn install --check-files --frozen-lockfile
+        run: npm ci
       - name: Upgrade dependencies
         run: npx projen upgrade
       - name: Find mutations
@@ -33,7 +37,7 @@ jobs:
         working-directory: ./
       - name: Upload patch
         if: steps.create_patch.outputs.patch_created
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7
         with:
           name: repo.patch
           path: repo.patch
@@ -57,7 +61,7 @@ jobs:
         with:
           ref: acceptance
       - name: Download patch
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: repo.patch
           path: ${{ runner.temp }}
